@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '.github/workflows/releasebuild.yml'
 
 jobs:
   build-and-deploy:
