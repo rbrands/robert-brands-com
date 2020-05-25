@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -38,8 +40,12 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - robert-brands.com - 2020-05-20 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
-        </div>
+            &copy; 2020 - robert-brands.com - 2020-05-25 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
+            @if (User.Identity.IsAuthenticated && User.IsAdmin()) {
+                <text>| Admin</text>
+            }
+
+            </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

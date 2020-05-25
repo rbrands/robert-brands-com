@@ -10,17 +10,18 @@ using Microsoft.Extensions.Logging;
 namespace robert_brands_com.Pages
 {
     [AllowAnonymous]
-    public class PrivacyModel : PageModel
+    public class DatenschutzModel : PageModel
     {
-        private readonly ILogger<PrivacyModel> _logger;
+        private readonly ILogger<IndexModel> _logger;
 
-        public PrivacyModel(ILogger<PrivacyModel> logger)
+        public DatenschutzModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
         }
 
         public void OnGet()
         {
+
         }
     }
 }

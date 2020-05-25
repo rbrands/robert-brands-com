@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using robert_brands_com.Filter;
+using System.Security.Claims;
 
 namespace robert_brands_com
 {
@@ -32,13 +34,21 @@ namespace robert_brands_com
 
             services.AddRazorPages().AddMvcOptions(options =>
             {
-                /* Enable this if authentication should be required for all pages
                 var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser() // no authentication required for all pages!
+                    .RequireAuthenticatedUser()
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
-                */
+                options.Filters.Add(new RejectFilter()); // rbrands: Filter a list of rejected browsers
             });
+
+            // rbrands Policy based on claims: https://docs.microsoft.com/en-us/aspnet/core/security/authorization/claims
+            // and https://docs.microsoft.com/en-us/aspnet/core/security/authorization/policies
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(KnownRoles.PolicyIsBlogAuthor, policy => policy.RequireRole(KnownRoles.BlogAuthorRoles));
+                options.AddPolicy(KnownRoles.PolicyIsCalendarCoordinator, policy => policy.RequireRole(KnownRoles.CalendarCoordinatorRoles));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
