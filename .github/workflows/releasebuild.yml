@@ -6,7 +6,7 @@ name: Deploy "releases/*" to slot "release"
 on:
   push:
     branches:
-      - releases/2020-05-20
+      - releases/*
 
 jobs:
   build-and-deploy:
