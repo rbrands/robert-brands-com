@@ -1,13 +1,42 @@
 ﻿@using System.Security.Claims
 @using Microsoft.AspNetCore.Authorization
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Robert Brands" />
+    @if (!String.IsNullOrEmpty(ViewBag.Keywords ?? String.Empty))
+    {
+        <meta name="keywords" content="@ViewBag.Keywords" />
+    }
+    else
+    {
+        <meta name="keywords" content="Fotografie,Radfahren,Web-Entwicklung,Rennrad,Köln" />
+    }
+    @if (!String.IsNullOrEmpty(ViewBag.Description ?? String.Empty))
+    {
+        <meta name="description" content="@ViewBag.Description" />
+    }
+    else
+    {
+        <meta name="description" content="Robert Brands - Softwareentwickler, Hobby-Fotograf, Radfahrer." />
+    }
+    <meta http-equiv="content-language" content="de-de" />
+    @if (ViewBag.NoRobots ?? false)
+    {
+        <meta name="robots" content="noindex, nofollow" />
+    }
+    <environment include="Staging,Development">
+        <meta name="robots" content="noindex, nofollow">
+    </environment>
+    @RenderSection("Metatags", required: false)
     <title>@ViewData["Title"] - robert-brands.com</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/open-iconic/font/css/open-iconic-foundation.css" rel="stylesheet">
+    @RenderSection("CSS", required: false)
+    @RenderSection("HeaderScripts", required: false)
 </head>
 <body>
     <header>
@@ -40,11 +69,10 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - robert-brands.com - 2020-05-25 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
+            &copy; 2020 - robert-brands.com - 2020-05-26 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
             @if (User.Identity.IsAuthenticated && User.IsAdmin()) {
                 <text>| Admin</text>
             }
-
             </div>
     </footer>
 
