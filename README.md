@@ -2,13 +2,16 @@
 
 # Personal CMS for robert-brands.com
 
-This site is my personal web site and provides a simple CMS. I use it to share photes, roadbike tracks, travel tips etc. But first of all it demonstrates some features around development with 
+This site is my personal web site and provides a very simple CMS. I use it to share photos, roadbike tracks, travel tips etc. But first of all it demonstrates some features around development with 
 
 - ASP.NET Core with Razor Pages
-- Azure AD
+- Authentication with Azure AD
 - Azure Table Storage
 - NoSQL Datenbank Azure Cosmos DB
 - Azure Web-Apps
 - Responsive Design with Bootstrap
+- GitHub Actions
+
+Fell free to use it as start for your own development or to understand and see examples of the mentioned technologies.
 
 
