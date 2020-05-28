@@ -12,14 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "AzureAd:Domain": "riwa4.de",
-        "SiteDB:DatabaseName": "rbrandssite",
-        "SiteDB:CollectionName": "collection1",
-        "SiteDB:EndPointUrl": "https://rbrandscosmosdb.documents.azure.com:443/",
-        "AzureAd:TenantId": "62f58951-d420-4e59-8d89-ad924510e70c",
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "AzureAd:ClientId": "f860d0ba-37e3-45e5-992e-4d746903acbb",
-        "SiteDB:AuthorizationKey": "Wm6XLAEUO6C5h7qN2L7I3j9WBLo9AcXlVPdvBIqRHQQSVNfBL4BHr1HsTe7t9fcu1bia0t6QS0GNf0XXlHVxbw=="
       }
     },
     "robert_brands_com": {

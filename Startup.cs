@@ -51,7 +51,6 @@ namespace robert_brands_com
             });
             // rbrands: Configure standard services.
             // For dependency injection in ASP.NET Core see https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection
-
             // Inject IOptions<DbConfig> for Cosmos DB
             services.Configure<DbConfig>(Configuration.GetSection("SiteDB"));
             DbConfig dbConfig = Configuration.GetSection("SiteDB").Get<DbConfig>();
