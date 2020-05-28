@@ -12,10 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "AzureAd:Domain": "riwa4.de",
-        "AzureAd:TenantId": "62f58951-d420-4e59-8d89-ad924510e70c",
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "AzureAd:ClientId": "f860d0ba-37e3-45e5-992e-4d746903acbb"
       }
     },
     "robert_brands_com": {
