@@ -17,16 +17,52 @@ namespace robert_brands_com.Repositories
         public string AuthorizationKey { get; set; }
         public bool CreateIfNotExists { get; set; }
     }
+    /// <summary>
+    /// Access to Cosmos DB is provided by this class that should created in Startup. All objects stored in the database are inherited from DocumentDBEntity
+    /// Create for every type to be accessed a repository in Startup.
+    /// </summary>
+    /// <typeparam name="T">Type that is handled by this repository</typeparam>
     public class CosmosDBRepository<T> : ICosmosDBRepository<T> where T : DocumentDBEntity, new()
     {
-        public Task<T> CreateDocument(T document)
+        private DbConfig _config;
+        private CosmosClient _cosmosClient;
+
+        public CosmosDBRepository(DbConfig dbConfig)
         {
-            throw new NotImplementedException();
+            _config = dbConfig;
+            _cosmosClient = this.CreateCosmosClient();
         }
 
-        public Task DeleteDocumentAsync(string id)
+        private CosmosClient CreateCosmosClient()
         {
-            throw new NotImplementedException();
+            CosmosClient client = new CosmosClient(_config.EndPointUrl, _config.AuthorizationKey);
+            if (_config.CreateIfNotExists)
+            {
+                // Check if database exists and create one if not
+                Database database = client.CreateDatabaseIfNotExistsAsync(_config.DatabaseName).Result;
+
+                // Create new container if not already exists
+                database.CreateContainerIfNotExistsAsync(_config.CollectionName, "/partionKey");
+            }
+            return client;
+        }
+        public async Task<T> CreateDocument(T document)
+        {
+            if (null == document)
+            {
+                throw new ArgumentNullException("document");
+            }
+            document.SetUniqueKey();
+            return await _cosmosClient.GetDatabase(_config.DatabaseName)
+                                       .GetContainer(_config.CollectionName)
+                                       .CreateItemAsync<T>(document, new PartitionKey(document.PartitionKey));
+        }
+
+        public async Task DeleteDocumentAsync(T item)
+        {
+            await _cosmosClient.GetDatabase(_config.DatabaseName)
+                               .GetContainer(_config.CollectionName)
+                               .DeleteItemAsync<T>(item.Id, new PartitionKey(item.PartitionKey));
         }
 
         public Task<T> GetDocument(string id)
