@@ -25,12 +25,12 @@ namespace robert_brands_com.Repositories
     public class CosmosDBRepository<T> : ICosmosDBRepository<T> where T : DocumentDBEntity, new()
     {
         private DbConfig _config;
-        private CosmosClient __cosmosClient;
+        private CosmosClient _cosmosClient;
 
         public CosmosDBRepository(DbConfig dbConfig)
         {
             _config = dbConfig;
-            __cosmosClient = this.CreateCosmosClient();
+            _cosmosClient = this.CreateCosmosClient();
         }
 
         private CosmosClient CreateCosmosClient()
@@ -53,14 +53,16 @@ namespace robert_brands_com.Repositories
                 throw new ArgumentNullException("document");
             }
             document.SetUniqueKey();
-            return await __cosmosClient.GetDatabase(_config.DatabaseName)
+            return await _cosmosClient.GetDatabase(_config.DatabaseName)
                                        .GetContainer(_config.CollectionName)
                                        .CreateItemAsync<T>(document, new PartitionKey(document.PartitionKey));
         }
 
-        public Task DeleteDocumentAsync(string id)
+        public async Task DeleteDocumentAsync(T item)
         {
-            throw new NotImplementedException();
+            await _cosmosClient.GetDatabase(_config.DatabaseName)
+                               .GetContainer(_config.CollectionName)
+                               .DeleteItemAsync<T>(item.Id, new PartitionKey(item.PartitionKey));
         }
 
         public Task<T> GetDocument(string id)
