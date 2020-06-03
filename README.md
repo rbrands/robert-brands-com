@@ -12,6 +12,6 @@ This site is my personal web site and provides a very simple CMS. I use it to sh
 - Responsive Design with Bootstrap
 - GitHub Actions
 
-Fell free to use it as start for your own development or to understand and see examples of the mentioned technologies.
+Feel free to use it as start for your own development or to understand and see examples of the mentioned technologies.
 
 
