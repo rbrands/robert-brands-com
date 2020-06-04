@@ -1,0 +1,49 @@
+﻿@page
+@model robert_brands_com.Pages.Admin.ActivityLogModel
+@using robert_brands_com.Models;
+@{
+    ViewData["Title"] = "ActivityLog";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>@ViewData["Title"]</h2>
+            <h3>@ViewData["Message"]</h3>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a asp-page-handler="get">Alle</a></li>
+                <li class="list-inline-item"><a asp-page-handler="norobots">Ohne Robots</a></li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered table-hover table-striped">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>User</th>
+                            <th>Category</th>
+                            <th>MessageTag</th>
+                            <th>Message</th>
+                            <th>ClientInfo</th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-weight-light">
+                        @foreach (ActivityLogItem activity in Model.Activities)
+                        {
+                            <tr>
+                                <td>@activity.TimeStamp.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>@activity.User</td>
+                                <td>@activity.Category</td>
+                                <td>@activity.MessageTag</td>
+                                <td>@activity.Message</td>
+                                <td class="small">@activity.ClientInfo</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

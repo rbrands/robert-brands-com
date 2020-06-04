@@ -26,6 +26,7 @@ namespace robert_brands_com.Repositories
             logActivity.Message = message;
             logActivity.ClientInfo = clientInfo;
             logActivity.TimeToLive = ttl;
+            logActivity.TimeStamp = DateTime.UtcNow;
 
             await _documentRepository.UpsertDocument(logActivity);
 

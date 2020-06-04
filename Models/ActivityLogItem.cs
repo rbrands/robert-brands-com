@@ -19,5 +19,7 @@ namespace robert_brands_com.Models
         public string Message { get; set; }
         [JsonProperty(PropertyName = "clientInfo", NullValueHandling = NullValueHandling.Ignore)]
         public string ClientInfo { get; set; }
+        [JsonProperty(PropertyName = "timeStamp", NullValueHandling = NullValueHandling.Ignore)]
+        public DateTime TimeStamp { get; set; }
     }
 }
