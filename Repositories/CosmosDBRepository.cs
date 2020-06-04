@@ -59,11 +59,11 @@ namespace robert_brands_com.Repositories
                                        .CreateItemAsync<T>(document, new PartitionKey(document.PartitionKey));
         }
 
-        public async Task DeleteDocumentAsync(T item)
+        public async Task DeleteDocumentAsync(string id)
         {
             await _cosmosClient.GetDatabase(_config.DatabaseName)
                                .GetContainer(_config.CollectionName)
-                               .DeleteItemAsync<T>(item.Id, new PartitionKey(item.PartitionKey));
+                               .DeleteItemAsync<T>(id, new PartitionKey(typeof(T).Name));
         }
 
         public async Task<T> GetDocument(string id)
@@ -87,7 +87,7 @@ namespace robert_brands_com.Repositories
             }
         }
         /// <summary>
-        /// Create a key for the document that uses the tenant and type as prefix and the given argument as suffix.
+        /// Create a key for the document that uses the type as prefix and the given argument as suffix.
         /// The composed key should be unique because it it used as id.
         /// </summary>
         /// <param name="key"></param>
