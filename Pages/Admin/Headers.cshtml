@@ -1,0 +1,77 @@
+﻿@page
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv
+@using Microsoft.Extensions.Configuration;
+@model robert_brands_com.Pages.Admin.HeadersModel
+@{
+    ViewData["Title"] = "Headers";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>@ViewData["Title"]</h2>
+            <h3>@ViewData["Message"]</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered table-hover table-striped">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Header</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (string header in Request.Headers.Keys)
+                        {
+                            <tr>
+                                <td>@header</td>
+                                <td>@Request.Headers[header]</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered table-hover table-striped">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Config-Value</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ASPNETCORE_ENVIRONMENT</td>
+                            <td>
+                                @hostingEnv.EnvironmentName
+                            </td>
+
+                        </tr>
+                        @foreach (IConfigurationSection configSection in Model.Configuration.GetChildren())
+                        {
+                            <tr>
+                                <td>@configSection.Key</td>
+                                <td>
+                                    @configSection.Value
+                                    <table>
+                                        @foreach (IConfigurationSection subSection in configSection.GetChildren())
+                                        {
+                                            <tr>
+                                                <td> @subSection.Key</td>
+                                                <td>: </td>
+                                                <td>@subSection.Value</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

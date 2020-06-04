@@ -56,6 +56,27 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
+                        @if (User.IsInRole(KnownRoles.Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdown02">
+                                    <a class="dropdown-item" asp-page="/Admin/ActivityLog">ActivityLog</a>
+                                    <a class="dropdown-item" asp-page="/Rad/NewTrackLink">Neuer Track</a>
+                                    <a class="dropdown-item" asp-page="/Admin/Kategorien">Kategorien verwalten</a>
+                                    <a class="dropdown-item" asp-page="/Admin/Environment">Environment</a>
+                                    <a class="dropdown-item" asp-page="/Admin/Headers">Headers</a>
+                                    <a class="dropdown-item" asp-page="/Shortcuts/New">Neuer Shortcut</a>
+                                    <a class="dropdown-item" asp-page="/Shortcuts/Index">Liste aller Shortcuts</a>
+                                    <a class="dropdown-item" asp-page="/Events/NewEventRegistration">Neue Eventregistrierung</a>
+                                    <a class="dropdown-item" asp-page="/Events/ListEventRegistrations">Liste aller Events</a>
+                                    <a class="dropdown-item" asp-page="/Fotos/NewFotoLink">Neuer Fotolink</a>
+                                </div>
+                            </li>
+                        }
+
                     </ul>
                 </div>
             </div>

@@ -1,0 +1,45 @@
+﻿@page
+@model robert_brands_com.Pages.Admin.EnvironmentModel
+@{
+    ViewData["Title"] = "Environment";
+}
+@using System.Security.Claims
+
+<h1>Environment</h1>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>@ViewData["Title"]</h2>
+            <h3>@ViewData["Message"]</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered table-hover table-striped">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Claim Type</th>
+                            <th>Claim Value</th>
+                            <th>Claim Issuer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Claim claim in User.Claims)
+                        {
+                            <tr>
+                                <td>@claim.Type</td>
+                                <td>@claim.Value</td>
+                                <td>@claim.Issuer</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td>User</td>
+                            <td>@User.Identity.Name</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

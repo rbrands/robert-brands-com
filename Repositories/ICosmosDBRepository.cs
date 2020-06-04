@@ -7,7 +7,7 @@ using robert_brands_com.Models;
 
 namespace robert_brands_com.Repositories
 {
-    interface ICosmosDBRepository<T> where T : DocumentDBEntity
+    public interface ICosmosDBRepository<T> where T : DocumentDBEntity
     {
         /// <summary>
         /// Creates or updates given document
