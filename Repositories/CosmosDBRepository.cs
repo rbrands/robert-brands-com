@@ -140,9 +140,22 @@ namespace robert_brands_com.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<T> UpsertDocument(T document)
+        public async Task<T> UpsertDocument(T document)
         {
-            throw new NotImplementedException();
+            Container container = _cosmosClient.GetDatabase(_config.DatabaseName).GetContainer(_config.CollectionName);
+            PartitionKey partitionKey = new PartitionKey(typeof(T).Name);
+
+            if (null == document)
+            {
+                throw new ArgumentNullException("document");
+            }
+            if (null != document.LogicalKey && null == document.Id)
+            {
+                document.SetUniqueKey();
+            }
+            ItemResponse<T> response = await container.UpsertItemAsync<T>(document, partitionKey);
+
+            return response.Resource;
         }
     }
 }
