@@ -16,6 +16,7 @@ using robert_brands_com.Filter;
 using robert_brands_com.Repositories;
 using System.Security.Claims;
 using robert_brands_com.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace robert_brands_com
 {
@@ -92,7 +93,20 @@ namespace robert_brands_com
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                // rbrands: Add endpoints for shortcuts
+                // See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-3.1
+                endpoints.MapControllerRoute(
+                    name: "categoryLink",
+                    pattern: "{category}/{nickname}",
+                    defaults: new { Controller = "Shortcuts", Action = "Link" }
+                   );
+                endpoints.MapControllerRoute(
+                    name: "link",
+                    pattern: "{nickname}",
+                    defaults: new { Controller = "Shortcuts", Action = "Link", Category = "Default" }
+                    );
             });
+
         }
     }
 }
