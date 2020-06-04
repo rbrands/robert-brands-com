@@ -135,9 +135,23 @@ namespace robert_brands_com.Repositories
             return results;
         }
 
-        public Task<PagedResult<T>> GetPagedDocumentsDescending<TKey>(Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> keySelector, int maxItemCount, string pagingToken)
+        public async Task<PagedResult<T>> GetPagedDocumentsDescending<TKey>(Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> keySelector, int maxItemCount, string pagingToken)
         {
-            throw new NotImplementedException();
+            Container container = _cosmosClient.GetDatabase(_config.DatabaseName).GetContainer(_config.CollectionName);
+            PartitionKey partitionKey = new PartitionKey(typeof(T).Name);
+            PagedResult<T> pagedResult = new PagedResult<T>();
+            pagedResult.Result = new List<T>();
+
+            FeedIterator<T> itemIterator = container.GetItemLinqQueryable<T>(true, pagingToken, new QueryRequestOptions { MaxItemCount = maxItemCount, PartitionKey = partitionKey })
+                                             .Where(d => d.Type == typeof(T).Name)
+                                             .Where<T>(predicate)
+                                             .OrderByDescending<T, TKey>(keySelector)
+                                             .ToFeedIterator<T>();
+            FeedResponse<T> feedResponse = await itemIterator.ReadNextAsync();
+            pagedResult.ContinuationToken = feedResponse.ContinuationToken;
+            pagedResult.Result.AddRange(feedResponse);
+
+            return pagedResult;
         }
 
         public async Task<T> UpsertDocument(T document)
