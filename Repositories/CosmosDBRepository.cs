@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Azure.Cosmos.Linq;
 
 namespace robert_brands_com.Repositories
 {
@@ -58,41 +59,117 @@ namespace robert_brands_com.Repositories
                                        .CreateItemAsync<T>(document, new PartitionKey(document.PartitionKey));
         }
 
-        public async Task DeleteDocumentAsync(T item)
+        public async Task DeleteDocumentAsync(string id)
         {
             await _cosmosClient.GetDatabase(_config.DatabaseName)
                                .GetContainer(_config.CollectionName)
-                               .DeleteItemAsync<T>(item.Id, new PartitionKey(item.PartitionKey));
+                               .DeleteItemAsync<T>(id, new PartitionKey(typeof(T).Name));
         }
 
-        public Task<T> GetDocument(string id)
+        public async Task<T> GetDocument(string id)
         {
-            throw new NotImplementedException();
+            PartitionKey partitionKey = new PartitionKey(typeof(T).Name);
+            if (String.IsNullOrEmpty(id))
+            {
+                throw new ApplicationException("Missing document id.");
+            }
+            try
+            {
+                ItemResponse<T> item = await _cosmosClient.GetDatabase(_config.DatabaseName)
+                                                          .GetContainer(_config.CollectionName)
+                                                          .ReadItemAsync<T>(id, partitionKey);
+                    
+                return item.Resource;
+            }
+            catch (CosmosException e) when (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// Create a key for the document that uses the type as prefix and the given argument as suffix.
+        /// The composed key should be unique because it it used as id.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task<T> GetDocumentByKey(string key)
+        {
+            if (String.IsNullOrEmpty(key))
+            {
+                throw new ApplicationException("Missing document key.");
+            }
+            string id = typeof(T).Name + "-" + key;
+            return await GetDocument(id);
         }
 
-        public Task<T> GetDocumentByKey(string key)
+        public async Task<IEnumerable<T>> GetDocuments(Expression<Func<T, bool>> predicate, int maxItemCount = -1)
         {
-            throw new NotImplementedException();
+            Container container = _cosmosClient.GetDatabase(_config.DatabaseName).GetContainer(_config.CollectionName);
+            PartitionKey partitionKey = new PartitionKey(typeof(T).Name);
+
+            FeedIterator<T> itemIterator = container.GetItemLinqQueryable<T>(true,null, new QueryRequestOptions { MaxItemCount = maxItemCount, PartitionKey = partitionKey })
+                                             .Where(d => d.Type == typeof(T).Name)
+                                             .Where<T>(predicate)
+                                             .ToFeedIterator<T>();
+            List<T> results = new List<T>();
+            while (itemIterator.HasMoreResults)
+            {
+                results.AddRange(await itemIterator.ReadNextAsync());
+            }
+            return results;
         }
 
-        public Task<IEnumerable<T>> GetDocuments(Expression<Func<T, bool>> predicate, int maxItemCount = -1)
+        public async Task<IEnumerable<T>> GetDocuments()
         {
-            throw new NotImplementedException();
+            Container container = _cosmosClient.GetDatabase(_config.DatabaseName).GetContainer(_config.CollectionName);
+            PartitionKey partitionKey = new PartitionKey(typeof(T).Name);
+
+            FeedIterator<T> itemIterator = container.GetItemLinqQueryable<T>(true, null, new QueryRequestOptions { PartitionKey = partitionKey })
+                                             .Where(d => d.Type == typeof(T).Name)
+                                             .ToFeedIterator<T>();
+            List<T> results = new List<T>();
+            while (itemIterator.HasMoreResults)
+            {
+                results.AddRange(await itemIterator.ReadNextAsync());
+            }
+            return results;
         }
 
-        public Task<IEnumerable<T>> GetDocuments()
+        public async Task<PagedResult<T>> GetPagedDocumentsDescending<TKey>(Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> keySelector, int maxItemCount, string pagingToken)
         {
-            throw new NotImplementedException();
+            Container container = _cosmosClient.GetDatabase(_config.DatabaseName).GetContainer(_config.CollectionName);
+            PartitionKey partitionKey = new PartitionKey(typeof(T).Name);
+            PagedResult<T> pagedResult = new PagedResult<T>();
+            pagedResult.Result = new List<T>();
+
+            FeedIterator<T> itemIterator = container.GetItemLinqQueryable<T>(true, pagingToken, new QueryRequestOptions { MaxItemCount = maxItemCount, PartitionKey = partitionKey })
+                                             .Where(d => d.Type == typeof(T).Name)
+                                             .Where<T>(predicate)
+                                             .OrderByDescending<T, TKey>(keySelector)
+                                             .ToFeedIterator<T>();
+            FeedResponse<T> feedResponse = await itemIterator.ReadNextAsync();
+            pagedResult.ContinuationToken = feedResponse.ContinuationToken;
+            pagedResult.Result.AddRange(feedResponse);
+
+            return pagedResult;
         }
 
-        public Task<PagedResult<T>> GetPagedDocumentsDescending<TKey>(Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> keySelector, int maxItemCount, string pagingToken)
+        public async Task<T> UpsertDocument(T document)
         {
-            throw new NotImplementedException();
-        }
+            Container container = _cosmosClient.GetDatabase(_config.DatabaseName).GetContainer(_config.CollectionName);
+            PartitionKey partitionKey = new PartitionKey(typeof(T).Name);
 
-        public Task<T> UpsertDocument(T document)
-        {
-            throw new NotImplementedException();
+            if (null == document)
+            {
+                throw new ArgumentNullException("document");
+            }
+            if (null == document.Id)
+            {
+                document.SetUniqueKey();
+            }
+            ItemResponse<T> response = await container.UpsertItemAsync<T>(document, partitionKey);
+
+            return response.Resource;
         }
     }
 }

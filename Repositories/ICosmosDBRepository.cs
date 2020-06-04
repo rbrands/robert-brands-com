@@ -32,7 +32,7 @@ namespace robert_brands_com.Repositories
         Task<IEnumerable<T>> GetDocuments(Expression<Func<T, bool>> predicate, int maxItemCount = -1);
         Task<PagedResult<T>> GetPagedDocumentsDescending<TKey>(Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> keySelector, int maxItemCount, string pagingToken);
         Task<IEnumerable<T>> GetDocuments();
-        Task DeleteDocumentAsync(T item);
+        Task DeleteDocumentAsync(string id);
     }
 }
 
