@@ -16,6 +16,7 @@ using robert_brands_com.Filter;
 using robert_brands_com.Repositories;
 using System.Security.Claims;
 using robert_brands_com.Models;
+using robert_brands_com.Repositories;
 
 namespace robert_brands_com
 {
@@ -50,6 +51,11 @@ namespace robert_brands_com
                 options.AddPolicy(KnownRoles.PolicyIsBlogAuthor, policy => policy.RequireRole(KnownRoles.BlogAuthorRoles));
                 options.AddPolicy(KnownRoles.PolicyIsCalendarCoordinator, policy => policy.RequireRole(KnownRoles.CalendarCoordinatorRoles));
             });
+            // rbrands: Configure standard services.
+            // For dependency injection in ASP.NET Core see https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection
+            // Inject IOptions<DbConfig> for Cosmos DB
+            services.Configure<DbConfig>(Configuration.GetSection("SiteDB"));
+            DbConfig dbConfig = Configuration.GetSection("SiteDB").Get<DbConfig>();
 
             //
             // rbrands: Configure standard services
