@@ -65,9 +65,25 @@ namespace robert_brands_com.Repositories
                                .DeleteItemAsync<T>(item.Id, new PartitionKey(item.PartitionKey));
         }
 
-        public Task<T> GetDocument(string id)
+        public async Task<T> GetDocument(string id)
         {
-            throw new NotImplementedException();
+            PartitionKey partitionKey = new PartitionKey(typeof(T).Name);
+            if (String.IsNullOrEmpty(id))
+            {
+                throw new ApplicationException("Missing document id.");
+            }
+            try
+            {
+                ItemResponse<T> item = await _cosmosClient.GetDatabase(_config.DatabaseName)
+                                                          .GetContainer(_config.CollectionName)
+                                                          .ReadItemAsync<T>(id, partitionKey);
+                    
+                return item.Resource;
+            }
+            catch (CosmosException e) when (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
         }
 
         public Task<T> GetDocumentByKey(string key)
