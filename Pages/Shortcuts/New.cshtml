@@ -1,0 +1,38 @@
+﻿@page
+@model robert_brands_com.Pages.Shortcuts.NewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Neuer Shortcut";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>@ViewData["Title"]</h2>
+            <h4>@ViewData["Message"]</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="All" class="bg-warning"></div>
+                <div class="form-group">
+                    <label asp-for="NewShortcut.Nickname">Link-Kürzel:</label>
+                    <input class="form-control" asp-for="NewShortcut.Nickname" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewShortcut.Url">Link:</label>
+                    <input class="form-control" asp-for="NewShortcut.Url" inputmode="url" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewShortcut.Category">Kategorie:</label>
+                    <input class="form-control" asp-for="NewShortcut.Category" value="Default" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewShortcut.Remark">Bemerkung:</label>
+                    <input class="form-control" asp-for="NewShortcut.Remark" />
+                </div>
+                <button class="btn btn-primary" type="submit">Speichern</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
