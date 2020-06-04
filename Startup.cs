@@ -13,7 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using robert_brands_com.Filter;
+using robert_brands_com.Repositories;
 using System.Security.Claims;
+using robert_brands_com.Models;
 
 namespace robert_brands_com
 {
@@ -48,6 +50,17 @@ namespace robert_brands_com
                 options.AddPolicy(KnownRoles.PolicyIsBlogAuthor, policy => policy.RequireRole(KnownRoles.BlogAuthorRoles));
                 options.AddPolicy(KnownRoles.PolicyIsCalendarCoordinator, policy => policy.RequireRole(KnownRoles.CalendarCoordinatorRoles));
             });
+
+            //
+            // rbrands: Configure standard services
+            //
+            services.AddSingleton(typeof(IConfigurationRoot), Configuration);
+            // Inject IOptions<DbConfig>
+            services.Configure<DbConfig>(Configuration.GetSection("SiteDB"));
+            DbConfig dbConfig = Configuration.GetSection("SiteDB").Get<DbConfig>();
+            // Repositories for ActivityLogging - one for writing one for reading because of different interfaces. 
+            services.AddSingleton(typeof(ICosmosDBRepository<ActivityLogItem>), new CosmosDBRepository<ActivityLogItem>(dbConfig));
+            services.AddSingleton(typeof(IActivityLog), new ActivityLogDBRepository(Configuration, dbConfig));
 
         }
 

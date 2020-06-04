@@ -163,7 +163,7 @@ namespace robert_brands_com.Repositories
             {
                 throw new ArgumentNullException("document");
             }
-            if (null != document.LogicalKey && null == document.Id)
+            if (null == document.Id)
             {
                 document.SetUniqueKey();
             }

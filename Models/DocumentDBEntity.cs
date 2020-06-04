@@ -51,6 +51,10 @@ namespace robert_brands_com.Models
             {
                 Id = Type + "-" + LogicalKey;
             }
+            else
+            {
+                Id = Guid.NewGuid().ToString();
+            }
         }
     }
 }
