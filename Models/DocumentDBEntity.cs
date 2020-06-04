@@ -38,7 +38,7 @@ namespace robert_brands_com.Models
         }
         /// <summary>
         /// Logical key to be used for this entity. If this member is set the id of the document
-        /// is created as according to the pattern tenant-type-key and should be unique.
+        /// is created as according to the pattern type-key and should be unique.
         /// </summary>
         [JsonProperty(PropertyName = "key", NullValueHandling = NullValueHandling.Ignore)]
         public string LogicalKey { get; set; }
