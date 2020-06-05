@@ -17,6 +17,8 @@ using robert_brands_com.Repositories;
 using System.Security.Claims;
 using robert_brands_com.Models;
 using Microsoft.AspNetCore.Mvc;
+using NetEscapades.AspNetCore.SecurityHeaders;
+
 
 namespace robert_brands_com
 {
@@ -89,12 +91,25 @@ namespace robert_brands_com
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // rbrands: Custom headers for security (rbrands)
+            // see https://github.com/andrewlock/NetEscapades.AspNetCore.SecurityHeaders
+            var policyCollection = new HeaderPolicyCollection()
+                .AddDefaultSecurityHeaders()
+                .RemoveCustomHeader("X-Frame-Options");
+            // rbrands: Example for custom header:    .AddCustomHeader("X-My-Test-Header", "Header value");
+            app.UseSecurityHeaders(policyCollection);
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 // rbrands: Add endpoints for shortcuts
                 // See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-3.1
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}"
+                    );
                 endpoints.MapControllerRoute(
                     name: "categoryLink",
                     pattern: "{category}/{nickname}",

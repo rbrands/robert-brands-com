@@ -30,7 +30,13 @@ namespace robert_brands_com.Pages.Shortcuts
         {
             if (ModelState.IsValid)
             {
-                await repository.CreateDocument(NewShortcut);
+                IEnumerable<Shortcut> list = await repository.GetDocuments(s => s.Category == NewShortcut.Category && s.Nickname == NewShortcut.Nickname);
+                Shortcut existingOne = list.FirstOrDefault();
+                if (null != existingOne)
+                {
+                    NewShortcut.Id = existingOne.Id;
+                }
+                await repository.UpsertDocument(NewShortcut);
                 ViewData["Message"] = "Shortcut gespeichert.";
                 return RedirectToPage("./Index");
             }
