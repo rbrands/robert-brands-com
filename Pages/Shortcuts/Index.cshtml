@@ -1,0 +1,53 @@
+﻿@page
+@model robert_brands_com.Pages.Shortcuts.IndexModel
+@{
+    ViewData["Title"] = "Alle Shortcuts";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>@ViewData["Title"]</h2>
+            <h3>@ViewData["Message"]</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-condensed table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Aktionen</th>
+                            <th>Kategorie</th>
+                            <th>Nickname</th>
+                            <th>URL</th>
+                            <th>Geändert</th>
+                            <th>Bemerkung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (robert_brands_com.Models.Shortcut s in Model.Shortcuts)
+                        {
+
+                            <tr>
+                                <td>
+                                    <a class="btn btn-outline-dark" asp-page="./New" asp-page-handler="changeshortcut" asp-route-category="@s.Category" asp-route-nickname="@s.Nickname">Ändern</a>
+                                    <a class="btn btn-outline-dark" asp-page-handler="delete" asp-route-category="@s.Category" asp-route-nickname="@s.Nickname">Löschen</a>
+                                </td>
+                                <td>@s.Category</td>
+                                <td>@s.Nickname</td>
+                                <td><a href="@s.Url" target="_blank" title="@s.Remark">@((s.Url.Length > 30) ? s.Url.Substring(0, 30) : s.Url) </a></td>
+                                <td>@s.Remark</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <a class="btn btn-primary" asp-controller="Shortcuts" asp-action="ExportShortcutsAsCSV">Export CSV</a>
+                <a class="btn btn-primary" asp-page="New">Neuer Shortcut</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

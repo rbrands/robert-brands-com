@@ -16,6 +16,9 @@ using robert_brands_com.Filter;
 using robert_brands_com.Repositories;
 using System.Security.Claims;
 using robert_brands_com.Models;
+using Microsoft.AspNetCore.Mvc;
+using NetEscapades.AspNetCore.SecurityHeaders;
+
 
 namespace robert_brands_com
 {
@@ -31,6 +34,9 @@ namespace robert_brands_com
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // rbrands: For Application Insights see https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core
+            services.AddApplicationInsightsTelemetry();
+
             services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
                 .AddAzureAD(options => Configuration.Bind("AzureAd", options));
 
@@ -62,12 +68,15 @@ namespace robert_brands_com
             // Repositories for ActivityLogging - one for writing one for reading because of different interfaces. 
             services.AddSingleton(typeof(ICosmosDBRepository<ActivityLogItem>), new CosmosDBRepository<ActivityLogItem>(dbConfig));
             services.AddSingleton(typeof(IActivityLog), new ActivityLogDBRepository(Configuration, dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<Shortcut>), new CosmosDBRepository<Shortcut>(dbConfig));
+            services.AddApplicationInsightsTelemetry();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // rbrands: For error handling see https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.1
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -81,17 +90,44 @@ namespace robert_brands_com
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStatusCodePages();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // rbrands: Custom headers for security (rbrands)
+            // see https://github.com/andrewlock/NetEscapades.AspNetCore.SecurityHeaders
+            var policyCollection = new HeaderPolicyCollection()
+                .AddDefaultSecurityHeaders()
+                .RemoveCustomHeader("X-Frame-Options");
+            // rbrands: Example for custom header:    .AddCustomHeader("X-My-Test-Header", "Header value");
+            app.UseSecurityHeaders(policyCollection);
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                // rbrands: Add endpoints for shortcuts
+                // See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-3.1
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}"
+                    );
+                endpoints.MapControllerRoute(
+                    name: "categoryLink",
+                    pattern: "{category}/{nickname}",
+                    defaults: new { Controller = "Shortcuts", Action = "Link" }
+                   );
+                endpoints.MapControllerRoute(
+                    name: "link",
+                    pattern: "{nickname}",
+                    defaults: new { Controller = "Shortcuts", Action = "Link", Category = "Default" }
+                    );
             });
+
         }
     }
 }
