@@ -5,9 +5,11 @@
     <UserSecretsId>aspnet-robert_brands_com-585D8E87-11AF-4F82-8CE2-96BFF78B0AFB</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
     <RootNamespace>robert_brands_com</RootNamespace>
+    <ApplicationInsightsResourceId>/subscriptions/8112f8e4-1adf-4e4f-ad90-aa7010a26cf4/resourceGroups/RB-PD-RGP-001/providers/microsoft.insights/components/robert-brands-com</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.14.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.4" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.9.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />

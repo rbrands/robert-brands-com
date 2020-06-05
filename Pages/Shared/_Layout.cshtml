@@ -37,6 +37,7 @@
     <link href="~/lib/open-iconic/font/css/open-iconic-foundation.css" rel="stylesheet">
     @RenderSection("CSS", required: false)
     @RenderSection("HeaderScripts", required: false)
+    @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
     <header>
