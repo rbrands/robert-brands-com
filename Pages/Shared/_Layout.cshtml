@@ -58,6 +58,11 @@
                             <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                         <li class="nav-item"><a class="nav-link" asp-page="/Fotos/Index" asp-route-category="">Fotos</a></li>
+                        @if (User.IsInAnyRole(KnownRoles.Admin, KnownRoles.User))
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-page="/Fotos/Album" asp-route-category="">Fotoalbum</a></li>
+                        }
+
                         @if (User.IsInRole(KnownRoles.Admin))
                         {
                             <li class="nav-item dropdown">
