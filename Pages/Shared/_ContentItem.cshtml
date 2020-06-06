@@ -1,0 +1,73 @@
+﻿@model robert_brands_com.Models.ContentItem
+@using System.Security.Claims
+@using robert_brands_com.Models
+
+<div class="card">
+    @if (!String.IsNullOrEmpty(Model.Header))
+    {
+        <div class="card-header">
+            @Model.Header
+        </div>
+    }
+    @if (Model.ContentType == ContentType.Text)
+    {
+        @if (!String.IsNullOrEmpty(Model.ImageLink))
+        {
+            <img class="card-img-top" src="@Model.ImageLink" alt="@Model.Header">
+        }
+    }
+    else if (Model.ContentType == ContentType.EmbeddedLink)
+    {
+        <a href="@Model.EmbeddedLink" target="_blank" title="@Model.Header"><img class="img-fluid card-img-top" src="@Model.ImageLink" /></a>
+    }
+    else if (Model.ContentType == ContentType.FlickrWithHeaderAndFooter)
+    {
+        <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="true" href="@Model.EmbeddedLink" title="@Model.Title"><img class="img-fluid card-img-top" src="@Model.ImageLink" alt="@Model.Title"></a>
+    }
+    else if (Model.ContentType == ContentType.FlickrWithHeader)
+    {
+        <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="false" href="@Model.EmbeddedLink" title="@Model.Title"><img class="img-fluid card-img-top" src="@Model.ImageLink" alt="@Model.Title"></a>
+    }
+    else if (Model.ContentType == ContentType.FlickrWithFooter)
+    {
+        <a target="_blank" data-flickr-embed="true" data-header="false" data-footer="true" href="@Model.EmbeddedLink" title="@Model.Title"><img class="img-fluid card-img-top" src="@Model.ImageLink" alt="@Model.Title"></a>
+    }
+    else if (Model.ContentType == ContentType.Flickr)
+    {
+        <a target="_blank" data-flickr-embed="true" data-header="false" data-footer="false" href="@Model.EmbeddedLink" title="@Model.Title"><img class="img-fluid card-img-top" src="@Model.ImageLink" alt="@Model.Title"></a>
+    }
+    else if (Model.ContentType == ContentType.Strava || Model.ContentType == ContentType.Gpsies || Model.ContentType == ContentType.Lightroom)
+    {
+        <div class="embed-responsive embed-responsive-4by3">
+            <iframe class="embed-responsive-item" src='@Model.EmbeddedLink'></iframe>
+        </div>
+    }
+    else if (Model.ContentType == ContentType.Vimeo)
+    {
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="@Model.EmbeddedLink"></iframe>
+        </div>
+        <p><a href="@Model.ImageLink" target="_blank" title="Video auf Vimeo">Video auf Vimeo</a></p>
+    }
+    <div class="card-body">
+        <h5 class="card-title">@Model.Title</h5>
+        <div class="card-text">
+            @Html.Raw(Model.Description)
+        </div>
+        @if (!String.IsNullOrEmpty(Model.LinkTitle) && !String.IsNullOrEmpty(Model.Link))
+        {
+            <a href="@Model.Link" title="@Model.LinkTitle" target="_blank" class="btn btn-primary">@Model.LinkTitle</a>
+
+        }
+        @if (User.IsInAnyRole(KnownRoles.CalendarCoordinatorRoles))
+        {
+            <a asp-page="EditContentItem" asp-route-documentid="@Model.ReferenceId" asp-route-contentitemid="@Model.UniqueId" class="btn btn-sm btn-outline-secondary">
+                <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+            </a>
+            <a asp-page-handler="deletecontentitem" asp-route-documentid="@Model.ReferenceId" asp-route-contentitemid="@Model.UniqueId" class="btn btn-sm btn-outline-secondary">
+                <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+            </a>
+            <small class="text-muted">@Model.SortOrder</small>
+        }
+    </div>
+</div>

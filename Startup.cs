@@ -68,7 +68,10 @@ namespace robert_brands_com
             // Repositories for ActivityLogging - one for writing one for reading because of different interfaces. 
             services.AddSingleton(typeof(ICosmosDBRepository<ActivityLogItem>), new CosmosDBRepository<ActivityLogItem>(dbConfig));
             services.AddSingleton(typeof(IActivityLog), new ActivityLogDBRepository(Configuration, dbConfig));
+            // All data repositories
             services.AddSingleton(typeof(ICosmosDBRepository<Shortcut>), new CosmosDBRepository<Shortcut>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<CommentedLinkItem>), new CosmosDBRepository<CommentedLinkItem>(dbConfig));
+            // Application Insights
             services.AddApplicationInsightsTelemetry();
 
         }
