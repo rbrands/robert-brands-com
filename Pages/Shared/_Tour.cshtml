@@ -1,0 +1,177 @@
+﻿@model robert_brands_com.Models.TrackItem
+@using System.Security.Claims
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                @if (!String.IsNullOrWhiteSpace(Model.KomootTourImage))
+                {
+                    <a href="@Model.KomootLink" target="_blank" title="Komoot"><img class="img-fluid" src="@Model.KomootTourImage" /></a>
+                }
+                else if (!String.IsNullOrEmpty(Model.GpsiesEmbedLink))
+                {
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <iframe class="embed-responsive-item" src='@Model.GpsiesEmbedLink'></iframe>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Auf einen Blick
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    <ul>
+                        @if (!String.IsNullOrEmpty(Model.Length))
+                        {
+                            <li>@Model.Length</li>
+                        }
+                        <li>Am @Model.Date.ToString("dd.MM.yyyy")</li>
+                        @if (!String.IsNullOrEmpty(Model.StravaLink))
+                        {
+                            <li><a href="@Model.StravaLink" target="_blank" title="Strava @Model.ShortTitle">Strava</a></li>
+                        }
+                        @if (!String.IsNullOrEmpty(Model.GpsiesLink))
+                        {
+                            <li><a href="@Model.GpsiesLink" target="_blank" title="GPSies @Model.ShortTitle">@(Model.IsGpxFile ? "GPX" : "GPSies")</a></li>
+                        }
+                        @if (!String.IsNullOrEmpty(Model.KomootLink))
+                        {
+                            <li><a href="@Model.KomootLink" target="_blank" title="Komoot @Model.ShortTitle">Komoot</a></li>
+                        }
+                        @if (!String.IsNullOrEmpty(Model.PhotosLink))
+                        {
+                            <li><a href="@Model.PhotosLink" target="_blank" title="Fotos @Model.ShortTitle">Fotos</a></li>
+                        }
+                        @if (!String.IsNullOrEmpty(Model.VideoLink))
+                        {
+                            <li><a href="@Model.VideoLink" target="_blank" title="Video @Model.ShortTitle">Video</a></li>
+                        }
+                    </ul>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            @if (User.IsInRole(KnownRoles.Admin))
+                            {
+                                <a asp-page="/Rad/NewTrackLink" asp-page-handler="changelink" asp-route-documentid="@Model.Id" class="btn btn-sm btn-outline-secondary">
+                                    <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                </a>
+                                <a asp-page-handler="deletelink" asp-route-documentid="@Model.Id" class="btn btn-sm btn-outline-secondary">
+                                    <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                </a>
+                            }
+                            @if (Model.Language != "de")
+                            {
+                                <a asp-route-language="" class="btn btn-sm btn-outline-secondary" rel="nofollow">Deutsch</a>
+                            }
+                            @if (Model.Language != "en")
+                            {
+                                <a asp-route-language="en" class="btn btn-sm btn-outline-secondary" rel="nofollow">English</a>
+                            }
+                            @if (Model.Language != "fr")
+                            {
+                                <a asp-route-language="fr" class="btn btn-sm btn-outline-secondary" rel="nofollow">Français</a>
+                            }
+                            @if (Model.Language != "es")
+                            {
+                                <a asp-route-language="es" class="btn btn-sm btn-outline-secondary" rel="nofollow">Espagnol</a>
+                            }
+                            @if (Model.Language != "pt")
+                            {
+                                <a asp-route-language="pt" class="btn btn-sm btn-outline-secondary" rel="nofollow">Portuguese</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Beschreibung
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    @Html.Raw(Model.Description)
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!String.IsNullOrEmpty(Model.StravaEmbedLink))
+    {
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Strava
+                </div>
+                <div class="card-body">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <iframe class="embed-responsive-item" src='@Model.StravaEmbedLink'></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!String.IsNullOrEmpty(Model.KomootTourImage) && !String.IsNullOrEmpty(Model.GpsiesEmbedLink))
+    {
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    GPSies
+                </div>
+                <div class="card-body">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <iframe class="embed-responsive-item" src='@Model.GpsiesEmbedLink'></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!String.IsNullOrEmpty(Model.FlickrLink))
+    {
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Fotoauswahl auf Flickr
+                </div>
+                <div class="card-body">
+                    <a target="_blank" data-flickr-embed="true" data-header="@Model.FlickrHeader.ToString().ToLower()" data-footer="@Model.FlickrFooter.ToString().ToLower()" href="@Model.FlickrLink" title="@Model.Title bei Flickr"><img class="img-fluid card-img-top" src="@Model.FlickrLinkImage" alt="Flickr"></a>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!String.IsNullOrEmpty(Model.PhotosLink))
+    {
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Fotos
+                </div>
+                <div class="card-body">
+                    <a target="_blank" href="@Model.PhotosLink" title="@Model.Title Fotos"><img class="img-fluid card-img-top" src="@Model.ImageLink" alt="Fotos">Fotoalbum</a>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!String.IsNullOrEmpty(Model.VideoEmbedLink))
+    {
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Video
+                </div>
+                <div class="card-body">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="@Model.VideoEmbedLink"></iframe>
+                    </div>
+                    <p><a href="@Model.VideoLink" target="_blank" title="Video auf Vimeo">Video auf Vimeo</a> von <a href="https://vimeo.com/robertbrands">Robert Brands</a> auf <a href="https://vimeo.com">Vimeo</a>.</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

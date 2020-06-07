@@ -67,6 +67,12 @@ namespace robert_brands_com
             DbConfig dbConfig = Configuration.GetSection("SiteDB").Get<DbConfig>();
             // Inject IOption<TinyMCEConfig>
             services.Configure<TinyMCEConfig>(Configuration.GetSection("TinyMCE"));
+            // Inject IOptions<FunctionSiteToolsConfig>
+            services.Configure<FunctionSiteToolsConfig>(Configuration.GetSection("FunctionSiteTools"));
+            FunctionSiteToolsConfig functionsConfig = Configuration.GetSection("FunctionSiteTools").Get<FunctionSiteToolsConfig>();
+            // rbrands: FunctionSiteTools to access Azure Functions
+            FunctionSiteTools functionSiteTools = new FunctionSiteTools(functionsConfig);
+            services.AddSingleton(typeof(IFunctionSiteTools), functionSiteTools);
             // Repositories for ActivityLogging - one for writing one for reading because of different interfaces. 
             services.AddSingleton(typeof(ICosmosDBRepository<ActivityLogItem>), new CosmosDBRepository<ActivityLogItem>(dbConfig));
             services.AddSingleton(typeof(IActivityLog), new ActivityLogDBRepository(Configuration, dbConfig));
