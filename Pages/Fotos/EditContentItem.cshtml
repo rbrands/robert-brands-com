@@ -1,0 +1,82 @@
+﻿@page "{documentid}/{contentitemid?}"
+@model robert_brands_com.Pages.Fotos.EditContentItemModel
+@using Microsoft.Extensions.Options;
+@using robert_brands_com.Models
+@inject IOptions<robert_brands_com.Repositories.TinyMCEConfig> TinyMCEConfig
+@{
+    ViewData["Title"] = "Inhaltsblock editieren";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>@ViewData["Title"]</h4>
+            <h5>@ViewData["Message"]</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="All" class="bg-warning"></div>
+                <input asp-for="CommentedLinkItemId" type="hidden" />
+                <input asp-for="PhotoPageDetail.UniqueId" type="hidden" />
+                <div class="form-group">
+                    <label asp-for="PhotoPageDetail.ContentType">Inhaltstyp</label>
+                    <select class="form-control" asp-for="PhotoPageDetail.ContentType" asp-items="Html.GetEnumSelectList<ContentType>()"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoPageDetail.SortOrder"></label>
+                    <input class="form-control" asp-for="PhotoPageDetail.SortOrder" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoPageDetail.ColumnWidth"></label>
+                    <input class="form-control" asp-for="PhotoPageDetail.ColumnWidth" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoPageDetail.Header"></label>
+                    <input class="form-control" asp-for="PhotoPageDetail.Header" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoPageDetail.Title"></label>
+                    <input class="form-control" asp-for="PhotoPageDetail.Title" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoPageDetail.Description"></label>
+                    <textarea class="form-control" asp-for="PhotoPageDetail.Description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoPageDetail.ImageLink"></label>
+                    <input class="form-control" asp-for="PhotoPageDetail.ImageLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoPageDetail.EmbeddedLink"></label>
+                    <input class="form-control" asp-for="PhotoPageDetail.EmbeddedLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoPageDetail.LinkTitle"></label>
+                    <input class="form-control" asp-for="PhotoPageDetail.LinkTitle" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoPageDetail.Link"></label>
+                    <input class="form-control" asp-for="PhotoPageDetail.Link" />
+                </div>
+                <button class="btn btn-primary" type="submit">Speichern</button>
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Abbrechen</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/@TinyMCEConfig.Value.ApiKey/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
