@@ -1,0 +1,87 @@
+﻿@page "{category?}"
+@using System.Security.Claims
+@model robert_brands_com.Pages.Fotos.AlbumModel
+@{
+    ViewData["Title"] = "Fotoalbum";
+    ViewBag.NoRobots = true;
+    ViewBag.Description = "Sammlung der Fotolinks";
+}
+@section CSS {
+    <link rel="stylesheet" href="~/css/album.css" />
+}
+
+<div class="container">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Fotoalbum</h1>
+            <p class="lead text-muted">
+                Dies ist eine kleine Linksammlung der Fotos der letzten Zeit. Manchmal ist es bei den ganzen Links zu OneDrive, Flickr, Adobe Lightroom nicht ganz
+                leicht, die Übersicht zu bewahren. Da soll diese Seite etwas helfen.
+            </p>
+            <h4>@ViewData["Message"]</h4>
+        </div>
+    </section>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            @if (User.IsInAnyRole(KnownRoles.Admin))
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">Filter</li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Album" asp-route-category="Riwa">Riwa</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Album" asp-route-category="Reise">Reisen</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Album" asp-route-category="Event">Events</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Album" asp-route-category="Koeln">Köln</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Album" asp-route-category="Wandern">Wandern</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Album" asp-route-category="Rad">Rad</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Album" asp-route-category="">Alle</a></li>
+                            <li class="list-inline-item">
+                                <form class="form-inline" method="post">
+                                    <input class="form-control mr-sm-2" type="search" placeholder="Suchen" aria-label="Suchen" asp-for="Search" />
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" asp-page-handler="search">Suchen</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            }
+            <div class="row">
+                @foreach (robert_brands_com.Models.CommentedLinkItem link in Model.CommentedLinks)
+                {
+                    @if (User.IsInRole(KnownRoles.Admin) || User.IsInAnyRole(link.Roles))
+                    {
+                        <div class="col-md-3">
+                            <div class="card box-shadow">
+                                <a href="@link.Link" target="_blank" title="@link.ShortTitle">
+                                    <img class="card-img-top" src="@link.ImageLink" alt="@link.ShortTitle">
+                                </a>
+                                <div class="card-body">
+                                    <div class="card-text">@Html.Raw(link.Description)</div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a href="@link.Link" target="_blank" title="@link.ShortTitle" class="btn btn-sm btn-outline-secondary">@link.Title</a>
+                                            @if (User.IsInRole(KnownRoles.Admin))
+                                            {
+                                                <a asp-page="/Fotos/NewFotoLink" asp-page-handler="changelink" asp-route-documentid="@link.Id" class="btn btn-sm btn-outline-secondary">
+                                                    <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                                </a>
+                                                <a asp-page-handler="deletelink" asp-route-documentid="@link.Id" class="btn btn-sm btn-outline-secondary">
+                                                    <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                                </a>
+                                            }
+                                        </div>
+                                        <small class="text-muted">@link.Date.ToString("dd.MM.yyyy")</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">@link.ListName</div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

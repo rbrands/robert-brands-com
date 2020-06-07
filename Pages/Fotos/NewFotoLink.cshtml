@@ -1,0 +1,115 @@
+﻿@page
+@model robert_brands_com.Pages.Fotos.NewFotoLinkModel
+@using robert_brands_com.Models;
+@using Microsoft.Extensions.Options;
+@inject IOptions<robert_brands_com.Repositories.TinyMCEConfig> TinyMCEConfig
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Neuer Fotolink";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>@ViewData["Title"]</h4>
+            <h5>@ViewData["Message"]</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="All" class="bg-warning"></div>
+                <input asp-for="NewLink.Id" type="hidden" />
+                <div class="form-group">
+                    <label asp-for="NewLink.ListName"></label>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewLink.ListName" type="radio" value="Fotosammlung" />
+                        <label class="form-check-label">Fotosammlung</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewLink.ListName" type="radio" value="Scuderia" />
+                        <label class="form-check-label">Scuderia</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewLink.ListName" type="radio" value="Fotos" />
+                        <label class="form-check-label">Fotos</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewLink.ListName" type="radio" value="Titel" />
+                        <label class="form-check-label">Titelseite</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.Date"></label>
+                    <input class="form-control" asp-for="NewLink.Date" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.Category"></label>
+                    <select class="form-control" asp-for="NewLink.Category">
+                        <option disabled value="">Kategorie auswählen</option>
+                        @foreach (ListCategory c in Model.Categories)
+                        {
+                            <option value="@c.Category">@(c.CategoryDisplay ?? c.Category)</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.Title"></label>
+                    <input class="form-control" asp-for="NewLink.Title" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.Link"></label>
+                    <input class="form-control" asp-for="NewLink.Link" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.UrlTitle"></label>
+                    <input class="form-control" asp-for="NewLink.UrlTitle" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.Roles"></label>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="UserRole" type="checkbox" />
+                        <label class="form-check-label">User</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.Description"></label>
+                    <textarea class="form-control" asp-for="NewLink.Description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.PlainDescription"></label>
+                    <input class="form-control" asp-for="NewLink.PlainDescription" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.LongDescription"></label>
+                    <textarea class="form-control" asp-for="NewLink.LongDescription"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.ShortTitle"></label>
+                    <input class="form-control" asp-for="NewLink.ShortTitle" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewLink.ImageLink"></label>
+                    <input class="form-control" asp-for="NewLink.ImageLink" />
+                </div>
+                <button class="btn btn-primary" type="submit">Speichern</button>
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Abbrechen</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/@TinyMCEConfig.Value.ApiKey/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

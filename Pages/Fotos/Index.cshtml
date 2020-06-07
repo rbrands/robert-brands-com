@@ -1,0 +1,210 @@
+﻿@page "{category?}"
+@using System.Security.Claims
+@using robert_brands_com.Models
+@model robert_brands_com.Pages.Fotos.IndexModel
+@{
+    ViewData["Title"] = "Fotos";
+    if (!String.IsNullOrEmpty(Model.ReferencedPhotoPage?.Title))
+    {
+        ViewData["Title"] = Model.ReferencedPhotoPage?.Title;
+    }
+    ViewBag.Description = "Mein Fotoalbum";
+    ViewBag.Keywords = "Fotografie,Reise,Köln";
+    if (!String.IsNullOrEmpty(Model.ReferencedPhotoPage?.PlainDescription))
+    {
+        ViewData["Description"] = Model.ReferencedPhotoPage?.PlainDescription;
+    }
+}
+<div class="container">
+    @if (Model.ReferencedPhotoPage == null)
+    {
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1 class="jumbotron-heading">Fotoalbum</h1>
+                <p class="lead text-muted">
+                    Meistens habe ich eine Kamera dabei... Die Fotos landen bei Flickr, OneDrive, Adobe Lightroom. Manchmal verliere ich da selbst die Übersicht - deswegen sammel ich
+                    hier die Links zu einigen der Fotos.
+                </p>
+                <h4>@ViewData["Message"]</h4>
+            </div>
+        </section>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">Filter</li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Index" asp-route-category="Reise">Reisen</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Index" asp-route-category="Event">Events</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Index" asp-route-category="Koeln">Köln</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Index" asp-route-category="Wandern">Wandern</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Index" asp-route-category="Rad">Rad</a></li>
+                            <li class="list-inline-item"><a asp-page="/Fotos/Index" asp-route-category="">Alle</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach (robert_brands_com.Models.CommentedLinkItem link in Model.CommentedLinks)
+                    {
+                        <div class="col-md-6">
+                            <div class="card box-shadow">
+                                <a href="@link.Link" target="_blank" title="@link.ShortTitle">
+                                    <img class="card-img-top" src="@link.ImageLink" alt="@link.ShortTitle">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title">@link.Title</h5>
+                                    <div class="card-text">
+                                        @Html.Raw(link.Description)
+                                        @if (!String.IsNullOrEmpty(link.UrlTitle))
+                                        {
+                                            <p><a asp-route-category="@link.UrlTitle">Mehr ...</a></p>
+                                        }
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a href="@link.Link" target="_blank" title="@link.ShortTitle" class="btn btn-sm btn-outline-secondary">@link.ShortTitle</a>
+                                            @if (User.IsInRole(KnownRoles.Admin))
+                                            {
+                                                <a asp-page="/Fotos/NewFotoLink" asp-page-handler="changelink" asp-route-documentid="@link.Id" class="btn btn-sm btn-outline-secondary">
+                                                    <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                                </a>
+                                                <a asp-page-handler="deletelink" asp-route-documentid="@link.Id" class="btn btn-sm btn-outline-secondary">
+                                                    <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                                </a>
+                                            }
+                                        </div>
+                                        <small class="text-muted">@link.Date.ToString("dd.MM.yyyy")</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        @if (Model.HeaderItem != null)
+        {
+            @if (!String.IsNullOrEmpty(Model.HeaderItem.EmbeddedLink))
+            {
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            @if (Model.HeaderItem.ContentType == ContentType.FlickrWithHeader)
+                            {
+                                <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="false" href="@Model.HeaderItem.EmbeddedLink" title="@Model.HeaderItem.Title"><img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" alt="@Model.HeaderItem.Title"></a>
+                            }
+                            else if (Model.HeaderItem.ContentType == ContentType.Flickr)
+                            {
+                                <a target="_blank" data-flickr-embed="true" data-header="false" data-footer="false" href="@Model.HeaderItem.EmbeddedLink" title="@Model.HeaderItem.Title"><img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" alt="@Model.HeaderItem.Title"></a>
+                            }
+                            else if (Model.HeaderItem.ContentType == ContentType.FlickrWithFooter)
+                            {
+                                <a target="_blank" data-flickr-embed="true" data-header="false" data-footer="true" href="@Model.HeaderItem.EmbeddedLink" title="@Model.HeaderItem.Title"><img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" alt="@Model.HeaderItem.Title"></a>
+                            }
+                            else if (Model.HeaderItem.ContentType == ContentType.FlickrWithHeaderAndFooter)
+                            {
+                                <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="true" href="@Model.HeaderItem.EmbeddedLink" title="@Model.HeaderItem.Title"><img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" alt="@Model.HeaderItem.Title"></a>
+                            }
+                            else if (Model.HeaderItem.ContentType == ContentType.EmbeddedLink)
+                            {
+                                <a href="@Model.HeaderItem.EmbeddedLink" target="_blank" title="@Model.HeaderItem.Header"><img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" /></a>
+                            }
+                            else if (Model.HeaderItem.ContentType == ContentType.Text)
+                            {
+                                <img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" />
+                            }
+                            else if (Model.HeaderItem.ContentType == ContentType.Text)
+                            {
+                                <img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" />
+                            }
+                            else if (Model.HeaderItem.ContentType == ContentType.Strava || Model.HeaderItem.ContentType == ContentType.Gpsies || Model.HeaderItem.ContentType == ContentType.Lightroom)
+                            {
+                                <div class="embed-responsive embed-responsive-4by3">
+                                    <iframe class="embed-responsive-item" src='@Model.HeaderItem.EmbeddedLink'></iframe>
+                                </div>
+                            }
+                            @if (!String.IsNullOrEmpty(Model.HeaderItem.Description))
+                            {
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        @Html.Raw(Model.HeaderItem.Description)
+                                    </p>
+                                    @if (!String.IsNullOrEmpty(Model.HeaderItem.Link))
+                                    {
+                                        <a href="@Model.HeaderItem.Link" target="_blank" title="@Model.HeaderItem.LinkTitle" class="btn btn-primary">@Model.HeaderItem.LinkTitle</a>
+
+                                    }
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1>@Model.ReferencedPhotoPage.Title</h1>
+                    <div>
+                        @Html.Raw(Model.ReferencedPhotoPage.Description)
+                        @Html.Raw(Model.ReferencedPhotoPage.LongDescription)
+                    </div>
+                    @if (User.IsInRole(KnownRoles.Admin))
+                    {
+                        <a asp-page="/Fotos/NewFotoLink" asp-page-handler="changelink" asp-route-documentid="@Model.ReferencedPhotoPage.Id" class="btn btn-sm btn-outline-secondary">
+                            <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                        </a>
+                        <a asp-page="/Fotos/EditContentItem" asp-route-documentid="@Model.ReferencedPhotoPage.Id" class="btn btn-sm btn-outline-secondary">
+                            Neue Info
+                        </a>
+                    }
+                </div>
+                <div class="col">
+                    @if (!String.IsNullOrEmpty(Model.ReferencedPhotoPage.ImageLink))
+                    {
+                        <img class="img-fluid" src="@Model.ReferencedPhotoPage.ImageLink" alt="@Model.ReferencedPhotoPage.Title">
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @if (null != Model.ReferencedPhotoPage.Infos)
+            {
+                @foreach (ContentItem infoBlock in Model.ReferencedPhotoPage.Infos)
+                {
+                    @if (infoBlock.SortOrder != 0 || User.IsInAnyRole(KnownRoles.CalendarCoordinatorRoles))
+                    {
+                        <div class="col-md-@infoBlock.ColumnWidth">
+                            @{
+                                await Html.RenderPartialAsync("_ContentItem", infoBlock);
+                            }
+                        </div>
+                    }
+                }
+            }
+        </div>
+        @section Metatags {
+            <meta property="og:type" content="article" />
+            <meta property="og:title" content="@Model.ReferencedPhotoPage.Title" />
+            @if (!String.IsNullOrEmpty(Model.ReferencedPhotoPage.PlainDescription))
+            {
+                <meta property="og:description" content="@Model.ReferencedPhotoPage.PlainDescription" />
+            }
+            @if (!String.IsNullOrEmpty(Model.ReferencedPhotoPage.ImageLink))
+            {
+                <meta property="og:image" content="@Model.ReferencedPhotoPage.ImageLink" />
+            }
+        }
+
+    }
+</div>
+@section Scripts {
+    <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+}
+
+

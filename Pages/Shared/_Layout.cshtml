@@ -57,6 +57,12 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item"><a class="nav-link" asp-page="/Fotos/Index" asp-route-category="">Fotos</a></li>
+                        @if (User.IsInAnyRole(KnownRoles.Admin, KnownRoles.User))
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-page="/Fotos/Album" asp-route-category="">Fotoalbum</a></li>
+                        }
+
                         @if (User.IsInRole(KnownRoles.Admin))
                         {
                             <li class="nav-item dropdown">
@@ -91,7 +97,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - robert-brands.com - 2020-06-04+ | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
+            &copy; 2020 - robert-brands.com - 2020-06-06 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
             @if (User.Identity.IsAuthenticated && User.IsAdmin()) {
                 <text>| Admin</text>
             }

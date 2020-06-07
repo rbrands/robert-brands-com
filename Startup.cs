@@ -65,10 +65,17 @@ namespace robert_brands_com
             // Inject IOptions<DbConfig>
             services.Configure<DbConfig>(Configuration.GetSection("SiteDB"));
             DbConfig dbConfig = Configuration.GetSection("SiteDB").Get<DbConfig>();
+            // Inject IOption<TinyMCEConfig>
+            services.Configure<TinyMCEConfig>(Configuration.GetSection("TinyMCE"));
             // Repositories for ActivityLogging - one for writing one for reading because of different interfaces. 
             services.AddSingleton(typeof(ICosmosDBRepository<ActivityLogItem>), new CosmosDBRepository<ActivityLogItem>(dbConfig));
             services.AddSingleton(typeof(IActivityLog), new ActivityLogDBRepository(Configuration, dbConfig));
+            // All data repositories
             services.AddSingleton(typeof(ICosmosDBRepository<Shortcut>), new CosmosDBRepository<Shortcut>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<CommentedLinkItem>), new CosmosDBRepository<CommentedLinkItem>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<ListCategory>), new CosmosDBRepository<ListCategory>(dbConfig));
+
+            // Application Insights
             services.AddApplicationInsightsTelemetry();
 
         }
