@@ -53,7 +53,7 @@ namespace robert_brands_com.Models
         public string VideoEmbedLink { get; set; }
         [JsonProperty(PropertyName = "imageLink", NullValueHandling = NullValueHandling.Ignore), Display(Name = "URL für Titelbild", Prompt = "Link zu einem Logo-Image"), UIHint("Url")]
         public string ImageLink { get; set; }
-        [JsonProperty(PropertyName = "gpsiesLink", NullValueHandling = NullValueHandling.Ignore), Display(Name = "GPSies", Prompt = "Link zu GPSies Track"), UIHint("Url")]
+        [JsonProperty(PropertyName = "gpsiesLink", NullValueHandling = NullValueHandling.Ignore), Display(Name = "GPSies/GPX", Prompt = "Link zu GPSies Track oder GPS-File"), UIHint("Url")]
         public string GpsiesLink { get; set; }
         [JsonProperty(PropertyName = "gpsiesEmbedLink", NullValueHandling = NullValueHandling.Ignore), Display(Name = "GPSies Embedded", Prompt = "Link zu GPSies Track zum Einbetten"), UIHint("Url")]
         public string GpsiesEmbedLink { get; set; }
