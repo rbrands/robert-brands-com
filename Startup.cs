@@ -16,6 +16,7 @@ using robert_brands_com.Filter;
 using robert_brands_com.Repositories;
 using System.Security.Claims;
 using robert_brands_com.Models;
+using reCAPTCHA.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using NetEscapades.AspNetCore.SecurityHeaders;
 
@@ -62,6 +63,9 @@ namespace robert_brands_com
             //
             // For dependency injection in ASP.NET Core see https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection
             services.AddSingleton(typeof(IConfigurationRoot), Configuration);
+            // Inject IOptions<RecaptchaSettings>
+            services.Configure<RecaptchaSettings>(Configuration.GetSection("RecaptchaSettings"));
+            services.AddTransient<IRecaptchaService, RecaptchaService>();
             // Inject IOptions<DbConfig>
             services.Configure<DbConfig>(Configuration.GetSection("SiteDB"));
             DbConfig dbConfig = Configuration.GetSection("SiteDB").Get<DbConfig>();

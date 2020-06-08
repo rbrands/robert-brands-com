@@ -1,0 +1,137 @@
+﻿@page
+@using System.Security.Claims
+@using robert_brands_com.Models
+@model robert_brands_com.Pages.Termine.AdminRegistrationModel
+@using Microsoft.Extensions.Options;
+@inject IOptions<robert_brands_com.Repositories.TinyMCEConfig> TinyMCEConfig
+@{
+    ViewData["Title"] = "Verwaltung der Registrierungen";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>@ViewData["Title"]</h4>
+            <h5>@ViewData["Message"]</h5>
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+                <h3 class="card-title">@Model.ReferencedCalenderItem.Title</h3>
+                <p>
+                    Verwaltung der Anmeldungen. Aktuell @Model.ReferencedCalenderItem.GetRegisteredMembersCount()/@Model.ReferencedCalenderItem.MaxRegistrationsCount Personen angemeldet.
+                </p>
+                <a asp-page="Anmelden" asp-route-permalink="@Model.ReferencedCalenderItem.UrlTitle" title="Registration-Link">Registration-Link</a>
+                <a class="btn btn-primary" asp-controller="Calendar" asp-route-id="@Model.ReferencedCalenderItem.Id" asp-action="ExportRegistrationsAsCSV">Export CSV</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Registration Keys</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered table-hover table-striped">
+                            <tbody class="font-weight-light">
+                                @foreach (RegistrationKey key in Model.RegistrationKeys)
+                                {
+                                    <tr>
+                                        <td>@key.Key</td>
+                                        <td>@key.Description</td>
+                                        <td>
+                                            <a asp-page-handler="deleteregistrationkey" asp-route-documentid="@Model.ReferencedCalenderItem.Id" asp-route-registrationkeyid="@key.UniqueId" class="btn btn-sm btn-outline-secondary">
+                                                <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a asp-page="Anmelden" asp-route-permalink="@Model.ReferencedCalenderItem.UrlTitle" asp-route-registrationkey="@key.Key">Link</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <form method="post">
+                        <div asp-validation-summary="All" class="bg-warning"></div>
+                        <input asp-for="CalendarItemId" type="hidden" />
+                        <input asp-for="NewRegistrationKey.UniqueId" type="hidden" />
+                        <div class="form-group">
+                            <label asp-for="NewRegistrationKey.Key"></label>
+                            <input class="form-control" asp-for="NewRegistrationKey.Key" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="NewRegistrationKey.Description"></label>
+                            <input class="form-control" asp-for="NewRegistrationKey.Description" />
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" asp-page-handler="addregistrationkey" type="submit" asp->Speichern</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        @foreach (Member member in Model.RegisteredUsers)
+        {
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        @member.Name
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text">
+                            <dl>
+                                <dt>E-Mail</dt>
+                                <dd>@member.EMail</dd>
+                                <dt>Anzahl</dt>
+                                <dd>@member.Count</dd>
+                                <dt>Anmeldedatum</dt>
+                                <dd>@member.RegistrationDate.ToString("yyyy-MM-dd HH:mm")</dd>
+                                @if (!String.IsNullOrEmpty(member.Remark))
+                                {
+                                    <dt>Anmerkung</dt>
+                                    <dd>@member.Remark</dd>
+                                }
+                                @if (!String.IsNullOrEmpty(member.RegistrationKey))
+                                {
+                                    <dt>Registration-Key</dt>
+                                    <dd>@member.RegistrationKey</dd>
+                                }
+                            </dl>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    @if (User.IsInAnyRole(KnownRoles.CalendarCoordinatorRoles))
+                                    {
+                                        <a asp-page="Anmelden" asp-page-handler="change" asp-route-documentid="@Model.ReferencedCalenderItem.Id" asp-route-registrationid="@member.UniqueId" class="btn btn-sm btn-outline-secondary">
+                                            <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                        </a>
+                                        <a asp-page-handler="delete" asp-route-documentid="@Model.ReferencedCalenderItem.Id" asp-route-memberid="@member.UniqueId" class="btn btn-sm btn-outline-secondary">
+                                            <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/@TinyMCEConfig.Value.ApiKey/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

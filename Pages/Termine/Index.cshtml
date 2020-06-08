@@ -1,0 +1,167 @@
+﻿@page "{permalink?}/{language?}"
+@using System.Security.Claims
+@using robert_brands_com.Models
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@model robert_brands_com.Pages.Termine.IndexModel
+@{
+    ViewData["Title"] = "Termine";
+    if (!String.IsNullOrEmpty(Model.ReferencedCalenderItem?.Title))
+    {
+        ViewData["Title"] = Model.ReferencedCalenderItem?.Title;
+    }
+    ViewData["Description"] = "Termine, Termine";
+    if (!String.IsNullOrEmpty(Model.ReferencedCalenderItem?.PlainDescription))
+    {
+        ViewData["Description"] = Model.ReferencedCalenderItem?.PlainDescription;
+    }
+}
+
+<div class="container">
+    @if (Model.ReferencedCalenderItem == null)
+    {
+        <div class="container">
+            @if (!String.IsNullOrEmpty(Model.OverviewArticle?.FlickrLink))
+            {
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <a target="_blank" data-flickr-embed="true" data-header="@Model.OverviewArticle.FlickrHeader.ToString().ToLower()" data-footer="@Model.OverviewArticle.FlickrFooter.ToString().ToLower()" href="@Model.OverviewArticle.FlickrLink" title="@Model.OverviewArticle.Title bei Flickr"><img class="img-fluid card-img-top" src="@Model.OverviewArticle.FlickrLinkImage" alt="Flickr"></a>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="jumbotron">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1>@Model.OverviewArticle?.Title</h1>
+                        @Html.Raw(Model.OverviewArticle?.ArticleContent)
+                        @if ((await AuthorizationService.AuthorizeAsync(User, KnownRoles.PolicyIsCalendarCoordinator)).Succeeded)
+                        {
+                            <a asp-page="/Blog/NewArticle" asp-page-handler="customized" asp-route-callingpage="/Termine/Index" asp-route-listname="Termine" asp-route-image="true" asp-route-logicalkey="@Model.ArticleKey" asp-route-featuredenabled="false" asp-route-timetolive="0" class="btn btn-sm btn-outline-secondary">
+                                <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                            </a>
+                            <a asp-page="NewEvent" class="btn btn-sm btn-outline-secondary">
+                                Neuer Termin
+                            </a>
+                        }
+                    </div>
+                    <div class="col">
+                        @if (!String.IsNullOrEmpty(Model.OverviewArticle?.ImageLink))
+                        {
+                            <img class="img-fluid" src="@Model.OverviewArticle.ImageLink" alt="@Model.OverviewArticle.Title">
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="container">
+        @if (Model.ReferencedCalenderItem == null)
+        {
+            await Html.RenderPartialAsync("_Calendar", Model.CalendarItems);
+        }
+        else
+        {
+            @if (Model.HeaderItem != null)
+            {
+                @if (!String.IsNullOrEmpty(Model.HeaderItem.EmbeddedLink))
+                {
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                @if (Model.HeaderItem.ContentType == ContentType.FlickrWithHeader)
+                                {
+                                    <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="false" href="@Model.HeaderItem.EmbeddedLink" title="@Model.HeaderItem.Title"><img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" alt="@Model.HeaderItem.Title"></a>
+                                }
+                                else if (Model.HeaderItem.ContentType == ContentType.Flickr)
+                                {
+                                    <a target="_blank" data-flickr-embed="true" data-header="false" data-footer="false" href="@Model.HeaderItem.EmbeddedLink" title="@Model.HeaderItem.Title"><img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" alt="@Model.HeaderItem.Title"></a>
+                                }
+                                else if (Model.HeaderItem.ContentType == ContentType.FlickrWithFooter)
+                                {
+                                    <a target="_blank" data-flickr-embed="true" data-header="false" data-footer="true" href="@Model.HeaderItem.EmbeddedLink" title="@Model.HeaderItem.Title"><img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" alt="@Model.HeaderItem.Title"></a>
+                                }
+                                else if (Model.HeaderItem.ContentType == ContentType.FlickrWithHeaderAndFooter)
+                                {
+                                    <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="true" href="@Model.HeaderItem.EmbeddedLink" title="@Model.HeaderItem.Title"><img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" alt="@Model.HeaderItem.Title"></a>
+                                }
+                                else if (Model.HeaderItem.ContentType == ContentType.EmbeddedLink)
+                                {
+                                    <a href="@Model.HeaderItem.EmbeddedLink" target="_blank" title="@Model.HeaderItem.Header"><img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" /></a>
+                                }
+                                else if (Model.HeaderItem.ContentType == ContentType.Text)
+                                {
+                                    <img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" />
+                                }
+                                else if (Model.HeaderItem.ContentType == ContentType.Text)
+                                {
+                                    <img class="img-fluid card-img-top" src="@Model.HeaderItem.ImageLink" />
+                                }
+                                else if (Model.HeaderItem.ContentType == ContentType.Strava || Model.HeaderItem.ContentType == ContentType.Gpsies || Model.HeaderItem.ContentType == ContentType.Lightroom)
+                                {
+                                    <div class="embed-responsive embed-responsive-4by3">
+                                        <iframe class="embed-responsive-item" src='@Model.HeaderItem.EmbeddedLink'></iframe>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            await Html.RenderPartialAsync("_CalendarItem", Model.ReferencedCalenderItem);
+            @section Metatags {
+                <meta property="og:type" content="article" />
+                <meta property="og:title" content="@Model.ReferencedCalenderItem.Title" />
+                @if (!String.IsNullOrEmpty(Model.ReferencedCalenderItem.PlainDescription))
+                {
+                    <meta property="og:description" content="@Model.ReferencedCalenderItem.PlainDescription" />
+                }
+                @if (!String.IsNullOrEmpty(Model.ReferencedCalenderItem.ImageLink))
+                {
+                    <meta property="og:image" content="@Model.ReferencedCalenderItem.ImageLink" />
+                }
+            }
+
+        }
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Bestätigung</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Model.Message
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            @if (!String.IsNullOrEmpty(Model.Message)) {
+            @:$('#messageModal').modal()
+        }
+        });
+    </script>
+}
+
+
+

@@ -1,0 +1,83 @@
+﻿@page "{documentid}/{contentitemid?}"
+@model robert_brands_com.Pages.Termine.EditContentItemModel
+@using robert_brands_com.Models
+@using Microsoft.Extensions.Options;
+@inject IOptions<robert_brands_com.Repositories.TinyMCEConfig> TinyMCEConfig
+@{
+    ViewData["Title"] = "Inhaltsblock editieren";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>@ViewData["Title"]</h4>
+            <h5>@ViewData["Message"]</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="All" class="bg-warning"></div>
+                <input asp-for="CalendarItemId" type="hidden" />
+                <input asp-for="AppointmentDetail.UniqueId" type="hidden" />
+                <div class="form-group">
+                    <label asp-for="AppointmentDetail.ContentType">Inhaltstyp</label>
+                    <select class="form-control" asp-for="AppointmentDetail.ContentType" asp-items="Html.GetEnumSelectList<ContentType>()"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppointmentDetail.SortOrder"></label>
+                    <input class="form-control" asp-for="AppointmentDetail.SortOrder" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppointmentDetail.ColumnWidth"></label>
+                    <input class="form-control" asp-for="AppointmentDetail.ColumnWidth" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppointmentDetail.Header"></label>
+                    <input class="form-control" asp-for="AppointmentDetail.Header" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppointmentDetail.Title"></label>
+                    <input class="form-control" asp-for="AppointmentDetail.Title" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppointmentDetail.Description"></label>
+                    <textarea class="form-control" asp-for="AppointmentDetail.Description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppointmentDetail.ImageLink"></label>
+                    <input class="form-control" asp-for="AppointmentDetail.ImageLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppointmentDetail.EmbeddedLink"></label>
+                    <input class="form-control" asp-for="AppointmentDetail.EmbeddedLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppointmentDetail.LinkTitle"></label>
+                    <input class="form-control" asp-for="AppointmentDetail.LinkTitle" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppointmentDetail.Link"></label>
+                    <input class="form-control" asp-for="AppointmentDetail.Link" />
+                </div>
+                <button class="btn btn-primary" type="submit">Speichern</button>
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Abbrechen</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/@TinyMCEConfig.Value.ApiKey/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
