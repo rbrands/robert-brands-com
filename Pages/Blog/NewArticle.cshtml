@@ -1,0 +1,245 @@
+﻿@page
+@using Microsoft.Extensions.Options;
+@inject IOptions<robert_brands_com.Repositories.TinyMCEConfig> TinyMCEConfig
+@model robert_brands_com.Pages.Blog.NewArticleModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Neuer Artikel";
+}
+@section CSS {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>@ViewData["Title"]</h4>
+            <h5>@ViewData["Message"]</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="All" class="bg-warning"></div>
+                @if (!String.IsNullOrEmpty(Model.NewArticle.Id))
+                {
+                    <input asp-for="NewArticle.Id" type="hidden" />
+                }
+                <input asp-for="CallingPage" type="hidden" />
+                <input asp-for="NewArticle.ListName" type="hidden" />
+                @if (!String.IsNullOrEmpty(Model.NewArticle.LogicalKey))
+                {
+                    <input asp-for="NewArticle.LogicalKey" type="hidden" />
+                }
+                <div class="form-group">
+                    <label asp-for="NewArticle.TimeToLive">Löschen nach</label>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewArticle.TimeToLive" type="radio" value="-1" />
+                        <label class="form-check-label">Gar nicht</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewArticle.TimeToLive" type="radio" value="604800" />
+                        <label class="form-check-label">einer Woche</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewArticle.TimeToLive" type="radio" value="2678400" />
+                        <label class="form-check-label">einem Monat</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewArticle.TimeToLive" type="radio" value="8035200" />
+                        <label class="form-check-label">drei Monaten</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewArticle.TimeToLive" type="radio" value="16070400" />
+                        <label class="form-check-label">sechs Monaten</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewArticle.TimeToLive" type="radio" value="30240000" />
+                        <label class="form-check-label">einem Jahr</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewArticle.Date"></label>
+                    <input class="form-control" asp-for="NewArticle.Date" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewArticle.Title"></label>
+                    <input class="form-control" asp-for="NewArticle.Title" />
+                </div>
+                @if (Model.SummaryEnabled)
+                {
+                    <input asp-for="SummaryEnabled" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="NewArticle.Summary"></label>
+                        <textarea class="form-control" asp-for="NewArticle.Summary"></textarea>
+                    </div>
+                }
+                <div class="form-group">
+                    <label asp-for="NewArticle.ArticleContent"></label>
+                    <textarea class="form-control" asp-for="NewArticle.ArticleContent"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewArticle.PlainSummary"></label>
+                    <input class="form-control" asp-for="NewArticle.PlainSummary" />
+                </div>
+                @if (Model.NicknameEnabled)
+                {
+                    <input asp-for="NicknameEnabled" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="NewArticle.Nickname"></label>
+                        <input class="form-control" asp-for="NewArticle.Nickname" />
+                    </div>
+                }
+                @if (Model.TitleLinkEnabled)
+                {
+                    <input asp-for="TitleLinkEnabled" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="NewArticle.UrlTitle"></label>
+                        <input class="form-control" asp-for="NewArticle.UrlTitle" />
+                    </div>
+                }
+                @if (Model.LinkEnabled)
+                {
+                    <input asp-for="LinkEnabled" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="NewArticle.Link"></label>
+                        <input class="form-control" asp-for="NewArticle.Link" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewArticle.LinkTitle"></label>
+                        <input class="form-control" asp-for="NewArticle.LinkTitle" />
+                    </div>
+                }
+                @if (Model.TagsEnabled)
+                {
+                    <input asp-for="TagsEnabled" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="NewArticle.Tags"></label>
+                        <input id="tags" class="form-control" asp-for="NewArticle.Tags" />
+                    </div>
+                }
+                @if (Model.ImageEnabled)
+                {
+                    <input asp-for="ImageEnabled" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="NewArticle.ImageLink"></label>
+                        <input class="form-control" asp-for="NewArticle.ImageLink" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewArticle.FlickrLink"></label>
+                        <input class="form-control" asp-for="NewArticle.FlickrLink" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewArticle.FlickrLinkImage"></label>
+                        <input class="form-control" asp-for="NewArticle.FlickrLinkImage" />
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check-inline">
+                            <input class="form-check-input" asp-for="NewArticle.FlickrHeader" type="checkbox" value="true" />
+                            <label class="form-check-label" asp-for="NewArticle.FlickrHeader"></label>
+                        </div>
+                        <div class="form-check-inline">
+                            <input class="form-check-input" asp-for="NewArticle.FlickrFooter" type="checkbox" value="true" />
+                            <label class="form-check-label" asp-for="NewArticle.FlickrFooter"></label>
+                        </div>
+                    </div>
+                }
+                @if (Model.FeaturedEnabled)
+                {
+                    <input asp-for="FeaturedEnabled" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="NewArticle.FeaturedLevel"></label>
+                        <select class="form-control" asp-for="NewArticle.FeaturedLevel">
+                            <option disabled value="">Soll der Artikel gefeatured werden?</option>
+                            <option value="0">Nein</option>
+                            <option value="1">Hauptfeature Titelseite</option>
+                            <option value="2">Seitenfeature 1</option>
+                            <option value="3">Seitenfeature 2</option>
+                            <option value="4">Seitenfeature 3</option>
+                        </select>
+                    </div>
+                }
+
+                <button class="btn btn-primary" type="submit">Speichern</button>
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Abbrechen</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            relative_urls: false,
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            height: 150,
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        var availableTags = [];
+        $(function () {
+            function split(val) {
+                return val.split(/,\s*/);
+            }
+            function extractLast(term) {
+                return split(term).pop();
+            }
+
+            $("#tags")
+                // don't navigate away from the field on tab when selecting an item
+                .on("keydown", function (event) {
+                    if (event.keyCode === $.ui.keyCode.TAB &&
+                        $(this).autocomplete("instance").menu.active) {
+                        event.preventDefault();
+                    }
+                })
+                .autocomplete({
+                    minLength: 0,
+                    source: function (request, response) {
+                        // delegate back to autocomplete, but extract the last term
+                        response($.ui.autocomplete.filter(
+                            availableTags, extractLast(request.term)));
+                    },
+                    focus: function () {
+                        // prevent value inserted on focus
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        var terms = split(this.value);
+                        // remove the current input
+                        terms.pop();
+                        // add the selected item
+                        terms.push(ui.item.value);
+                        // add placeholder to get the comma-and-space at the end
+                        terms.push("");
+                        this.value = terms.join(", ");
+                        return false;
+                    }
+                });
+        });
+        $.ajax({
+            type: "GET",
+            url: "/Blog/NewArticle?handler=Tags&listname=@Model.ListName",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+                availableTags = response;
+            },
+            failure: function (response) {
+                alert(response);
+            }
+        });
+    </script>
+}
+
+

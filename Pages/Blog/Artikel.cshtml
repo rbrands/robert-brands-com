@@ -1,0 +1,96 @@
+﻿@page "{permalink?}/{language?}"
+@using System.Security.Claims
+@using robert_brands_com.Models
+@model robert_brands_com.Pages.Blog.ArtikelModel
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
+    ViewBag.Description = "Blog-Artikel";
+    ViewBag.Keywords = "Blog,News,Neuigkeiten";
+}
+@section CSS {
+    <link rel="stylesheet" href="~/css/blog.css" />
+}
+<div class="container">
+    @if (!String.IsNullOrEmpty(Model.ReferencedArticle.FlickrLink))
+    {
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <a target="_blank" data-flickr-embed="true" data-header="@Model.ReferencedArticle.FlickrHeader.ToString().ToLower()" data-footer="@Model.ReferencedArticle.FlickrFooter.ToString().ToLower()" href="@Model.ReferencedArticle.FlickrLink" title="@Model.ReferencedArticle.Title bei Flickr"><img class="img-fluid card-img-top" src="@Model.ReferencedArticle.FlickrLinkImage" alt="Flickr"></a>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="jumbotron p-3 p-md-5 rounded">
+        <div class="row">
+            <div class="col-md-8 px-0">
+                <h1 class="display-4">@Model.ReferencedArticle.Title</h1>
+                <div class="lead my-3 text-muted small">
+                    @Model.ReferencedArticle.Date.ToString("dd.MM.yyyy") von
+                    @Model.ReferencedArticle.Author
+                    @if (!String.IsNullOrEmpty(Model.ReferencedArticle.UrlTitle))
+                    {
+                        <br /><a href="~/blog/artikel/@Model.ReferencedArticle.UrlTitle">/blog/artikel/@Model.ReferencedArticle.UrlTitle</a>
+                    }
+                </div>
+                <div class="lead my-3">
+                    @if (!String.IsNullOrEmpty(Model.ReferencedArticle.Link))
+                    {
+                        <p>
+                            <a href="@Model.ReferencedArticle.Link" target="_blank" title="@Model.ReferencedArticle.Title">@(Model.ReferencedArticle.LinkTitle ?? "Siehe auch ...")</a>
+                        </p>
+                    }
+                    @Html.Raw(Model.ReferencedArticle.Summary)
+                    @if (Model.Language != "de")
+                    {
+                        <a asp-route-language="" class="btn btn-sm btn-outline-secondary" rel="nofollow">Deutsch</a>
+                    }
+                    @if (Model.Language != "en")
+                    {
+                        <a asp-route-language="en" class="btn btn-sm btn-outline-secondary" rel="nofollow">English</a>
+                    }
+                    @if (Model.Language != "fr")
+                    {
+                        <a asp-route-language="fr" class="btn btn-sm btn-outline-secondary" rel="nofollow">Français</a>
+                    }
+                    @if (Model.Language != "es")
+                    {
+                        <a asp-route-language="es" class="btn btn-sm btn-outline-secondary" rel="nofollow">Espagnol</a>
+                    }
+                    @if (Model.Language != "pt")
+                    {
+                        <a asp-route-language="pt" class="btn btn-sm btn-outline-secondary" rel="nofollow">Portuguese</a>
+                    }
+                </div>
+            </div>
+            <div class="col">
+                @if (!String.IsNullOrEmpty(Model.ReferencedArticle.ImageLink))
+                {
+                    <img class="img-fluid" src="@Model.ReferencedArticle.ImageLink" alt="@Model.ReferencedArticle.Title">
+                }
+            </div>
+        </div>
+    </div>
+    @if (!String.IsNullOrEmpty(Model.ReferencedArticle.ArticleContent))
+    {
+        @Html.Raw(Model.ReferencedArticle.ArticleContent)
+    }
+</div>
+@section Metatags {
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="@Model.ReferencedArticle.Title" />
+    @if (!String.IsNullOrEmpty(Model.ReferencedArticle.PlainSummary))
+    {
+        <meta property="og:description" content="@Model.ReferencedArticle.PlainSummary" />
+    }
+    @if (!String.IsNullOrEmpty(Model.ReferencedArticle.ImageLink))
+    {
+        <meta property="og:image" content="@Model.ReferencedArticle.ImageLink" />
+    }
+}
+
+@section Scripts {
+    <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+}
+
