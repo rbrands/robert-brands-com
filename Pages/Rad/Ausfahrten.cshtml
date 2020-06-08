@@ -1,8 +1,160 @@
-﻿@page
+﻿@page "{category?}/{permalink?}/{language?}"
 @model robert_brands_com.Pages.Rad.AusfahrtenModel
+@using System.Security.Claims
+@section CSS {
+    <link rel="stylesheet" href="~/css/tracks.css" />
+}
 @{
     ViewData["Title"] = "Ausfahrten";
 }
+<div class="container">
+    @if (Model.ReferencedTrack == null)
+    {
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="true" href="https://www.flickr.com/photos/rbrands/albums/72157677562620164" title="Radausfahrten"><img class="card-img-top img-fluid" src="https://farm5.staticflickr.com/4513/37030555514_17b871106a_h.jpg" alt="Radausfahrten"></a>
+                    <div class="card-body">
+                        <p class="card-text">
+                            Hier sammel ich alles rund um die Ausfahrten der letzten Zeit - Fotos, Video, GPS-Tracks alles auf einer Seite. Das Datum ist immer der Tag, an dem ich
+                            die betreffende Runde zuletzt gefahren bin. 
+                        </p>
+                        <p class="card-text">
+                            Fotos zur Scuderia Südstadt sind unter <a asp-page="/Rad/Scuderia">https://robert-brands.com/scuderia</a> zu finden.
+                        </p>
+                        <ul class="list-inline text-right">
+                            <li class="list-inline-item">Filter</li>
+                            <li class="list-inline-item"><a asp-route-category="Bergisches">Bergisches Land</a></li>
+                            <li class="list-inline-item"><a asp-route-category="Eifel">Eifel</a></li>
+                            <li class="list-inline-item"><a asp-route-category="Siebengebirge">Siebengebirge</a></li>
+                            <li class="list-inline-item"><a asp-route-category="Koeln">Köln flach</a></li>
+                            <li class="list-inline-item"><a asp-route-category="">Alle</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card-columns">
+                    @foreach (robert_brands_com.Models.TrackItem track in Model.Tracks)
+                    {
+                        <div class="card">
+                            @if (!String.IsNullOrEmpty(track.ImageLink))
+                            {
+                                <img class="card-img-top" src="@track.ImageLink" alt="@track.ShortTitle">
+                            }
+                            else if (!String.IsNullOrEmpty(track.KomootTourImage))
+                            {
+                                <a href="@track.KomootLink" target="_blank" title="Komoot Tour @track.ShortTitle"><img class="card-img-top" src="@track.KomootTourImage" alt="@track.ShortTitle"></a>
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@track.Title</h5>
+                                <div class="card-text">
+                                    @if (!String.IsNullOrEmpty(track.Length))
+                                    {
+                                        <p>@track.Length</p>
+                                    }
+                                    @Html.Raw(track.Description)
+                                    @if (!String.IsNullOrEmpty(track.UrlTitle))
+                                    {
+                                        <p><a asp-route-category="@track.Category.ToLower()" asp-route-permalink="@track.UrlTitle">Mehr ...</a></p>
+                                    }
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            @if (!String.IsNullOrEmpty(track.StravaLink))
+                                            {
+                                                <a href="@track.StravaLink" target="_blank" title="Strava @track.ShortTitle" class="btn btn-sm btn-outline-secondary">
+                                                    Strava
+                                                </a>
+                                            }
+                                            @if (!String.IsNullOrEmpty(track.GpsiesLink))
+                                            {
+                                                <a href="@track.GpsiesLink" target="_blank" title="GPSies @track.ShortTitle" class="btn btn-sm btn-outline-secondary">
+                                                    @(track.IsGpxFile ? "GPX" : "GPSies")
+                                                </a>
+                                            }
+                                            @if (!String.IsNullOrEmpty(track.KomootLink))
+                                            {
+                                                <a href="@track.KomootLink" target="_blank" title="Komoot @track.ShortTitle" class="btn btn-sm btn-outline-secondary">
+                                                    Komoot
+                                                </a>
+                                            }
+                                            @if (!String.IsNullOrEmpty(track.PhotosLink))
+                                            {
+                                                <a href="@track.PhotosLink" target="_blank" title="Fotos @track.ShortTitle" class="btn btn-sm btn-outline-secondary">Fotos</a>
+                                            }
+                                            else if (!String.IsNullOrEmpty(track.FlickrLink))
+                                            {
+                                                <a href="@track.FlickrLink" target="_blank" title="Fotos @track.ShortTitle" class="btn btn-sm btn-outline-secondary">Fotos</a>
+                                            }
+                                            @if (!String.IsNullOrEmpty(track.VideoLink))
+                                            {
+                                                <a href="@track.VideoLink" target="_blank" title="Video @track.ShortTitle" class="btn btn-sm btn-outline-secondary">Video</a>
+                                            }
+                                            @if (User.IsInRole(KnownRoles.Admin))
+                                            {
+                                                <a asp-page="/Rad/NewTrackLink" asp-page-handler="changelink" asp-route-documentid="@track.Id" class="btn btn-sm btn-outline-secondary">
+                                                    <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                                </a>
+                                                <a asp-page-handler="deletelink" asp-route-documentid="@track.Id" class="btn btn-sm btn-outline-secondary">
+                                                    <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                                </a>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="card-text text-right"><small class="text-muted">@track.Date.ToString("dd.MM.yyyy")</small></div>
 
-<h1>Ausfahrten</h1>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        await Html.RenderPartialAsync("_Tour", Model.ReferencedTrack);
+        @section Metatags {
+            <meta property="og:type" content="article" />
+            <meta property="og:title" content="@Model.ReferencedTrack.Title" />
+            @if (!String.IsNullOrEmpty(Model.ReferencedTrack.PlainDescription))
+            {
+                <meta property="og:description" content="@Model.ReferencedTrack.PlainDescription" />
+            }
+            @if (!String.IsNullOrEmpty(Model.ReferencedTrack.KomootTourImage))
+            {
+                <meta property="og:image" content="@Model.ReferencedTrack.KomootTourImage" />
+            }
+            else if (!String.IsNullOrEmpty(Model.ReferencedTrack.ImageLink))
+            {
+                <meta property="og:image" content="@Model.ReferencedTrack.ImageLink" />
+            }
+        }
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="list-inline text-right">
+                            <li class="list-inline-item">Ausfahrten-Filter</li>
+                            <li class="list-inline-item"><a asp-route-category="Bergisches" asp-route-permalink="">Bergisches Land</a></li>
+                            <li class="list-inline-item"><a asp-route-category="Eifel" asp-route-permalink="">Eifel</a></li>
+                            <li class="list-inline-item"><a asp-route-category="Siebengebirge" asp-route-permalink="">Siebengebirge</a></li>
+                            <li class="list-inline-item"><a asp-route-category="Koeln" asp-route-permalink="">Köln flach</a></li>
+                            <li class="list-inline-item"><a asp-route-category="" asp-route-permalink="">Alle</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+}
 

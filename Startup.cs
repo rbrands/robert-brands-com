@@ -80,6 +80,11 @@ namespace robert_brands_com
             services.AddSingleton(typeof(ICosmosDBRepository<Shortcut>), new CosmosDBRepository<Shortcut>(dbConfig));
             services.AddSingleton(typeof(ICosmosDBRepository<CommentedLinkItem>), new CosmosDBRepository<CommentedLinkItem>(dbConfig));
             services.AddSingleton(typeof(ICosmosDBRepository<ListCategory>), new CosmosDBRepository<ListCategory>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<TrackItem>), new CosmosDBRepository<TrackItem>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<Article>), new CosmosDBRepository<Article>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<ArticleTag>), new CosmosDBRepository<ArticleTag>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<CalendarItem>), new CosmosDBRepository<CalendarItem>(dbConfig));
+            // rbrands: Example for creating for every request services.AddScoped<ICosmosDBRepository<CalendarItem>>(provider => new CosmosDBRepository<CalendarItem>(Configuration, "SiteDB"));
 
             // Application Insights
             services.AddApplicationInsightsTelemetry();

@@ -1,0 +1,80 @@
+﻿@page
+@using System.Security.Claims
+@model robert_brands_com.Pages.Rad.ScuderiaModel
+@{
+    ViewData["Title"] = "Scuderia";
+    ViewBag.Description = "Fotoalbum zur Scuderia Südstadt";
+    ViewBag.Keywords = "Fotografie, Radfahren, Scuderia, Scuderia Südstadt, Rennrad, Köln";
+}
+@section CSS {
+    <link rel="stylesheet" href="~/css/album.css" />
+}
+
+<div class="container">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Scuderia Südstadt</h1>
+            <p class="lead text-muted">
+                Seit 2013 fahre ich mit der <a href="http://www.scuderia-suedstadt.de" target="_blank" title="Scuderia Südstadt">Scuderia Südstadt</a> Rad. Und meistens habe ich eine Kamera
+                dabei ... Als ständig aktualisierte <a href="https://adobe.ly/2Gm0sDw" target="_blank" title="Scuderia-Fotos">Fotoauwahl Scuderia Südstadt</a> sammel ich hier die Fotos. Eine Auswahl
+                der Strecken ist auf der Seite <a asp-page="/Rad/Ausfahrten" title="Ausfahrten">Ausfahrten</a> zu finden.
+            </p>
+            <p>
+                <div class="embed-responsive embed-responsive-4by3">
+                    <iframe class="embed-responsive-item" src='https://lightroom.adobe.com/embed/shares/da8a7f66700e4070bc2c822b6118ec52/slideshow?background_color=%23191919&color=%23cccdcd'></iframe>
+                </div>
+
+                <a href="https://adobe.ly/2Gm0sDw" target="_blank" title="Fotoauswahl Scuderia" class="btn btn-primary my-2">Fotoauswahl ab 2013</a>
+            </p>
+        </div>
+    </section>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">Filter</li>
+                        <li class="list-inline-item"><a asp-page="/Rad/Scuderia" asp-route-category="Rad">Ausfahrten</a></li>
+                        <li class="list-inline-item"><a asp-page="/Rad/Scuderia" asp-route-category="Reise">Reisen</a></li>
+                        <li class="list-inline-item"><a asp-page="/Rad/Scuderia" asp-route-category="Event">Events</a></li>
+                        <li class="list-inline-item"><a asp-page="/Rad/Scuderia" asp-route-category="">Alle</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (robert_brands_com.Models.CommentedLinkItem link in this.Model.CommentedLinks)
+                {
+                    <div class="col-md-4">
+                        <div class="card box-shadow">
+                            @if (!String.IsNullOrEmpty(link.ImageLink))
+                            {
+                                <a href="@link.Link" target="_blank" title="@link.ShortTitle">
+                                    <img class="card-img-top" src="@link.ImageLink" alt="@link.ShortTitle">
+                                </a>
+                            }
+                            <div class="card-body">
+                                <div class="card-text">@Html.Raw(link.Description)</div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="@link.Link" target="_blank" title="@link.ShortTitle" class="btn btn-sm btn-outline-secondary">@link.Title</a>
+                                        @if (User.IsInRole(KnownRoles.Admin))
+                                        {
+                                            <a asp-page="/Fotos/NewFotoLink" asp-page-handler="changelink" asp-route-documentid="@link.Id" class="btn btn-sm btn-outline-secondary">
+                                                <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                            </a>
+                                            <a asp-page-handler="deletelink" asp-route-documentid="@link.Id" class="btn btn-sm btn-outline-secondary">
+                                                <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                            </a>
+                                        }
+                                    </div>
+                                    <small class="text-muted">@link.Date.ToString("dd.MM.yyyy")</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
