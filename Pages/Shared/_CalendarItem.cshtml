@@ -26,7 +26,7 @@
             {
                 <a asp-page="/Termine/Anmelden" asp-page-handler="checkinout" asp-route-documentid="@Model.Id" class="btn btn-primary">Anmeldung</a>
             }
-            <a class="btn btn-sm btn-outline-secondary" asp-controller="Events" asp-action="ExportICal" asp-route-calendarItemId="@Model.Id">
+            <a class="btn btn-sm btn-outline-secondary" asp-controller="Calendar" asp-action="ExportICal" asp-route-calendarItemId="@Model.Id">
                 <span class="fi-calendar" title="Kalendar" aaria-hidden="true"></span>
             </a>
             @if (User.IsInAnyRole(KnownRoles.CalendarCoordinatorRoles))

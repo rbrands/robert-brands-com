@@ -9,6 +9,10 @@ using System.Security.Claims;
 using robert_brands_com.Models;
 using robert_brands_com.Repositories;
 using System.Globalization;
+using Ical.Net;
+using Ical.Net.CalendarComponents;
+using Ical.Net.DataTypes;
+
 
 namespace robert_brands_com.Controllers
 {
@@ -34,6 +38,35 @@ namespace robert_brands_com.Controllers
             string fileName = String.Format("{0:yyyy}-{1:MM}-{2:dd}{3}.csv", dateForFilename, dateForFilename, dateForFilename, calendarItem.Title);
             return File(new System.Text.UTF8Encoding().GetBytes(csvData.ToString()), "text/csv", fileName);
         }
+        [AllowAnonymous]
+        public async Task<IActionResult> ExportICal(string calendarItemId)
+        {
+            CalendarItem calendarItem = await repository.GetDocument(calendarItemId);
+            if (calendarItem == null)
+            {
+                return new NotFoundResult();
+            }
+            string description = calendarItem.PlainDescription ?? calendarItem.Summary ?? String.Empty;
+            if (!String.IsNullOrEmpty(calendarItem.UrlTitle))
+            {
+                description += " https://robert-brands.com/termine/" + calendarItem.UrlTitle;
+            }
+            CalendarEvent e = new CalendarEvent
+            {
+                Start = new CalDateTime(calendarItem.StartDate),
+                End = new CalDateTime(calendarItem.EndDate),
+                Summary = calendarItem.Title,
+                Description = description,
+                Location = calendarItem.Place,
+                IsAllDay = calendarItem.WholeDay,
+                Organizer = new Organizer(calendarItem.Host)
+            };
+            Ical.Net.Calendar calendar = new Ical.Net.Calendar();
+            calendar.Events.Add(e);
 
+            var serializer = new Ical.Net.Serialization.CalendarSerializer();
+            string iCal = serializer.SerializeToString(calendar);
+            return File(new System.Text.UTF8Encoding().GetBytes(iCal), "text/calendar", "iCal.ics");
+        }
     }
 }
