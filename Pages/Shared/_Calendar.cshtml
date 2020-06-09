@@ -1,0 +1,56 @@
+﻿
+@using System.Security.Claims
+@using robert_brands_com.Models;
+@model IEnumerable<CalendarItem>;
+
+<div class="row">
+    @foreach (CalendarItem calendarItem in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    @calendarItem.CalendarName
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <h6 class="text-muted">@calendarItem.Place</h6>
+                        <div class="h6">@calendarItem.GetEventDateAsString()</div>
+                        <h4 class="card-title">@calendarItem.Title</h4>
+                        @Html.Raw(calendarItem.Summary)
+                        @if (!String.IsNullOrEmpty(calendarItem.UrlTitle))
+                        {
+                            <p><a asp-route-permalink="@calendarItem.UrlTitle">Mehr ...</a></p>
+                        }
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                @if (calendarItem.RegistrationOpen && calendarItem.GetRegisteredMembersCount() < calendarItem.MaxRegistrationsCount || User.IsInAnyRole(KnownRoles.CalendarCoordinatorRoles))
+                                {
+                                    <a asp-page="/Termine/Anmelden" asp-page-handler="checkinout" asp-route-documentid="@calendarItem.Id" class="btn btn-primary">Anmeldung</a>
+                                }
+                                <a class="btn btn-sm btn-outline-secondary" asp-controller="Calendar" asp-action="ExportICal" asp-route-calendarItemId="@calendarItem.Id">
+                                    <span class="fi-calendar" title="Kalendar" aaria-hidden="true"></span>
+                                </a>
+                                @if (User.IsInAnyRole(KnownRoles.CalendarCoordinatorRoles))
+                                {
+                                    <a asp-page="/Termine/NewEvent" asp-page-handler="change" asp-route-documentid="@calendarItem.Id" class="btn btn-sm btn-outline-secondary">
+                                        <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                    </a>
+                                    <a asp-page="AdminRegistration" asp-route-documentid="@calendarItem.Id" class="btn btn-sm btn-outline-secondary">
+                                        <span class="fi-people" title="Anmeldungen" aria-hidden="true"></span>
+                                    </a>
+                                    <a asp-page="SendMail" asp-route-id="@calendarItem.Id" class="btn btn-sm btn-outline-secondary">
+                                        <span class="fi-envelope-closed" title="Anmeldungen" aria-hidden="true"></span>
+                                    </a>
+                                    <a asp-page-handler="delete" asp-route-documentid="@calendarItem.Id" class="btn btn-sm btn-outline-secondary">
+                                        <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                        <div class="card-text text-right"><small class="text-muted">@calendarItem.Host</small></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

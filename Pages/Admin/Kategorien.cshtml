@@ -1,0 +1,48 @@
+﻿@page
+@model robert_brands_com.Pages.Admin.KategorienModel
+@using robert_brands_com.Models
+@{
+    ViewData["Title"] = "Kategorien";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>@ViewData["Title"]</h2>
+            <h3>@ViewData["Message"]</h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-condensed table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Aktionen</th>
+                        <th>Liste</th>
+                        <th>Kategorie</th>
+                        <th>Anzeigetext</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ListCategory c in Model.CategoryList)
+                    {
+                        <tr>
+                            <td>
+                                <a class="btn btn-outline-dark" asp-page="NewCategory" asp-page-handler="changecategory" asp-route-documentid="@c.Id">Ändern</a>
+                                <a class="btn btn-outline-dark" asp-page-handler="delete" asp-route-documentid="@c.Id">Löschen</a>
+                            </td>
+                            <td>@c.ListName</td>
+                            <td>@c.Category</td>
+                            <td>@c.CategoryDisplay</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <a class="btn btn-primary" asp-page="NewCategory">Neue Kategorie</a>
+        </div>
+    </div>
+</div>
+
+

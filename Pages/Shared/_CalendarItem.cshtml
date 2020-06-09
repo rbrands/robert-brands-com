@@ -1,0 +1,94 @@
+﻿@model robert_brands_com.Models.CalendarItem
+@using System.Security.Claims
+@using robert_brands_com.Models
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-8">
+            <h6 class="text-muted">@Model.Place</h6>
+            <div class="h4">
+                @Model.GetEventDateAsString()
+            </div>
+            <h1>@Model.Title</h1>
+            <div>
+                @Html.Raw(Model.Summary)
+                @Html.Raw(Model.Description)
+                @if (Model.ShowRegistrations && Model.GetRegisteredMembersCount() > 0)
+                {
+                    <p>
+                        Dabei: @Model.GetMembersAsList()
+                    </p>
+
+                }
+            </div>
+            <div><small class="text-muted">@Model.Host</small></div>
+            @if (Model.RegistrationOpen && Model.GetRegisteredMembersCount() < Model.MaxRegistrationsCount || User.IsInAnyRole(KnownRoles.CalendarCoordinatorRoles))
+            {
+                <a asp-page="/Termine/Anmelden" asp-page-handler="checkinout" asp-route-documentid="@Model.Id" class="btn btn-primary">Anmeldung</a>
+            }
+            <a class="btn btn-sm btn-outline-secondary" asp-controller="Calendar" asp-action="ExportICal" asp-route-calendarItemId="@Model.Id">
+                <span class="fi-calendar" title="Kalendar" aaria-hidden="true"></span>
+            </a>
+            @if (User.IsInAnyRole(KnownRoles.CalendarCoordinatorRoles))
+            {
+                <a asp-page="/Termine/NewEvent" asp-page-handler="change" asp-route-documentid="@Model.Id" class="btn btn-sm btn-outline-secondary">
+                    <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                </a>
+                <a asp-page="AdminRegistration" asp-route-documentid="@Model.Id" class="btn btn-sm btn-outline-secondary">
+                    <span class="fi-people" title="Anmeldungen" aria-hidden="true"></span>
+                </a>
+                <a asp-page="SendMail" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">
+                    <span class="fi-envelope-closed" title="Anmeldungen" aria-hidden="true"></span>
+                </a>
+                <a asp-page="/Termine/EditContentItem" asp-route-documentid="@Model.Id" class="btn btn-sm btn-outline-secondary">
+                    Neue Info
+                </a>
+            }
+            @if (Model.EnableTranslations)
+            {
+                @if (Model.Language != "de")
+                {
+                    <a asp-route-language="" class="btn btn-sm btn-outline-secondary" rel="nofollow">Deutsch</a>
+                }
+                @if (Model.Language != "en")
+                {
+                    <a asp-route-language="en" class="btn btn-sm btn-outline-secondary" rel="nofollow">English</a>
+                }
+                @if (Model.Language != "fr")
+                {
+                    <a asp-route-language="fr" class="btn btn-sm btn-outline-secondary" rel="nofollow">Français</a>
+                }
+                @if (Model.Language != "es")
+                {
+                    <a asp-route-language="es" class="btn btn-sm btn-outline-secondary" rel="nofollow">Espagnol</a>
+                }
+                @if (Model.Language != "pt")
+                {
+                    <a asp-route-language="pt" class="btn btn-sm btn-outline-secondary" rel="nofollow">Portuguese</a>
+                }
+            }
+        </div>
+        <div class="col">
+            @if (!String.IsNullOrEmpty(Model.ImageLink))
+            {
+                <img class="img-fluid" src="@Model.ImageLink" alt="@Model.Title">
+            }
+        </div>
+    </div>
+</div>
+<div class="row">
+    @if (null != Model.Infos)
+    {
+        @foreach (ContentItem infoBlock in Model.Infos)
+        {
+            @if (infoBlock.SortOrder != 0 || User.IsInAnyRole(KnownRoles.CalendarCoordinatorRoles))
+            {
+                <div class="col-md-@infoBlock.ColumnWidth">
+                    @{
+                        await Html.RenderPartialAsync("_ContentItem", infoBlock);
+                    }
+                </div>
+            }
+        }
+    }
+</div>

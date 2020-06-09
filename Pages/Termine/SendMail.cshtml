@@ -1,0 +1,58 @@
+﻿@page "{id}"
+@model robert_brands_com.Pages.Termine.SendMailModel
+@using robert_brands_com.Models
+@using Microsoft.Extensions.Options;
+@inject IOptions<robert_brands_com.Repositories.TinyMCEConfig> TinyMCEConfig
+@{
+    ViewData["Title"] = "Send Mail";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>@ViewData["Title"]</h4>
+            <h5>@ViewData["Message"]</h5>
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+                <h3 class="card-title">@Model.ReferencedCalenderItem.Title</h3>
+                <p>
+                    Verschicken einer Mail an alle Teilnehmer. Aktuell @Model.ReferencedCalenderItem.GetRegisteredMembersCount()/@Model.ReferencedCalenderItem.MaxRegistrationsCount Personen angemeldet.
+                </p>
+            </div>
+            <form method="post" asp-val>
+                <div asp-validation-summary="All" class="bg-warning"></div>
+                <input asp-for="CalendarItemId" type="hidden" />
+                <div class="form-group">
+                    <label asp-for="MailSubject">Betreff</label>
+                    <input class="form-control" asp-for="MailSubject" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="MailText">Nachricht</label>
+                    <textarea class="form-control" asp-for="MailText"></textarea>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary">Mail schicken</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/@TinyMCEConfig.Value.ApiKey/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

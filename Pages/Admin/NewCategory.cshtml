@@ -1,0 +1,34 @@
+﻿@page
+@model robert_brands_com.Pages.Admin.NewCategoryModel
+@{
+    ViewData["Title"] = "Kategorie";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>@ViewData["Title"]</h2>
+            <h4>@ViewData["Message"]</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="All" class="bg-warning"></div>
+                <div class="form-group">
+                    <label asp-for="Category.ListName">Liste:</label>
+                    <input class="form-control" asp-for="Category.ListName" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Category.Category">Kategorie:</label>
+                    <input class="form-control" asp-for="Category.Category" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Category.CategoryDisplay">Anzeigetext:</label>
+                    <input class="form-control" asp-for="Category.CategoryDisplay" />
+                </div>
+                <button class="btn btn-primary" type="submit">Speichern</button>
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Abbrechen</button>
+            </form>
+        </div>
+    </div>
+</div>
+

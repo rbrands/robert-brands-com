@@ -1,0 +1,286 @@
+﻿@page "{tag?}"
+@using System.Security.Claims
+@using robert_brands_com.Models
+@model robert_brands_com.Pages.Blog.IndexModel
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
+    ViewData["Title"] = "Index";
+    ViewBag.Description = "Blog";
+    ViewBag.Keywords = "Blog,News,Neuigkeiten";
+}
+@section CSS {
+    <link rel="stylesheet" href="~/css/blog.css" />
+}
+
+<div class="container">
+    <div class="jumbotron p-3 p-md-5 rounded">
+        <div class="row">
+            @if (Model.HeadlineArticle != null)
+            {
+                <div class="col-md-8 px-0">
+                    <h1 class="display-4">@Model.HeadlineArticle.Title</h1>
+                    <div class="lead my-3 text-muted small">
+                        @Model.HeadlineArticle.Date.ToString("dd.MM.yyyy") von
+                        @Model.HeadlineArticle.Author
+                        @if (!String.IsNullOrEmpty(Model.HeadlineArticle.UrlTitle))
+                        {
+                            <br /><a href="~/blog/artikel/@Model.HeadlineArticle.UrlTitle">/blog/artikel/@Model.HeadlineArticle.UrlTitle</a>
+                        }
+                        @if (!String.IsNullOrEmpty(Model.HeadlineArticle.Link))
+                        {
+                            <p>
+                                <a href="@Model.HeadlineArticle.Link" target="_blank" title="@Model.HeadlineArticle.Title">@(Model.HeadlineArticle.LinkTitle ?? "Siehe auch ...")</a>
+                            </p>
+                        }
+                    </div>
+                    <div class="lead my-3">
+                        @Html.Raw(Model.HeadlineArticle.Summary)
+                    </div>
+                    <p class="lead mb-0">
+                        @if ((await AuthorizationService.AuthorizeAsync(User, KnownRoles.PolicyIsBlogAuthor)).Succeeded)
+                        {
+                            <a asp-page="NewArticle" asp-page-handler="customized" asp-route-documentid="@Model.HeadlineArticle.Id"
+                               asp-route-callingpage="/Blog/Index"
+                               asp-route-listname="Blog"
+                               asp-route-titlelink="true"
+                               asp-route-link="true"
+                               asp-route-summary="true"
+                               asp-route-tags="true"
+                               asp-route-featuredenabled="true"
+                               asp-route-image="true"
+                               asp-route-nickname="true"
+                               class="btn btn-sm btn-outline-secondary">
+                                <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                            </a>
+                            <a asp-page-handler="deletearticle" asp-route-documentid="@Model.HeadlineArticle.Id" class="btn btn-sm btn-outline-secondary">
+                                <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                            </a>
+                            <a asp-page="/Blog/NewArticle" asp-page-handler="customized" asp-route-callingpage="/Blog/Index" asp-route-listname="Blog" asp-route-titlelink="true" asp-route-link="true" asp-route-summary="true" asp-route-tags="true" asp-route-featuredenabled="true" asp-route-image="true" asp-route-nickname="true" asp-route-timetolive="2678400" class="btn btn-sm btn-outline-secondary">
+                                Neuer Artikel
+                            </a>
+                        }
+
+                        @if (!String.IsNullOrEmpty(Model.HeadlineArticle.UrlTitle))
+                        {
+                            <a asp-page="Artikel" asp-route-permalink="@Model.HeadlineArticle.UrlTitle">Weiter lesen ...</a>
+                        }
+                    </p>
+                </div>
+                <div class="col">
+                    @if (!String.IsNullOrEmpty(Model.HeadlineArticle.ImageLink))
+                    {
+                        <img class="img-fluid" src="@Model.HeadlineArticle.ImageLink" alt="@Model.HeadlineArticle.Title">
+                    }
+                </div>
+            }
+        </div>
+    </div>
+    @if (Model.SideFeaturedArticle_1 != null || Model.SideFeaturedArticle_2 != null)
+    {
+        <div class="card-deck">
+            @if (Model.SideFeaturedArticle_1 != null)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <strong class="d-inline-block mb-2 text-primary">@Model.SideFeaturedArticle_1.Tags?.Trim(' ', ',')</strong>
+                                <h3 class="mb-0 text-dark">
+                                    @Model.SideFeaturedArticle_1.Title
+                                </h3>
+                                <div class="mb-1 text-muted small">
+                                    @Model.SideFeaturedArticle_1.Date.ToString("dd.MM.yyyy") von @Model.SideFeaturedArticle_1.Author
+                                    @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_1.UrlTitle))
+                                    {
+                                        <br /><a href="~/blog/artikel/@Model.SideFeaturedArticle_1.UrlTitle">/blog/artikel/@Model.SideFeaturedArticle_1.UrlTitle</a>
+                                    }
+                                    @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_1.Link))
+                                    {
+                                        <p>
+                                            <a href="@Model.SideFeaturedArticle_1.Link" target="_blank" title="@Model.SideFeaturedArticle_1.Title">@(Model.SideFeaturedArticle_1.LinkTitle ?? "Siehe auch ...")</a>
+                                        </p>
+                                    }
+                                </div>
+                                <p class="card-text mb-auto">@Html.Raw(Model.SideFeaturedArticle_1.Summary)</p>
+                                @if ((await AuthorizationService.AuthorizeAsync(User, KnownRoles.PolicyIsBlogAuthor)).Succeeded)
+                                {
+                                    <a asp-page="NewArticle" asp-page-handler="customized" asp-route-documentid="@Model.SideFeaturedArticle_1.Id"
+                                       asp-route-callingpage="/Blog/Index"
+                                       asp-route-listname="Blog"
+                                       asp-route-titlelink="true"
+                                       asp-route-link="true"
+                                       asp-route-summary="true"
+                                       asp-route-tags="true"
+                                       asp-route-featuredenabled="true"
+                                       asp-route-image="true"
+                                       asp-route-nickname="true"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                    </a>
+                                    <a asp-page-handler="deletearticle" asp-route-documentid="@Model.SideFeaturedArticle_1.Id" class="btn btn-sm btn-outline-secondary">
+                                        <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                    </a>
+                                }
+                                @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_1.UrlTitle))
+                                {
+                                    <a asp-page="Artikel" asp-route-permalink="@Model.SideFeaturedArticle_1.UrlTitle">Weiter lesen...</a>
+                                }
+                            </div>
+                            <div class="col">
+                                @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_1.ImageLink))
+                                {
+                                    <img class="img-fluid" src="@Model.SideFeaturedArticle_1.ImageLink" alt="@Model.SideFeaturedArticle_1.Title">
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (Model.SideFeaturedArticle_2 != null)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <strong class="d-inline-block mb-2 text-success">@Model.SideFeaturedArticle_2.Tags?.Trim(' ', ',')</strong>
+                                <h3 class="mb-0 text-dark">
+                                    @Model.SideFeaturedArticle_2.Title
+                                </h3>
+                                <div class="mb-1 text-muted small">
+                                    @Model.SideFeaturedArticle_2.Date.ToString("dd.MM.yyyy") von @Model.SideFeaturedArticle_2.Author
+                                    @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_2.UrlTitle))
+                                    {
+                                        <br /><a href="~/blog/artikel/@Model.SideFeaturedArticle_2.UrlTitle">/blog/artikel/@Model.SideFeaturedArticle_2.UrlTitle</a>
+                                    }
+                                    @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_2.Link))
+                                    {
+                                        <p>
+                                            <a href="@Model.SideFeaturedArticle_2.Link" target="_blank" title="@Model.SideFeaturedArticle_2.Title">@(Model.SideFeaturedArticle_2.LinkTitle ?? "Siehe auch ...")</a>
+                                        </p>
+                                    }
+                                </div>
+                                <div class="card-text mb-auto align-item-st">@Html.Raw(Model.SideFeaturedArticle_2.Summary)</div>
+                                @if ((await AuthorizationService.AuthorizeAsync(User, KnownRoles.PolicyIsBlogAuthor)).Succeeded)
+                                {
+                                    <a asp-page="NewArticle" asp-page-handler="customized" asp-route-documentid="@Model.SideFeaturedArticle_2.Id"
+                                       asp-route-callingpage="/Blog/Index"
+                                       asp-route-listname="Blog"
+                                       asp-route-titlelink="true"
+                                       asp-route-link="true"
+                                       asp-route-summary="true"
+                                       asp-route-tags="true"
+                                       asp-route-featuredenabled="true"
+                                       asp-route-image="true"
+                                       asp-route-nickname="true"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                    </a>
+                                    <a asp-page-handler="deletearticle" asp-route-documentid="@Model.SideFeaturedArticle_2.Id" class="btn btn-sm btn-outline-secondary">
+                                        <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                    </a>
+                                }
+                                @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_2.UrlTitle))
+                                {
+                                    <a asp-page="Artikel" asp-route-permalink="@Model.SideFeaturedArticle_2.UrlTitle">Weiter lesen...</a>
+                                }
+                            </div>
+                            <div class="col">
+                                @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_2.ImageLink))
+                                {
+                                    <img class="img-fluid" src="@Model.SideFeaturedArticle_2.ImageLink" alt="@Model.SideFeaturedArticle_2.Title">
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <main role="main" class="pt-3">
+        <div class="row">
+            <div class="col-md-8 blog-post">
+                @foreach (Article article in Model.BlogArticles)
+                {
+                    <div class="row">
+                        <div class="col blog-post">
+                            <div class="d-inline-block mb-2 text-muted">@article.Tags?.Trim(' ', ',')</div>
+                            <h3>@article.Title</h3>
+                            <p class="text-muted small">
+                                @article.Date.ToString("dd.MM.yyyy") von @article.Author
+                                @if (!String.IsNullOrEmpty(article.UrlTitle))
+                                {
+                                    <br /><a asp-page="Artikel" asp-route-permalink="@article.UrlTitle">/blog/artikel/@article.UrlTitle</a>
+                                }
+                            </p>
+                            @if (!String.IsNullOrEmpty(article.Link))
+                            {
+                                <p>
+                                    <a href="@article.Link" target="_blank" title="@article.Title">@(article.LinkTitle ?? "Siehe auch ...")</a>
+                                </p>
+                            }
+                            @Html.Raw(article.Summary)
+                            @if ((await AuthorizationService.AuthorizeAsync(User, KnownRoles.PolicyIsBlogAuthor)).Succeeded)
+                            {
+                                <a asp-page="NewArticle" asp-page-handler="customized" asp-route-documentid="@article.Id"
+                                   asp-route-callingpage="/Blog/Index"
+                                   asp-route-listname="Blog"
+                                   asp-route-titlelink="true"
+                                   asp-route-link="true"
+                                   asp-route-summary="true"
+                                   asp-route-tags="true"
+                                   asp-route-featuredenabled="true"
+                                   asp-route-image="true"
+                                   asp-route-nickname="true"
+                                   class="btn btn-sm btn-outline-secondary">
+                                    <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                </a>
+                                <a asp-page-handler="deletearticle" asp-route-documentid="@article.Id" class="btn btn-sm btn-outline-secondary">
+                                    <span class="fi-trash" title="Löschen" aria-hidden="true"></span>
+                                </a>
+                            }
+                            @if (!String.IsNullOrEmpty(article.UrlTitle))
+                            {
+                                <a asp-page="Artikel" asp-route-permalink="@article.UrlTitle">/blog/artikel/@article.UrlTitle</a>
+                            }
+                        </div>
+                        @if (!String.IsNullOrEmpty(article.ImageLink))
+                        {
+                            <div class="col">
+                                <img class="img-fluid" src="@article.ImageLink" alt="@article.Title" />
+                            </div>
+                        }
+                    </div><!-- /.blog-post -->
+                }
+                @if (!String.IsNullOrEmpty(Model.ContinuationToken))
+                {
+                    <nav class="blog-pagination">
+                        <a class="btn btn-outline-primary" asp-page-handler="older" asp-route-continuationtoken="@Model.ContinuationToken" asp-route-tag="@Model.Tag">Weiter</a>
+                    </nav>
+                }
+            </div>
+            <aside class="col-md-4 blog-sidebar">
+                <div class="p-3 mb-3 bg-light rounded">
+                    <h4 class="font-italic">Über...</h4>
+                    <p class="mb-0">
+                        Als weitere "Fingerübung" habe ich jetzt hier einen eigenen Blog implementiert.
+                        Und so habe ich auch gleich einen Raum, um Hinweise, Artikel, Links, Fotos usw. zu sammeln.
+                    </p>
+                </div>
+                <div class="p-3">
+                    <h4 class="font-italic">Themen</h4>
+                    <ol class="list-unstyled mb-0">
+                        @foreach (string tag in Model.Tags)
+                        {
+                            <li><a asp-route-tag="@tag" asp-page-handler="get">@tag</a></li>
+                        }
+                        <li><a asp-route-tag="" asp-page-handler="get">Alle</a></li>
+                    </ol>
+                </div>
+            </aside><!-- /.blog-sidebar -->
+
+        </div><!-- /.blog-main -->
+    </main><!-- /.container -->
+</div>
+

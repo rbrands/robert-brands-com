@@ -1,0 +1,103 @@
+﻿@page "{category?}/{permalink?}/{language?}"
+@using System.Security.Claims
+@using robert_brands_com.Models
+@model robert_brands_com.Pages.Wanderungen.IndexModel
+@{
+    ViewData["Title"] = "Wanderungen";
+    ViewBag.Keywords = "Wandern";
+}
+
+<div class="container">
+    @if (Model.ReferencedTrack == null)
+    {
+        @if (!String.IsNullOrEmpty(Model.OverviewArticle?.FlickrLink))
+        {
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <a target="_blank" data-flickr-embed="true" data-header="@Model.OverviewArticle.FlickrHeader.ToString().ToLower()" data-footer="@Model.OverviewArticle.FlickrFooter.ToString().ToLower()" href="@Model.OverviewArticle.FlickrLink" title="@Model.OverviewArticle.Title bei Flickr"><img class="img-fluid card-img-top" src="@Model.OverviewArticle.FlickrLinkImage" alt="Flickr"></a>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1>@Model.OverviewArticle?.Title</h1>
+                    @Html.Raw(Model.OverviewArticle?.ArticleContent)
+                    @if (User.IsInRole(KnownRoles.Admin))
+                    {
+                        <a asp-page="/Blog/NewArticle" asp-page-handler="customized" asp-route-callingpage="/Wanderungen/Index" asp-route-listname="Wanderungen" asp-route-image="true" asp-route-logicalkey="@Model.ArticleKey" asp-route-featuredenabled="false" asp-route-timetolive="0" class="btn btn-sm btn-outline-secondary">
+                            <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                        </a>
+                    }
+                </div>
+                <div class="col">
+                    @if (!String.IsNullOrEmpty(Model.OverviewArticle?.ImageLink))
+                    {
+                        <img class="img-fluid" src="@Model.OverviewArticle.ImageLink" alt="@Model.OverviewArticle.Title">
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    <div class="container bg-light">
+        @if (Model.ReferencedTrack == null)
+        {
+            <div class="row">
+                <div class="col">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">Filter</li>
+                        @foreach (ListCategory c in Model.Categories)
+                        {
+                            <li class="list-inline-item"><a asp-route-category="@c.Category">@(c.CategoryDisplay ?? c.Category)</a></li>
+                        }
+                        <li class="list-inline-item"><a asp-route-category="">Alle</a></li>
+                    </ul>
+                </div>
+            </div>
+            await Html.RenderPartialAsync("_TourList", Model.Tracks);
+        }
+        else
+        {
+            await Html.RenderPartialAsync("_Tour", Model.ReferencedTrack);
+            @section Metatags {
+                <meta property="og:type" content="article" />
+                <meta property="og:title" content="@Model.ReferencedTrack.Title" />
+                @if (!String.IsNullOrEmpty(Model.ReferencedTrack.PlainDescription))
+                {
+                    <meta property="og:description" content="@Model.ReferencedTrack.PlainDescription" />
+                }
+                @if (!String.IsNullOrEmpty(Model.ReferencedTrack.KomootTourImage))
+                {
+                    <meta property="og:image" content="@Model.ReferencedTrack.KomootTourImage" />
+                }
+                else if (!String.IsNullOrEmpty(Model.ReferencedTrack.ImageLink))
+                {
+                    <meta property="og:image" content="@Model.ReferencedTrack.ImageLink" />
+                }
+            }
+
+            <div class="row">
+                <div class="col">
+                    <ul class="list-inline text-right">
+                        <li class="list-inline-item">Wanderungen</li>
+                        @foreach (ListCategory c in Model.Categories)
+                        {
+                            <li class="list-inline-item"><a asp-route-category="@c.Category">@(c.CategoryDisplay ?? c.Category)</a></li>
+                        }
+                        <li class="list-inline-item"><a asp-route-category="">Alle</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+@section Scripts {
+    <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+}
+
+
+

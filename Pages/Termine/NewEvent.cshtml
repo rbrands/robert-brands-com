@@ -1,0 +1,157 @@
+﻿@page
+@using robert_brands_com.Models
+@using Microsoft.Extensions.Options;
+@inject IOptions<robert_brands_com.Repositories.TinyMCEConfig> TinyMCEConfig
+@model robert_brands_com.Pages.Termine.NewEventModel
+@{
+    ViewData["Title"] = "Termin";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>@ViewData["Title"]</h4>
+            <h5>@ViewData["Message"]</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="All" class="bg-warning"></div>
+                <input asp-for="NewEvent.Id" type="hidden" />
+                <div class="form-group">
+                    <label asp-for="NewEvent.TimeToLive">Löschen nach</label>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.TimeToLive" type="radio" value="-1" />
+                        <label class="form-check-label">Gar nicht</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.TimeToLive" type="radio" value="604800" />
+                        <label class="form-check-label">einer Woche</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.TimeToLive" type="radio" value="2678400" />
+                        <label class="form-check-label">einem Monat</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.TimeToLive" type="radio" value="8035200" />
+                        <label class="form-check-label">drei Monaten</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.TimeToLive" type="radio" value="16070400" />
+                        <label class="form-check-label">sechs Monaten</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.TimeToLive" type="radio" value="30240000" />
+                        <label class="form-check-label">einem Jahr</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.CalendarName"></label>
+                    <select class="form-control" asp-for="NewEvent.CalendarName">
+                        <option disabled value="">Kalendar auswählen</option>
+                        @foreach (ListCategory c in Model.Categories)
+                        {
+                            <option value="@c.Category">@(c.CategoryDisplay ?? c.Category)</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.Title"></label>
+                    <input class="form-control" asp-for="NewEvent.Title" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.UrlTitle"></label>
+                    <input class="form-control" asp-for="NewEvent.UrlTitle" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.StartDate"></label>
+                    <input class="form-control" asp-for="NewEvent.StartDate" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.EndDate"></label>
+                    <input class="form-control" asp-for="NewEvent.EndDate" />
+                </div>
+                <div class="form-group">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.WholeDay" type="checkbox" value="true" />
+                        <label class="form-check-label" asp-for="NewEvent.WholeDay"></label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.PublicListing" type="checkbox" value="true" />
+                        <label class="form-check-label" asp-for="NewEvent.PublicListing"></label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.RegistrationOpen" type="checkbox" value="true" />
+                        <label class="form-check-label" asp-for="NewEvent.RegistrationOpen"></label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.RegistrationKeyRequired" type="checkbox" value="true" />
+                        <label class="form-check-label" asp-for="NewEvent.RegistrationKeyRequired"></label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.ShowRegistrations" type="checkbox" value="true" />
+                        <label class="form-check-label" asp-for="NewEvent.ShowRegistrations"></label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.AllowFriends" type="checkbox" value="true" />
+                        <label class="form-check-label" asp-for="NewEvent.AllowFriends"></label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewEvent.EnableTranslations" type="checkbox" value="true" />
+                        <label class="form-check-label" asp-for="NewEvent.EnableTranslations"></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.Place"></label>
+                    <input class="form-control" asp-for="NewEvent.Place" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.Host"></label>
+                    <input class="form-control" asp-for="NewEvent.Host" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.MaxRegistrationsCount"></label>
+                    <input class="form-control" asp-for="NewEvent.MaxRegistrationsCount" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.ImageLink"></label>
+                    <input class="form-control" asp-for="NewEvent.ImageLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.PlainDescription"></label>
+                    <input class="form-control" asp-for="NewEvent.PlainDescription" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.Summary"></label>
+                    <textarea class="form-control" asp-for="NewEvent.Summary"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.Description"></label>
+                    <textarea class="form-control" asp-for="NewEvent.Description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewEvent.RegistrationDescription"></label>
+                    <textarea class="form-control" asp-for="NewEvent.RegistrationDescription"></textarea>
+                </div>
+                <button class="btn btn-primary" type="submit">Speichern</button>
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Abbrechen</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/@TinyMCEConfig.Value.ApiKey/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

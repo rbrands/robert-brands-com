@@ -1,0 +1,104 @@
+﻿@page "{permalink?}/{registrationkey?}"
+@model robert_brands_com.Pages.Termine.AnmeldenModel
+@using robert_brands_com.Models
+@using Microsoft.Extensions.Options
+@using reCAPTCHA.AspNetCore
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
+@inject IOptions<robert_brands_com.Repositories.TinyMCEConfig> TinyMCEConfig
+@{
+    ViewData["Title"] = "Für Veranstaltung anmelden";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>@ViewData["Title"]</h4>
+            <h5>@ViewData["Message"]</h5>
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+                <h3 class="card-title">@Model.ReferencedCalendarItem.Title</h3>
+                <h6>@Model.ReferencedCalendarItem.GetEventDateAsString()</h6>
+                @if (String.IsNullOrEmpty(Model.ReferencedCalendarItem.RegistrationDescription))
+                {
+                    <text>
+                        Hier erfolgt die An- und auch Abmeldung. Für eine Abmeldung bitte den Namen und die E-Mail-Adresse genau wie bei der Anmeldung eingeben.
+                        @if (Model.ReferencedCalendarItem.RegistrationKeyRequired)
+                        {
+                            <text>Auch der Registrierungsschlüssel muss für eine Abmeldung wieder eingegeben werden.</text>
+                }
+                        E-Mail und Telefonnummmer wird ggf. nur für Benachrichtigungen rund um diesen Termin verwendet und nicht für eine weitere Verwendung gespeichert.
+                        </text>
+                    }
+                    else
+                    {
+                        @Html.Raw(Model.ReferencedCalendarItem.RegistrationDescription)
+                    }
+            </div>
+            <form method="post">
+                <div asp-validation-summary="All" class="bg-warning"></div>
+                <input asp-for="CalendarItemId" type="hidden" />
+                <input asp-for="NewMember.UniqueId" type="hidden" />
+                <input asp-for="NewMember.RegistrationDate" type="hidden" />
+                @if (Model.ReferencedCalendarItem.RegistrationKeyRequired)
+                {
+                    <div class="form-group">
+                        <label asp-for="NewMember.RegistrationKey"></label>
+                        <input class="form-control" asp-for="NewMember.RegistrationKey" />
+                    </div>
+                }
+                <div class="form-group">
+                    <label asp-for="NewMember.Name"></label>
+                    <input class="form-control" asp-for="NewMember.Name" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewMember.EMail"></label>
+                    <input class="form-control" asp-for="NewMember.EMail" />
+                </div>
+                @if (Model.ReferencedCalendarItem.AllowFriends)
+                {
+                    <div class="form-group">
+                        <label asp-for="NewMember.Count"></label>
+                        <input class="form-control" asp-for="NewMember.Count" />
+                    </div>
+                }
+                else
+                {
+                    <input asp-for="NewMember.Count" type="hidden" />
+                }
+                <div class="form-group">
+                    <label asp-for="NewMember.Remark"></label>
+                    <input class="form-control" asp-for="NewMember.Remark" />
+                </div>
+                @if (Model.UseCaptcha)
+                {
+                    <div class="g-recaptcha" data-sitekey="@RecaptchaSettings.Value.SiteKey"></div>
+                }
+
+                <p></p>
+                <div class="btn-group">
+                    <button class="btn btn-primary" type="submit">Anmelden</button>
+                    <button class="btn btn-outline-primary" asp-page-handler="Unregister" type="submit">Abmelden</button>
+                    <a asp-page="Index" class="btn btn-outline-secondary">Abbrechen</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/@TinyMCEConfig.Value.ApiKey/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

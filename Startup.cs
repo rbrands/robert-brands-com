@@ -16,6 +16,7 @@ using robert_brands_com.Filter;
 using robert_brands_com.Repositories;
 using System.Security.Claims;
 using robert_brands_com.Models;
+using reCAPTCHA.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using NetEscapades.AspNetCore.SecurityHeaders;
 
@@ -62,11 +63,20 @@ namespace robert_brands_com
             //
             // For dependency injection in ASP.NET Core see https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection
             services.AddSingleton(typeof(IConfigurationRoot), Configuration);
+            // Inject IOptions<RecaptchaSettings>
+            services.Configure<RecaptchaSettings>(Configuration.GetSection("RecaptchaSettings"));
+            services.AddTransient<IRecaptchaService, RecaptchaService>();
             // Inject IOptions<DbConfig>
             services.Configure<DbConfig>(Configuration.GetSection("SiteDB"));
             DbConfig dbConfig = Configuration.GetSection("SiteDB").Get<DbConfig>();
             // Inject IOption<TinyMCEConfig>
             services.Configure<TinyMCEConfig>(Configuration.GetSection("TinyMCE"));
+            // Inject IOptions<FunctionSiteToolsConfig>
+            services.Configure<FunctionSiteToolsConfig>(Configuration.GetSection("FunctionSiteTools"));
+            FunctionSiteToolsConfig functionsConfig = Configuration.GetSection("FunctionSiteTools").Get<FunctionSiteToolsConfig>();
+            // rbrands: FunctionSiteTools to access Azure Functions
+            FunctionSiteTools functionSiteTools = new FunctionSiteTools(functionsConfig);
+            services.AddSingleton(typeof(IFunctionSiteTools), functionSiteTools);
             // Repositories for ActivityLogging - one for writing one for reading because of different interfaces. 
             services.AddSingleton(typeof(ICosmosDBRepository<ActivityLogItem>), new CosmosDBRepository<ActivityLogItem>(dbConfig));
             services.AddSingleton(typeof(IActivityLog), new ActivityLogDBRepository(Configuration, dbConfig));
@@ -74,6 +84,11 @@ namespace robert_brands_com
             services.AddSingleton(typeof(ICosmosDBRepository<Shortcut>), new CosmosDBRepository<Shortcut>(dbConfig));
             services.AddSingleton(typeof(ICosmosDBRepository<CommentedLinkItem>), new CosmosDBRepository<CommentedLinkItem>(dbConfig));
             services.AddSingleton(typeof(ICosmosDBRepository<ListCategory>), new CosmosDBRepository<ListCategory>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<TrackItem>), new CosmosDBRepository<TrackItem>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<Article>), new CosmosDBRepository<Article>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<ArticleTag>), new CosmosDBRepository<ArticleTag>(dbConfig));
+            services.AddSingleton(typeof(ICosmosDBRepository<CalendarItem>), new CosmosDBRepository<CalendarItem>(dbConfig));
+            // rbrands: Example for creating for every request services.AddScoped<ICosmosDBRepository<CalendarItem>>(provider => new CosmosDBRepository<CalendarItem>(Configuration, "SiteDB"));
 
             // Application Insights
             services.AddApplicationInsightsTelemetry();

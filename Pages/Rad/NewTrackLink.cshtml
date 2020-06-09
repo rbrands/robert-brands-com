@@ -1,0 +1,160 @@
+﻿@page
+@model robert_brands_com.Pages.Rad.NewTrackLinkModel
+@using robert_brands_com.Models
+@using Microsoft.Extensions.Options;
+@inject IOptions<robert_brands_com.Repositories.TinyMCEConfig> TinyMCEConfig
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Neuer Track";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>@ViewData["Title"]</h4>
+            <h5>@ViewData["Message"]</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="All" class="bg-warning"></div>
+                <input asp-for="NewTrack.Id" type="hidden" />
+                <div class="form-group">
+                    <label asp-for="NewTrack.ListName"></label>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewTrack.ListName" type="radio" value="Ausfahrten" />
+                        <label class="form-check-label">Ausfahrten</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewTrack.ListName" type="radio" value="Reise" />
+                        <label class="form-check-label">Reise</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewTrack.ListName" type="radio" value="Wanderungen" />
+                        <label class="form-check-label">Wanderungen</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.Date"></label>
+                    <input class="form-control" asp-for="NewTrack.Date" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.Category"></label>
+                    <select class="form-control" asp-for="NewTrack.Category">
+                        <option disabled value="">Kategorie auswählen</option>
+                        @foreach (ListCategory c in Model.Categories)
+                        {
+                            <option value="@c.Category">@(c.CategoryDisplay ?? c.Category)</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.Title"></label>
+                    <input class="form-control" asp-for="NewTrack.Title" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.Length"></label>
+                    <input class="form-control" asp-for="NewTrack.Length" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.Description"></label>
+                    <textarea class="form-control" asp-for="NewTrack.Description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.ShortTitle"></label>
+                    <input class="form-control" asp-for="NewTrack.ShortTitle" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.PlainDescription"></label>
+                    <input class="form-control" asp-for="NewTrack.PlainDescription" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.UrlTitle"></label>
+                    <input class="form-control" asp-for="NewTrack.UrlTitle" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.TourSet"></label>
+                    <input class="form-control" asp-for="NewTrack.TourSet" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.ImageLink"></label>
+                    <input class="form-control" asp-for="NewTrack.ImageLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.PhotosLink"></label>
+                    <input class="form-control" asp-for="NewTrack.PhotosLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.FlickrLink"></label>
+                    <input class="form-control" asp-for="NewTrack.FlickrLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.FlickrLinkImage"></label>
+                    <input class="form-control" asp-for="NewTrack.FlickrLinkImage" />
+                </div>
+                <div class="form-group">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewTrack.FlickrHeader" type="checkbox" value="true" />
+                        <label class="form-check-label" asp-for="NewTrack.FlickrHeader"></label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewTrack.FlickrFooter" type="checkbox" value="true" />
+                        <label class="form-check-label" asp-for="NewTrack.FlickrFooter"></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.VideoLink"></label>
+                    <input class="form-control" asp-for="NewTrack.VideoLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.VideoEmbedLink"></label>
+                    <input class="form-control" asp-for="NewTrack.VideoEmbedLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.StravaLink"></label>
+                    <input class="form-control" asp-for="NewTrack.StravaLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.StravaEmbedLink"></label>
+                    <input class="form-control" asp-for="NewTrack.StravaEmbedLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.GpsiesLink"></label>
+                    <input class="form-control" asp-for="NewTrack.GpsiesLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.GpsiesEmbedLink"></label>
+                    <input class="form-control" asp-for="NewTrack.GpsiesEmbedLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.KomootLink"></label>
+                    <input class="form-control" asp-for="NewTrack.KomootLink" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewTrack.KomootTourImage"></label>
+                    <input class="form-control" asp-for="NewTrack.KomootTourImage" />
+                </div>
+                <button class="btn btn-primary" type="submit">Speichern</button>
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Abbrechen</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/@TinyMCEConfig.Value.ApiKey/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            relative_urls: false,
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
