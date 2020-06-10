@@ -29,8 +29,8 @@ namespace robert_brands_com.Pages.Termine
             _categoryRepository = categoryRepository;
             _activityLog = activityLogRepository;
             this.NewEvent = new CalendarItem();
-            this.NewEvent.StartDate = DateTime.Now.AddDays(1.0);
-            this.NewEvent.EndDate = this.NewEvent.StartDate.AddHours(3.0);
+            this.NewEvent.StartDate = DateTime.Today.AddDays(1.0).AddHours(12.0);
+            this.NewEvent.EndDate = this.NewEvent.StartDate.AddHours(2.0);
             NewEvent.CalendarName = "Termin";
             NewEvent.TimeToLive = 16070400;
         }
