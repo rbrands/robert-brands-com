@@ -1,10 +1,144 @@
 ﻿@page
+@using System.Security.Claims
+@using robert_brands_com.Models
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Robert Brands";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="fotoCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
+                <ol class="carousel-indicators">
+                    @for (int i = 0; i < Model.PhotoList.Count(); ++i)
+                    {
+                        <li data-target="#fotoCarousel" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+                    }
+                </ol>
+                <div class="carousel-inner">
+                    @foreach (CommentedLinkItem photoLink in Model.PhotoList)
+                    {
+                        <div class="carousel-item @(Model.PhotoLinkOffset == 0 ? "active" : "")">
+                            <a href="@photoLink.Link" target="_blank"><img class="img-fluid" src="@photoLink.ImageLink" alt="@photoLink.ShortTitle" /></a>
+                            <div class="carousel-caption">
+                                <a href="@photoLink.Link" class="h2 text-white" target="_blank">@photoLink.Title</a>
+                            </div>
+                            <span class="invisible">@(Model.PhotoLinkOffset++)</span>
+                        </div>
+                    }
+                    <a class="carousel-control-prev" href="#fotoCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                        <span class="sr-only">Zurück</span>
+                    </a>
+                    <a class="carousel-control-next" href="#fotoCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                        <span class="sr-only">Vorwärts</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card border-0">
+                <div class="card-body">
+                    <h1 class="h4 card-title">Kontakt</h1>
+                    <p class="card-text">Robert Brands</p>
+                    <p class="card-text">
+                        <script>
+                            document.write('<' + 'a' + ' ' + 'h' + 'r' + 'e' + 'f' + '=' + "'" + 'm' + 'a' + '&' + '#' + '1' + '0' + '5' + ';' + 'l' + 't' + '&' + '#' + '1' + '1' + '1' + ';' +
+                                '&' + '#' + '5' + '8' + ';' + 'm' + 'a' + 'i' + '%' + '6' + 'C' + '&' + '#' + '6' + '4' + ';' + 'r' + 'o' + 'b' + '%' + '6' + '&' + '#' + '5' + '3' +
+                                ';' + '%' + '7' + '2' + 't' + '-' + 'b' + '%' + '7' + '&' + '#' + '5' + '0' + ';' + 'a' + '%' + '6' + 'E' + 'd' + 's' + '&' + '#' + '4' + '6' + ';' +
+                                'c' + 'o' + '&' + '#' + '1' + '0' + '9' + ';' + "'" + '>' + 'm' + 'a' + '&' + '#' + '1' + '0' + '5' + ';' + 'l' + '&' + '#' + '6' + '4' + ';' + 'r' +
+                                'o' + 'b' + '&' + '#' + '1' + '0' + '1' + ';' + 'r' + 't' + '&' + '#' + '4' + '5' + ';' + 'b' + 'r' + '&' + '#' + '9' + '7' + ';' + '&' + '#' + '1' +
+                                '1' + '0' + ';' + 'd' + '&' + '#' + '1' + '1' + '5' + ';' + '&' + '#' + '4' + '6' + ';' + 'c' + 'o' + '&' + '#' + '1' + '0' + '9' + ';' + '<' + '/' +
+                                'a' + '>');</script><noscript>[Turn on JavaScript to see the email address]</noscript>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-0">
+                <div class="card-body">
+                    <h4 class="card-title">Office</h4>
+                    <p class="card-text">
+                        <ul>
+                            <li>
+                                <a href="https://www.xing.com/profile/Robert_Brands" target="_blank" rel="me"><img src="https://www.xing.com/img/buttons/1_de_btn.gif" width="85" height="23" alt="Robert Brands"></a>
+                            </li>
+                            <li>
+                                <a href="https://de.linkedin.com/pub/robert-brands/1/410/473">
+                                    <img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_myprofile_160x33.png" width="160" height="33" border="0" alt="View Robert Brands's profile on LinkedIn">
+                                </a>
+                            </li>
+                            <li><a href="~/blog/TechTalk">TechTalk</a></li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-0">
+                <div class="card-body">
+                    <h4 class="card-title">OOF - Out of office</h4>
+                    <p class="card-text">
+                        <ul>
+                            <li><a href="https://www.facebook.com/brands.robert">Facebook</a></li>
+                            <li><a href="https://www.flickr.com/photos/rbrands/">Flickr</a></li>
+                            <li><a href="https://www.strava.com/athletes/robert_brands">Strava</a></li>
+                            <li><a href="https://vimeo.com/robertbrands">Vimeo</a></li>
+                            <li><a href="https://www.instagram.com/rbrands1961/">Instagram</a></li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-0">
+                <div class="card-body">
+                    @if (Model.Headline != null)
+                    {
+                        <h4 class="card-title">
+                            @Model.Headline.Title
+                            @if (User.IsInAnyRole(KnownRoles.Admin))
+                            {
+                                <a asp-page="/Blog/NewArticle" asp-page-handler="customized" asp-route-callingpage="/Index"
+                                   asp-route-listname="Homepage"
+                                   asp-route-logicalkey="homepage-headline"
+                                   asp-route-timetolive="0"
+                                   asp-route-featuredenabled="false"
+                                   asp-route-nickname="false"
+                                   asp-route-titlelink="false"
+                                   asp-route-link="false"
+                                   asp-route-tags="false"
+                                   asp-route-image="false"
+                                   class="btn btn-sm btn-outline-secondary">
+                                    <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                                </a>
+                            }
+                        </h4>
+                        <div class="card-text">
+                            @Html.Raw(Model.Headline.ArticleContent)
+                        </div>
+                    }
+                    else if (User.IsInAnyRole(KnownRoles.Admin))
+                    {
+                        <div class="card-text">
+                            <a asp-page="/Blog/NewArticle" asp-page-handler="customized" asp-route-callingpage="/Index" asp-route-listname="Homepage" asp-route-logicalkey="homepage-headline" asp-route-featuredenabled="false" asp-route-timetolive="0" class="btn btn-sm btn-outline-secondary">
+                                <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+@section Scripts {
+    <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+}
+
