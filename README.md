@@ -14,4 +14,6 @@ This site is my personal web site and provides a very simple CMS. I use it to sh
 
 Feel free to use it as start for your own development or to understand and see examples of the mentioned technologies.
 
+For further documentation see the Wiki https://github.com/rbrands/robert-brands-com/wiki
+
 
