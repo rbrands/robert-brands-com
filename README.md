@@ -6,11 +6,11 @@ This site is my personal web site and provides a very simple CMS. I use it to sh
 
 - ASP.NET Core with Razor Pages
 - Authentication with Azure AD
-- Azure Table Storage
-- NoSQL Datenbank Azure Cosmos DB
+- NoSQL database Azure Cosmos DB
 - Azure Web-Apps
 - Responsive Design with Bootstrap
 - GitHub Actions
+- Using Azure Functions with fluent API
 
 Feel free to use it as start for your own development or to understand and see examples of the mentioned technologies.
 
