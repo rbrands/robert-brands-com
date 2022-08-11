@@ -18,7 +18,7 @@ jobs:
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: '3.0.x'
+        dotnet-version: '6.0.x'
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
@@ -29,7 +29,7 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'robert-brands-com(release)'
+        app-name: 'robert-brands-com'
         slot-name: 'release'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_3c99cbe0ec2c432c9e541f6c96c53002 }}
         package: ${{env.DOTNET_ROOT}}/myapp 
