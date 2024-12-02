@@ -64,7 +64,7 @@ namespace robert_brands_com.Repositories
                             .WithHeader("x-functions-key", _functionsConfig.TranslateFunctionKey)
                            .SetQueryParam("to", language)
                            .PostJsonAsync(body)
-                           .ReceiveJsonList();
+                           .ReceiveJson<List<dynamic>>();
             dynamic translated = response[0];
             return translated.translations[0].text;
         }
@@ -75,7 +75,7 @@ namespace robert_brands_com.Repositories
             dynamic response = await $"https://{_functionsConfig.FunctionAppName}.azurewebsites.net/api/AnalyzeImage"
                             .WithHeader("x-functions-key", _functionsConfig.AnalyzeImageFunctionKey)
                            .PostJsonAsync(body)
-                           .ReceiveJson();
+                           .ReceiveJson<dynamic>();
             return response;
 
         }

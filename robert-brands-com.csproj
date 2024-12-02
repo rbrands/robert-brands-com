@@ -1,24 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <UserSecretsId>aspnet-robert_brands_com-585D8E87-11AF-4F82-8CE2-96BFF78B0AFB</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
     <RootNamespace>robert_brands_com</RootNamespace>
     <ApplicationInsightsResourceId>/subscriptions/8112f8e4-1adf-4e4f-ad90-aa7010a26cf4/resourceGroups/RB-PD-RGP-001/providers/microsoft.insights/components/robert-brands-com</ApplicationInsightsResourceId>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Queues" Version="12.12.0" />
-    <PackageReference Include="Flurl" Version="3.0.6" />
-    <PackageReference Include="Flurl.Http" Version="3.2.4" />
-    <PackageReference Include="Ical.Net" Version="4.2.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="6.0.10" />
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.31.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
-    <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.17.0" />
+    <PackageReference Include="Azure.Storage.Queues" Version="12.21.0" />
+    <PackageReference Include="Flurl" Version="4.0.0" />
+    <PackageReference Include="Flurl.Http" Version="4.0.2" />
+    <PackageReference Include="Ical.Net" Version="4.3.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="6.0.36" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.46.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.24.0" />
     <PackageReference Include="reCAPTCHA.AspNetCore" Version="3.0.10" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="3.4.0" />
   </ItemGroup>
-
 </Project>

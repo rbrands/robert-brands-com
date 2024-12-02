@@ -55,8 +55,7 @@
                                 Featured
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">
-                                <a class="dropdown-item" asp-page="/Rad/Scuderia">Scuderia Fotoalbum</a>
-                                <a class="dropdown-item" asp-page="/Wanderungen/Index" asp-route-category="">Wanderungen</a>
+                                <a class="dropdown-item" href="/rad/scuderia">Scuderia Südstadt</a>
                                 <a class="dropdown-item" href="/rad/routedesgrandesalpes">Route des Grandes Alpes</a>
                                 <a class="dropdown-item" href="/Fotos/Korsika">Korsika</a>
                                 <a class="dropdown-item" href="/Fotos/Vietnam">Vietnam</a>
@@ -110,7 +109,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - robert-brands.com - 2024-12-02 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
+            &copy; 2024 - robert-brands.com - 2024-12-02 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
             @if (User.Identity.IsAuthenticated && User.IsAdmin()) {
                 <text>| Admin</text>
             }
