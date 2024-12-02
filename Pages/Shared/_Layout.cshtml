@@ -71,9 +71,9 @@
                             </div>
                         </li>
 
-                        <li class="nav-item"><a class="nav-link" asp-page="/Blog/Index">Blog</a></li>
+                        <!--  <li class="nav-item"><a class="nav-link" asp-page="/Blog/Index">Blog</a></li> -->
                         <li class="nav-item"><a class="nav-link" asp-page="/Fotos/Index" asp-route-category="">Fotos</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-page="/Termine/Index" asp-route-permalink="">Termine</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link" asp-page="/Termine/Index" asp-route-permalink="">Termine</a></li> -->
                         <li class="nav-item"><a class="nav-link" asp-page="/Rad/Ausfahrten" asp-route-category="" asp-route-permalink="">Radausfahrten</a></li>
                         <li class="nav-item"><a class="nav-link" asp-page="/Rad/Reisen" asp-route-category="" asp-route-permalink="">Radreisen</a></li>
 
@@ -110,7 +110,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - robert-brands.com - 2022-11-04 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
+            &copy; 2022 - robert-brands.com - 2024-12-02 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
             @if (User.Identity.IsAuthenticated && User.IsAdmin()) {
                 <text>| Admin</text>
             }
