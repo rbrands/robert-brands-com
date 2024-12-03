@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 using Flurl.Http;
 using Flurl;
 using robert_brands_com.Models;
-using Azure.Storage;
 using Azure.Storage.Queues;
-using Azure.Storage.Queues.Models;
 using Newtonsoft.Json;
 
 namespace robert_brands_com.Repositories
@@ -19,36 +17,6 @@ namespace robert_brands_com.Repositories
         public FunctionSiteTools(FunctionSiteToolsConfig functionsConfig)
         {
             _functionsConfig = functionsConfig;
-        }
-        public async Task LogToDb(ActivityLogItem logItem)
-        {
-            // Create the queue client and queue.
-            QueueClient queue = new QueueClient(_functionsConfig.StorageConnectionString, "logging");
-            // Create the queue if it doesn't already exist
-            await queue.CreateIfNotExistsAsync();
-            // Send message to the queue.
-            string serializedLogActivity = JsonConvert.SerializeObject(logItem);
-            await queue.SendMessageAsync(serializedLogActivity);
-            return;
-        }
-        public async Task SendMail(string email, string subject, string htmlText)
-        {
-            EMail mailMessage = new EMail();
-            mailMessage.Email = email;
-            mailMessage.Subject = subject;
-            mailMessage.HtmlText = htmlText;
-            mailMessage.From = _functionsConfig.From;
-            mailMessage.FromName = _functionsConfig.FromName;
-
-            // Create the queue client and queue.
-            QueueClient queue = new QueueClient(_functionsConfig.StorageConnectionString, "sendmail");
-            // Create the queue if it doesn't already exist
-            await queue.CreateIfNotExistsAsync();
-            // Send message to the queue.
-            string serializedEmail = JsonConvert.SerializeObject(mailMessage);
-            await queue.SendMessageAsync(serializedEmail);
-
-            return;
         }
         public async Task<string> Translate(string language, string text)
         {
@@ -64,9 +32,8 @@ namespace robert_brands_com.Repositories
                             .WithHeader("x-functions-key", _functionsConfig.TranslateFunctionKey)
                            .SetQueryParam("to", language)
                            .PostJsonAsync(body)
-                           .ReceiveJson<List<dynamic>>();
-            dynamic translated = response[0];
-            return translated.translations[0].text;
+                           .ReceiveJson<List<TranslationResponse>>();
+            return response.FirstOrDefault()?.Translations.FirstOrDefault()?.Text ?? text;
         }
         public async Task<dynamic> AnalyzeImage(string imageUrl)
         {
@@ -75,7 +42,7 @@ namespace robert_brands_com.Repositories
             dynamic response = await $"https://{_functionsConfig.FunctionAppName}.azurewebsites.net/api/AnalyzeImage"
                             .WithHeader("x-functions-key", _functionsConfig.AnalyzeImageFunctionKey)
                            .PostJsonAsync(body)
-                           .ReceiveJson<dynamic>();
+                           .ReceiveJson<ImageAnalysisResult>();
             return response;
 
         }
@@ -92,5 +59,19 @@ namespace robert_brands_com.Repositories
         public string From { get; set; }
         public string FromName { get; set; }
     }
+    public class ImageAnalysisResult
+    {
+        public string Description { get; set; }
+        public List<string> Tags { get; set; }
+    }
 
+    public class TranslationResponse
+    {
+        public List<Translation> Translations { get; set; }
+    }
+
+    public class Translation
+    {
+        public string Text { get; set; }
+    }
 }

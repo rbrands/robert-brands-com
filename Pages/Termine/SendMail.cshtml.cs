@@ -53,13 +53,6 @@ namespace robert_brands_com.Pages.Termine
             }
             if (ModelState.IsValid)
             {
-                if (ReferencedCalenderItem.Members != null)
-                {
-                    foreach (Member member in ReferencedCalenderItem.Members)
-                    {
-                        await _functionSiteTools.SendMail(member.EMail, MailSubject, MailText);
-                    }
-                }
                 return RedirectToPage("Index");
             }
             else
