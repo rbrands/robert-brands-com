@@ -60,11 +60,11 @@
                                 <a class="dropdown-item" href="/Fotos/Korsika">Korsika</a>
                                 <a class="dropdown-item" href="/Fotos/Vietnam">Vietnam</a>
                                 <a class="dropdown-item" href="/Fotos/Marokko">Marokko</a>
-                                <a class="dropdown-item" href="/Fotos/Nepal">Nepal</a>
                                 @if (User.IsInAnyRole(KnownRoles.Admin, KnownRoles.User))
                                 {
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" asp-page="/Fotos/Album">Fotoalbum</a>
+                                    <a class="dropdown-item" asp-page="/Blog/Index">Blog</a>
                                 }
 
                             </div>
@@ -86,14 +86,14 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdown02">
                                     <a class="dropdown-item" asp-page="/Admin/ActivityLog">ActivityLog</a>
                                     <a class="dropdown-item" asp-page="/Rad/NewTrackLink">Neuer Track</a>
+                                    <a class="dropdown-item" asp-page="/Fotos/NewFotoLink">Neuer Fotolink</a>
+                                    <a class="dropdown-item" asp-page="/Shortcuts/New">Neuer Shortcut</a>
+                                    <a class="dropdown-item" asp-page="/Shortcuts/Index">Liste aller Shortcuts</a>
                                     <a class="dropdown-item" asp-page="/Admin/Kategorien">Kategorien verwalten</a>
                                     <a class="dropdown-item" asp-page="/Admin/Environment">Claims</a>
                                     <a class="dropdown-item" asp-page="/Admin/Headers">Headers</a>
-                                    <a class="dropdown-item" asp-page="/Shortcuts/New">Neuer Shortcut</a>
-                                    <a class="dropdown-item" asp-page="/Shortcuts/Index">Liste aller Shortcuts</a>
                                     <a class="dropdown-item" asp-page="/Events/NewEventRegistration">Neue Eventregistrierung</a>
                                     <a class="dropdown-item" asp-page="/Events/ListEventRegistrations">Liste aller Events</a>
-                                    <a class="dropdown-item" asp-page="/Fotos/NewFotoLink">Neuer Fotolink</a>
                                 </div>
                             </li>
                         }
