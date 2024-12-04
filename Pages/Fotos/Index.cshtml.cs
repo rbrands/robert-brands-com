@@ -41,7 +41,9 @@ namespace robert_brands_com.Pages.Fotos
                 if (ReferencedPhotoPage == null)
                 {
                     // Now check if a category matches the given argument
-                    IEnumerable<CommentedLinkItem> documents = await repository.GetDocuments(d => d.ListName == listName && d.Category == category);
+                    IEnumerable<CommentedLinkItem> documents = await repository.GetDocuments(d => 
+                        d.ListName.Equals(listName, StringComparison.OrdinalIgnoreCase) && 
+                        d.Category.Equals(category, StringComparison.OrdinalIgnoreCase));
                     CommentedLinks = documents.OrderByDescending(d => d.Date);
                 }
                 else
