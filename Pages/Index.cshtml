@@ -45,13 +45,23 @@
                 <div class="card-body">
                     <h4 class="card-title">Freelancer</h4>
                     <p class="card-text">
-                        <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="small" data-theme="light" data-type="HORIZONTAL" data-vanity="robertbrands" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://de.linkedin.com/in/robertbrands?trk=profile-badge"></a></div>
-                    </p>
-                    <p class="card-text">
-                        <a href="https://github.com/rbrands"><img src="~/images/github-mark.png" alt="GitHub" height="33" style="margin-right: 8px;">GitHub Profil</a>
-                    </p>
-                    <p class="card-text">
-                        <a href="/Freelancer"><img src="https://1drv.ms/i/s!AlVNeomY2iiZqpU0j15C5YuFeljvEw?embed=1&width=1024" width="41">Freelancer Profil</a>
+                        <ul class="profile-links">
+                            <li class="profile-link-item">
+                                <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="small" data-theme="light" data-type="HORIZONTAL" data-vanity="robertbrands" data-version="v1">
+                                    <a class="badge-base__link LI-simple-link" href="https://de.linkedin.com/in/robertbrands?trk=profile-badge"></a>
+                                </div>
+                            </li>
+                            <li class="profile-link-item">
+                                <a href="https://github.com/rbrands">
+                                    <img src="~/images/github-mark.png" alt="GitHub" height="33" class="profile-link-icon">GitHub Profil
+                                </a>
+                            </li>
+                            <li class="profile-link-item">
+                                <a href="/Freelancer">
+                                    <img src="https://1drv.ms/i/s!AlVNeomY2iiZqpU0j15C5YuFeljvEw?embed=1&width=41" class="profile-link-icon">Freelancer Profil
+                                </a>
+                            </li>
+                        </ul>
                     </p>
                 </div>
             </div>
@@ -61,12 +71,32 @@
                 <div class="card-body">
                     <h4 class="card-title">Social</h4>
                     <p class="card-text">
-                        <ul>
-                            <li><a href="https://www.strava.com/athletes/robert_brands">Strava</a></li>
-                            <li><a href="https://www.komoot.com/de-de/user/302301092673">Komoot</a></li>
-                            <li><a href="https://www.instagram.com/rbrands1961/">Instagram</a></li>
-                            <li><a href="https://www.flickr.com/photos/rbrands/">Flickr</a></li>
-                            <li><a href="https://vimeo.com/robertbrands">Vimeo</a></li>
+                        <ul class="social-links">
+                            <li>
+                                <a href="https://www.strava.com/athletes/robert_brands">
+                                    <img src="~/images/strava-logo.png" alt="Strava" class="social-logo">Strava
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.komoot.com/de-de/user/302301092673">
+                                    <img src="~/images/komoot-logo.png" alt="Komoot" class="social-logo">Komoot
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.instagram.com/rbrands1961/">
+                                    <img src="~/images/instagram-logo.png" alt="Instagram" class="social-logo">Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.flickr.com/photos/rbrands/">
+                                    <img src="~/images/flickr-logo.png" alt="Flickr" class="social-logo">Flickr
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://vimeo.com/robertbrands">
+                                    <img src="~/images/vimeo-logo.png" alt="Vimeo" class="social-logo">Vimeo
+                                </a>
+                            </li>
                         </ul>
                     </p>
                 </div>
@@ -121,3 +151,48 @@
     <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
 }
 
+<style>
+    .social-links {
+        list-style: none;
+        padding: 0;
+    }
+
+    .social-links li {
+        margin-bottom: 10px;
+    }
+
+    .social-links a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .social-logo {
+        width: 34px;
+        margin-right: 8px;
+    }
+
+    .profile-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .profile-link-item {
+        margin-bottom: 10px;
+    }
+
+    .profile-link-item a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .profile-link-icon {
+        margin-right: 8px;
+        width: 33px;
+        height: auto;
+    }
+</style>
