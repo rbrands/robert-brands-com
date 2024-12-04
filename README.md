@@ -16,16 +16,15 @@ Feel free to use it as a start for your own development or to understand and see
 
 For further documentation see the Wiki https://github.com/rbrands/robert-brands-com/wiki
 
-## Component Diagram
+## Architecture Diagram
+
 
 ```mermaid
 graph TD;
-    A[Browser] --> B[Web Server]
-    B --> C[Application Server]
-    C --> D[Database]
-    C --> E[Authentication Service]
-    E --> F[Azure AD]
-    C --> G[Azure Functions]
-    C --> H[Cosmos DB]
-
-    
+    A[Browser<br>Client] --> B[Web Server<br>Azure Web App]
+    B --> C[Application Server<br>ASP.NET Razor Pages]
+    C --> E[Authentication Service<br>Auth]
+    E --> F[Microsoft Entra ID<br>Identity]
+    C --> G[Azure Functions<br>Serverless]
+    C --> H[Cosmos DB<br>Database]
+    C --> K[Application Insights<br>Monitoring]
