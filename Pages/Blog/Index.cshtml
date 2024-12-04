@@ -21,8 +21,7 @@
                 <div class="col-md-8 px-0">
                     <h1 class="display-4">@Model.HeadlineArticle.Title</h1>
                     <div class="lead my-3 text-muted small">
-                        @Model.HeadlineArticle.Date.ToString("dd.MM.yyyy") von
-                        @Model.HeadlineArticle.Author
+                        @Model.HeadlineArticle.Date.ToString("dd.MM.yyyy")
                         @if (!String.IsNullOrEmpty(Model.HeadlineArticle.UrlTitle))
                         {
                             <br /><a href="~/blog/artikel/@Model.HeadlineArticle.UrlTitle">/blog/artikel/@Model.HeadlineArticle.UrlTitle</a>
@@ -90,7 +89,7 @@
                                     @Model.SideFeaturedArticle_1.Title
                                 </h3>
                                 <div class="mb-1 text-muted small">
-                                    @Model.SideFeaturedArticle_1.Date.ToString("dd.MM.yyyy") von @Model.SideFeaturedArticle_1.Author
+                                    @Model.SideFeaturedArticle_1.Date.ToString("dd.MM.yyyy")
                                     @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_1.UrlTitle))
                                     {
                                         <br /><a href="~/blog/artikel/@Model.SideFeaturedArticle_1.UrlTitle">/blog/artikel/@Model.SideFeaturedArticle_1.UrlTitle</a>
@@ -148,7 +147,7 @@
                                     @Model.SideFeaturedArticle_2.Title
                                 </h3>
                                 <div class="mb-1 text-muted small">
-                                    @Model.SideFeaturedArticle_2.Date.ToString("dd.MM.yyyy") von @Model.SideFeaturedArticle_2.Author
+                                    @Model.SideFeaturedArticle_2.Date.ToString("dd.MM.yyyy")
                                     @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_2.UrlTitle))
                                     {
                                         <br /><a href="~/blog/artikel/@Model.SideFeaturedArticle_2.UrlTitle">/blog/artikel/@Model.SideFeaturedArticle_2.UrlTitle</a>
@@ -208,7 +207,7 @@
                             <div class="d-inline-block mb-2 text-muted">@article.Tags?.Trim(' ', ',')</div>
                             <h3>@article.Title</h3>
                             <p class="text-muted small">
-                                @article.Date.ToString("dd.MM.yyyy") von @article.Author
+                                @article.Date.ToString("dd.MM.yyyy")
                                 @if (!String.IsNullOrEmpty(article.UrlTitle))
                                 {
                                     <br /><a asp-page="Artikel" asp-route-permalink="@article.UrlTitle">/blog/artikel/@article.UrlTitle</a>

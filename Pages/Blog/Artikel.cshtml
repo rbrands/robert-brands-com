@@ -27,12 +27,7 @@
             <div class="col-md-8 px-0">
                 <h1 class="display-4">@Model.ReferencedArticle.Title</h1>
                 <div class="lead my-3 text-muted small">
-                    @Model.ReferencedArticle.Date.ToString("dd.MM.yyyy") von
-                    @Model.ReferencedArticle.Author
-                    @if (!String.IsNullOrEmpty(Model.ReferencedArticle.UrlTitle))
-                    {
-                        <br /><a href="~/blog/artikel/@Model.ReferencedArticle.UrlTitle">/blog/artikel/@Model.ReferencedArticle.UrlTitle</a>
-                    }
+                    @Model.ReferencedArticle.Date.ToString("dd.MM.yyyy")
                 </div>
                 <div class="lead my-3">
                     @if (!String.IsNullOrEmpty(Model.ReferencedArticle.Link))
