@@ -6,21 +6,16 @@
     ViewBag.NoRobots = true;
     ViewBag.Description = "Sammlung der Fotolinks";
 }
-@section CSS {
-    <link rel="stylesheet" href="~/css/album.css" />
-}
 
 <div class="container">
-    <section class="jumbotron text-center">
-        <div class="container">
-            <h1 class="jumbotron-heading">Fotoalbum</h1>
-            <p class="lead text-muted">
-                Dies ist eine kleine Linksammlung der Fotos der letzten Zeit. Manchmal ist es bei den ganzen Links zu OneDrive, Flickr, Adobe Lightroom nicht ganz
-                leicht, die Übersicht zu bewahren. Da soll diese Seite etwas helfen.
-            </p>
-            <h4>@ViewData["Message"]</h4>
+    <div class="jumbotron p-3 p-md-5 rounded">
+        <h1 class="display-4">Fotoalbum</h1>
+        <div class="lead my-3">
+            Dies ist eine kleine Linksammlung der Fotos der letzten Zeit. Manchmal ist es bei den ganzen Links zu OneDrive, Flickr, Adobe Lightroom nicht ganz
+            leicht, die Übersicht zu bewahren. Da soll diese Seite etwas helfen.
         </div>
-    </section>
+        <h4>@ViewData["Message"]</h4>
+    </div>
     <div class="album py-5 bg-light">
         <div class="container">
             @if (User.IsInAnyRole(KnownRoles.Admin))

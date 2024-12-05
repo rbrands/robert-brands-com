@@ -32,6 +32,10 @@ namespace robert_brands_com.Pages.Fotos
             {
                 IEnumerable<CommentedLinkItem> documents = await repository.GetDocuments(d => d.ListName == listName);
                 CommentedLinks = documents.OrderByDescending(d => d.Date);
+                if (CommentedLinks.Any())
+                {
+                    ViewData["Image"] = CommentedLinks.First()?.ImageLink;
+                }
             }
             else
             {
@@ -45,6 +49,10 @@ namespace robert_brands_com.Pages.Fotos
                         d.ListName.Equals(listName, StringComparison.OrdinalIgnoreCase) && 
                         d.Category.Equals(category, StringComparison.OrdinalIgnoreCase));
                     CommentedLinks = documents.OrderByDescending(d => d.Date);
+                    if (CommentedLinks.Any())
+                    {
+                        ViewData["Image"] = CommentedLinks.First()?.ImageLink;
+                    }
                 }
                 else
                 {
