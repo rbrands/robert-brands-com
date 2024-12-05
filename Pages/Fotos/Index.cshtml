@@ -18,16 +18,14 @@
 <div class="container">
     @if (Model.ReferencedPhotoPage == null)
     {
-        <section class="jumbotron text-center">
-            <div class="container">
-                <h1 class="jumbotron-heading">Fotoalbum</h1>
-                <p class="lead text-muted">
-                    Meistens habe ich eine Kamera dabei... Die Fotos landen bei Flickr, OneDrive, Adobe Lightroom. Manchmal verliere ich da selbst die Übersicht - deswegen sammel ich
-                    hier die Links zu einigen der Fotos.
-                </p>
-                <h4>@ViewData["Message"]</h4>
-            </div>
-        </section>
+        <div class="jumbotron p-3 p-md-5 rounded">
+            <h1 class="display-4">Fotoalbum</h1>
+            <p class="lead my-3">
+                Meistens habe ich eine Kamera dabei... Die Fotos landen bei Flickr, OneDrive, Adobe Lightroom. Manchmal verliere ich da selbst die Übersicht - deswegen sammel ich
+                hier die Links zu einigen der Fotos.
+            </p>
+            <h4>@ViewData["Message"]</h4>
+        </div>
         <div class="album py-5 bg-light">
             <div class="container">
                 <div class="row">
