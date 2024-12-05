@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
 using robert_brands_com.Models;
 using robert_brands_com.Repositories;
+using System.Collections.Immutable;
 
 namespace robert_brands_com.Pages.Blog
 {
@@ -47,7 +48,12 @@ namespace robert_brands_com.Pages.Blog
                 }
             }
             this.ViewData["Keywords"] = this.ReferencedArticle.Tags;
-            this.ViewData["Description"] = ReferencedArticle.Title;
+            this.ViewData["Description"] = String.IsNullOrEmpty(ReferencedArticle.PlainSummary) ? ReferencedArticle.Title : ReferencedArticle.PlainSummary;
+            this.ViewData["Title"] = ReferencedArticle.Title;
+            if (!String.IsNullOrEmpty(ReferencedArticle.ImageLink))
+            {
+                this.ViewData["Image"] = ReferencedArticle.ImageLink;
+            }
             await this.LogActivity(permalink);
             return Page();
         }
@@ -64,7 +70,8 @@ namespace robert_brands_com.Pages.Blog
             }
             Language = "de";
             this.ViewData["Keywords"] = this.ReferencedArticle.Tags;
-            this.ViewData["Description"] = ReferencedArticle.Title;
+            this.ViewData["Description"] = String.IsNullOrEmpty(ReferencedArticle.PlainSummary) ? ReferencedArticle.Title : ReferencedArticle.PlainSummary;
+            this.ViewData["Title"] = ReferencedArticle.Title;
             if (!String.IsNullOrEmpty(language))
             {
                 Language = language;

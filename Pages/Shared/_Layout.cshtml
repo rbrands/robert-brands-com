@@ -17,10 +17,34 @@
     @if (!String.IsNullOrEmpty(ViewBag.Description ?? String.Empty))
     {
         <meta name="description" content="@ViewBag.Description" />
+        <meta property="og:description" content="@ViewBag.Description" />
+        <meta name="twitter:description" content="@ViewBag.Description" />
     }
     else
     {
         <meta name="description" content="Robert Brands - Solution Architect, Fotograf, Radfahrer." />
+        <meta property="og:description" content="Robert Brands - Solution Architect, Fotograf, Radfahrer." />
+        <meta name="twitter:description" content="Robert Brands - Solution Architect, Fotograf, Radfahrer." />
+    }
+    @if (!String.IsNullOrEmpty(ViewBag.Image ?? String.Empty))
+    {
+        <meta property="og:image" content="@ViewBag.Image" />
+        <meta name="twitter:image" content="@ViewBag.Image" />
+    }
+    else
+    {
+        <meta property="og:image" content="https://robert-brands.com/images/robert-profil.jpg" />
+        <meta name="twitter:image" content="https://robert-brands.com/images/robert-profil.jpg" />
+    }
+    @if (!String.IsNullOrEmpty(ViewBag.Title ?? String.Empty))
+    {
+        <meta property="og:title" content="@ViewBag.Title" />
+        <meta name="twitter:title" content="@ViewBag.Title" />
+    }
+    else
+    {
+        <meta property="og:image" content="https://robert-brands.com/images/robert-profil.jpg" />
+        <meta name="twitter:image" content="https://robert-brands.com/images/robert-profil.jpg" />
     }
     <meta http-equiv="content-language" content="de-de" />
     @if (ViewBag.NoRobots ?? false)

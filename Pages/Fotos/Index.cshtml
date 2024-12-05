@@ -14,6 +14,10 @@
     {
         ViewData["Description"] = Model.ReferencedPhotoPage?.PlainDescription;
     }
+    if (!String.IsNullOrEmpty(Model.ReferencedPhotoPage?.ImageLink))
+    {
+        ViewBag.Image = Model.ReferencedPhotoPage?.ImageLink;
+    }
 }
 <div class="container">
     @if (Model.ReferencedPhotoPage == null)

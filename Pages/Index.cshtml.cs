@@ -33,6 +33,10 @@ namespace robert_brands_com.Pages
             Headline = await this.repository.GetDocumentByKey("homepage-headline");
             IEnumerable<CommentedLinkItem> documents = await photoRepository.GetDocuments(d => d.ListName == listName);
             PhotoList = documents.OrderByDescending(d => d.Date);
+            if (PhotoList.Count() > 0)
+            {
+                this.ViewData["Image"] = PhotoList.First().ImageLink;
+            }
         }
     }
 }
