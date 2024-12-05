@@ -68,7 +68,10 @@ namespace robert_brands_com.Pages.Rad
                 }
                 Tracks = documents.OrderByDescending(d => d.Date);
                 this.ViewData["Title"] = OverviewArticle?.Title;
-                this.ViewData["Description"] = OverviewArticle?.PlainSummary;
+                if (!String.IsNullOrEmpty(OverviewArticle?.PlainSummary))
+                {
+                    this.ViewData["Description"] = OverviewArticle?.PlainSummary;
+                }
                 if (!String.IsNullOrEmpty(OverviewArticle?.ImageLink))
                 {
                     this.ViewData["Image"] = OverviewArticle?.ImageLink;

@@ -61,19 +61,6 @@
         else
         {
             await Html.RenderPartialAsync("_Tour", Model.ReferencedTrack);
-
-            <div class="row">
-                <div class="col">
-                    <ul class="list-inline text-right">
-                        <li class="list-inline-item">Touren</li>
-                        @foreach (ListCategory c in Model.Categories)
-                        {
-                            <li class="list-inline-item"><a asp-route-category="@c.Category">@(c.CategoryDisplay ?? c.Category)</a></li>
-                        }
-                        <li class="list-inline-item"><a asp-route-category="">Alle</a></li>
-                    </ul>
-                </div>
-            </div>
         }
     </div>
 </div>
