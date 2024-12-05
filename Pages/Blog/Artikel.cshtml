@@ -4,10 +4,6 @@
 @model robert_brands_com.Pages.Blog.ArtikelModel
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
-@{
-    ViewBag.Description = "Blog-Artikel";
-    ViewBag.Keywords = "Blog,News,Neuigkeiten";
-}
 @section CSS {
     <link rel="stylesheet" href="~/css/blog.css" />
 }
@@ -74,15 +70,7 @@
 </div>
 @section Metatags {
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="@Model.ReferencedArticle.Title" />
-    @if (!String.IsNullOrEmpty(Model.ReferencedArticle.PlainSummary))
-    {
-        <meta property="og:description" content="@Model.ReferencedArticle.PlainSummary" />
-    }
-    @if (!String.IsNullOrEmpty(Model.ReferencedArticle.ImageLink))
-    {
-        <meta property="og:image" content="@Model.ReferencedArticle.ImageLink" />
-    }
+    <meta name="twitter:card" content="summary_large_image" />
 }
 
 @section Scripts {

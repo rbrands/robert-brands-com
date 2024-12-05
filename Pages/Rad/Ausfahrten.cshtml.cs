@@ -25,12 +25,11 @@ namespace robert_brands_com.Pages.Rad
         }
         public async Task<IActionResult> OnGetAsync(string category = null, string permalink = null, string language = null)
         {
+           
             if (String.IsNullOrEmpty(category))
             {
                 IEnumerable<TrackItem> documents = await repository.GetDocuments(d => d.ListName == "Ausfahrten");
                 Tracks = documents.OrderByDescending(d => d.Date);
-                this.ViewData["Title"] = "Radausfahrten";
-                this.ViewData["Description"] = "Radausfahrten - Köln, Bergisches Land, Eifel";
                 await this.LogGetActivity();
             }
             else if (String.IsNullOrEmpty(permalink))
@@ -38,8 +37,7 @@ namespace robert_brands_com.Pages.Rad
                 string categoryLower = category.ToLower();
                 IEnumerable<TrackItem> documents = await repository.GetDocuments(d => d.ListName == "Ausfahrten" && d.Category.ToLower() == categoryLower);
                 Tracks = documents.OrderByDescending(d => d.Date);
-                this.ViewData["Title"] = "Radausfahrten " + category;
-                this.ViewData["Description"] = $"Radausfahrten - {category}";
+                this.ViewData["Title"] = "Ausfahrten " + category;
                 await this.LogActivity(categoryLower);
             }
             else
@@ -59,6 +57,14 @@ namespace robert_brands_com.Pages.Rad
                 }
                 this.ViewData["Title"] = ReferencedTrack.Title;
                 this.ViewData["Description"] = "Die Tourbeschreibung.";
+                if (!String.IsNullOrEmpty(ReferencedTrack.KomootTourImage))
+                {
+                    this.ViewData["Image"] = ReferencedTrack.KomootTourImage;
+                }
+                else if (!String.IsNullOrEmpty(ReferencedTrack.ImageLink))
+                {
+                    this.ViewData["Image"] = ReferencedTrack.ImageLink;
+                }
                 if (!String.IsNullOrEmpty(ReferencedTrack.PlainDescription))
                 {
                     this.ViewData["Description"] = ReferencedTrack.PlainDescription;

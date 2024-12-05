@@ -5,7 +5,10 @@
     <link rel="stylesheet" href="~/css/tracks.css" />
 }
 @{
+    // Set defaults for meta tags
     ViewData["Title"] = "Ausfahrten";
+    ViewData["Description"] = "Hier sammle ich alles rund um die Ausfahrten der letzten Zeit - Fotos, Video, GPS-Tracks alles auf einer Seite.";
+    ViewData["Image"] = "https://live.staticflickr.com/65535/54172429130_e75fc2b5cf_h.jpg";
 }
 <div class="container">
     @if (Model.ReferencedTrack == null)
@@ -13,10 +16,10 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="true" href="https://www.flickr.com/photos/rbrands/albums/72157677562620164" title="Radausfahrten"><img class="card-img-top img-fluid" src="https://live.staticflickr.com/65535/54172429130_e75fc2b5cf_h.jpg" alt="Radausfahrten"></a>
+                    <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="true" href="https://www.flickr.com/photos/rbrands/albums/72157677562620164" title="Radausfahrten"><img class="card-img-top img-fluid" src="@ViewBag.Image" alt="Radausfahrten"></a>
                     <div class="card-body">
                         <p class="card-text lead">
-                            Hier sammel ich alles rund um die Ausfahrten der letzten Zeit - Fotos, Video, GPS-Tracks alles auf einer Seite. Das Datum ist immer der Tag, an dem ich
+                            Hier sammle ich alles rund um die Ausfahrten der letzten Zeit - Fotos, Video, GPS-Tracks alles auf einer Seite. Das Datum ist immer der Tag, an dem ich
                             die betreffende Runde zuletzt gefahren bin. 
                         </p>
                         <p class="card-text lead">
@@ -122,42 +125,12 @@
     else
     {
         await Html.RenderPartialAsync("_Tour", Model.ReferencedTrack);
-        @section Metatags {
-            <meta property="og:type" content="article" />
-            <meta property="og:title" content="@Model.ReferencedTrack.Title" />
-            @if (!String.IsNullOrEmpty(Model.ReferencedTrack.PlainDescription))
-            {
-                <meta property="og:description" content="@Model.ReferencedTrack.PlainDescription" />
-            }
-            @if (!String.IsNullOrEmpty(Model.ReferencedTrack.KomootTourImage))
-            {
-                <meta property="og:image" content="@Model.ReferencedTrack.KomootTourImage" />
-            }
-            else if (!String.IsNullOrEmpty(Model.ReferencedTrack.ImageLink))
-            {
-                <meta property="og:image" content="@Model.ReferencedTrack.ImageLink" />
-            }
-        }
-
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <ul class="list-inline text-right">
-                            <li class="list-inline-item">Ausfahrten-Filter</li>
-                            <li class="list-inline-item"><a asp-route-category="Bergisches" asp-route-permalink="">Bergisches Land</a></li>
-                            <li class="list-inline-item"><a asp-route-category="Eifel" asp-route-permalink="">Eifel</a></li>
-                            <li class="list-inline-item"><a asp-route-category="Siebengebirge" asp-route-permalink="">Siebengebirge</a></li>
-                            <li class="list-inline-item"><a asp-route-category="Koeln" asp-route-permalink="">Köln flach</a></li>
-                            <li class="list-inline-item"><a asp-route-category="" asp-route-permalink="">Alle</a></li>
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
-        </div>
     }
 </div>
+@section Metatags {
+    <meta property="og:type" content="article" />
+    <meta name="twitter:card" content="summary_large_image" />
+}
 
 @section Scripts {
     <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>

@@ -8,11 +8,15 @@
     {
         ViewData["Title"] = Model.ReferencedPhotoPage?.Title;
     }
-    ViewBag.Description = "Mein Fotoalbum";
+    ViewBag.Description = "Eine Sammlung meiner Fotos auf Flickr, OneDrive und Adobe Lightroom.";
     ViewBag.Keywords = "Fotografie,Reise,Köln";
     if (!String.IsNullOrEmpty(Model.ReferencedPhotoPage?.PlainDescription))
     {
         ViewData["Description"] = Model.ReferencedPhotoPage?.PlainDescription;
+    }
+    if (!String.IsNullOrEmpty(Model.ReferencedPhotoPage?.ImageLink))
+    {
+        ViewBag.Image = Model.ReferencedPhotoPage?.ImageLink;
     }
 }
 <div class="container">
@@ -187,15 +191,6 @@
         </div>
         @section Metatags {
             <meta property="og:type" content="article" />
-            <meta property="og:title" content="@Model.ReferencedPhotoPage.Title" />
-            @if (!String.IsNullOrEmpty(Model.ReferencedPhotoPage.PlainDescription))
-            {
-                <meta property="og:description" content="@Model.ReferencedPhotoPage.PlainDescription" />
-            }
-            @if (!String.IsNullOrEmpty(Model.ReferencedPhotoPage.ImageLink))
-            {
-                <meta property="og:image" content="@Model.ReferencedPhotoPage.ImageLink" />
-            }
         }
 
     }
