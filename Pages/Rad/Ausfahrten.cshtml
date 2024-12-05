@@ -4,9 +4,6 @@
 @section CSS {
     <link rel="stylesheet" href="~/css/tracks.css" />
 }
-@{
-    ViewData["Title"] = "Ausfahrten";
-}
 <div class="container">
     @if (Model.ReferencedTrack == null)
     {
@@ -122,23 +119,6 @@
     else
     {
         await Html.RenderPartialAsync("_Tour", Model.ReferencedTrack);
-        @section Metatags {
-            <meta property="og:type" content="article" />
-            <meta property="og:title" content="@Model.ReferencedTrack.Title" />
-            @if (!String.IsNullOrEmpty(Model.ReferencedTrack.PlainDescription))
-            {
-                <meta property="og:description" content="@Model.ReferencedTrack.PlainDescription" />
-            }
-            @if (!String.IsNullOrEmpty(Model.ReferencedTrack.KomootTourImage))
-            {
-                <meta property="og:image" content="@Model.ReferencedTrack.KomootTourImage" />
-            }
-            else if (!String.IsNullOrEmpty(Model.ReferencedTrack.ImageLink))
-            {
-                <meta property="og:image" content="@Model.ReferencedTrack.ImageLink" />
-            }
-        }
-
         <div class="row">
             <div class="col">
                 <div class="card">
@@ -158,6 +138,10 @@
         </div>
     }
 </div>
+@section Metatags {
+    <meta property="og:type" content="article" />
+    <meta name="twitter:card" content="summary_large_image" />
+}
 
 @section Scripts {
     <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>

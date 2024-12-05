@@ -37,6 +37,9 @@ namespace robert_brands_com.Pages.Rad
 
         public async Task<IActionResult> OnGetAsync(string category = null, string permalink = null, string language = null)
         {
+             // Set defaults for meta tags
+            ViewData["Title"] = "Radreisen";
+            ViewData["Description"] = "Zum Radfahren in den Urlaub oder im Urlaub das Rad dabei - wie auch immer, hier gibt es die Strecken, die sich über die Zeit angesammelt haben.";
             IEnumerable<TrackItem> documents;
             if (String.IsNullOrEmpty(category))
             {
@@ -44,8 +47,13 @@ namespace robert_brands_com.Pages.Rad
                 ArticleKey = "radreisen";
                 OverviewArticle = await articleRepository.GetDocumentByKey(ArticleKey);
                 Tracks = documents.OrderByDescending(d => d.Date);
-                this.ViewData["Title"] = "Rad - Reisen";
-                this.ViewData["Description"] = "Unterwegs mit dem Rennrad - eine kleine Streckenauswahl";
+                if (!String.IsNullOrEmpty(OverviewArticle?.ImageLink))
+                {
+                    this.ViewData["Image"] = OverviewArticle?.ImageLink;
+                } else if (Tracks.Any())
+                {
+                    this.ViewData["Image"] = Tracks.First()?.ImageLink;
+                }
                 await this.LogGetActivity();
             }
             else if (String.IsNullOrEmpty(permalink))
@@ -59,8 +67,15 @@ namespace robert_brands_com.Pages.Rad
                     OverviewArticle = await articleRepository.GetDocumentByKey("radreisen");
                 }
                 Tracks = documents.OrderByDescending(d => d.Date);
-                this.ViewData["Title"] = $"Rad - Reisen - {category}";
-                this.ViewData["Description"] = $"Rad - Reisen - {category}";
+                this.ViewData["Title"] = OverviewArticle?.Title;
+                this.ViewData["Description"] = OverviewArticle?.PlainSummary;
+                if (!String.IsNullOrEmpty(OverviewArticle?.ImageLink))
+                {
+                    this.ViewData["Image"] = OverviewArticle?.ImageLink;
+                } else if (Tracks.Any())
+                {
+                    this.ViewData["Image"] = Tracks.First()?.ImageLink;
+                }
                 await this.LogActivity(categoryLower);
             }
             else
@@ -80,6 +95,18 @@ namespace robert_brands_com.Pages.Rad
                 }
                 this.ViewData["Title"] = ReferencedTrack.Title;
                 this.ViewData["Description"] = "Die Beschreibung zur Tour.";
+                if (!String.IsNullOrEmpty(ReferencedTrack.KomootTourImage))
+                {
+                    this.ViewData["Image"] = ReferencedTrack.KomootTourImage;
+                }
+                else if (!String.IsNullOrEmpty(ReferencedTrack.ImageLink))
+                {
+                    this.ViewData["Image"] = ReferencedTrack.ImageLink;
+                }
+                if (!String.IsNullOrEmpty(ReferencedTrack.PlainDescription))
+                {
+                    this.ViewData["Description"] = ReferencedTrack.PlainDescription;
+                }
                 await this.LogActivity($"{categoryLower}/{permaLinkLower}");
             }
             Categories = await categoryRepository.GetDocuments(d => d.ListName == CategoryListName);

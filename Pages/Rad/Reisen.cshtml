@@ -3,9 +3,7 @@
 @using robert_brands_com.Models
 @model robert_brands_com.Pages.Rad.ReisenModel
 @{
-    ViewData["Title"] = "Radreisen";
     ViewBag.Keywords = "Radfahren, Rennrad, Reisen, Scuderia Südstadt";
-    ViewBag.Description = "Zum Radfahren in den Urlaub oder im Urlaub das Rad dabei - wie auch immer, hier gibt es die Strecken, die sich über die Zeit angesammelt haben.";
 }
 
 <div class="container">
@@ -63,22 +61,6 @@
         else
         {
             await Html.RenderPartialAsync("_Tour", Model.ReferencedTrack);
-            @section Metatags {
-                <meta property="og:type" content="article" />
-                <meta property="og:title" content="@Model.ReferencedTrack.Title" />
-                @if (!String.IsNullOrEmpty(Model.ReferencedTrack.PlainDescription))
-                {
-                    <meta property="og:description" content="@Model.ReferencedTrack.PlainDescription" />
-                }
-                @if (!String.IsNullOrEmpty(Model.ReferencedTrack.KomootTourImage))
-                {
-                    <meta property="og:image" content="@Model.ReferencedTrack.KomootTourImage" />
-                }
-                else if (!String.IsNullOrEmpty(Model.ReferencedTrack.ImageLink))
-                {
-                    <meta property="og:image" content="@Model.ReferencedTrack.ImageLink" />
-                }
-            }
 
             <div class="row">
                 <div class="col">
@@ -95,6 +77,12 @@
         }
     </div>
 </div>
+
+@section Metatags {
+    <meta property="og:type" content="article" />
+    <meta name="twitter:card" content="summary_large_image" />
+}
+
 @section Scripts {
     <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
     <script src="https://player.vimeo.com/api/player.js"></script>
