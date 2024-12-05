@@ -4,16 +4,22 @@
 @section CSS {
     <link rel="stylesheet" href="~/css/tracks.css" />
 }
+@{
+    // Set defaults for meta tags
+    ViewData["Title"] = "Ausfahrten";
+    ViewData["Description"] = "Hier sammle ich alles rund um die Ausfahrten der letzten Zeit - Fotos, Video, GPS-Tracks alles auf einer Seite.";
+    ViewData["Image"] = "https://live.staticflickr.com/65535/54172429130_e75fc2b5cf_h.jpg";
+}
 <div class="container">
     @if (Model.ReferencedTrack == null)
     {
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="true" href="https://www.flickr.com/photos/rbrands/albums/72157677562620164" title="Radausfahrten"><img class="card-img-top img-fluid" src="https://live.staticflickr.com/65535/54172429130_e75fc2b5cf_h.jpg" alt="Radausfahrten"></a>
+                    <a target="_blank" data-flickr-embed="true" data-header="true" data-footer="true" href="https://www.flickr.com/photos/rbrands/albums/72157677562620164" title="Radausfahrten"><img class="card-img-top img-fluid" src="@ViewBag.Image" alt="Radausfahrten"></a>
                     <div class="card-body">
                         <p class="card-text lead">
-                            Hier sammel ich alles rund um die Ausfahrten der letzten Zeit - Fotos, Video, GPS-Tracks alles auf einer Seite. Das Datum ist immer der Tag, an dem ich
+                            Hier sammle ich alles rund um die Ausfahrten der letzten Zeit - Fotos, Video, GPS-Tracks alles auf einer Seite. Das Datum ist immer der Tag, an dem ich
                             die betreffende Runde zuletzt gefahren bin. 
                         </p>
                         <p class="card-text lead">

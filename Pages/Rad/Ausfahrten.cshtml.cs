@@ -25,11 +25,7 @@ namespace robert_brands_com.Pages.Rad
         }
         public async Task<IActionResult> OnGetAsync(string category = null, string permalink = null, string language = null)
         {
-            // Set defaults for meta tags
-            ViewData["Title"] = "Ausfahrten";
-            ViewData["Description"] = "Hier sammel ich alles rund um die Ausfahrten der letzten Zeit - Fotos, Video, GPS-Tracks alles auf einer Seite.";
-            ViewData["Image"] = "https://live.staticflickr.com/65535/54172429130_e75fc2b5cf_h.jpg";
-            
+           
             if (String.IsNullOrEmpty(category))
             {
                 IEnumerable<TrackItem> documents = await repository.GetDocuments(d => d.ListName == "Ausfahrten");
