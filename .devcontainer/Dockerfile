@@ -1,16 +1,32 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/main/containers/dotnet/.devcontainer/base.Dockerfile
-
-# [Choice] .NET version: 8.0, 6.0, 3.1
+# Use the official .NET 8.0 SDK image
 ARG VARIANT="8.0"
 FROM mcr.microsoft.com/dotnet/sdk:${VARIANT}
 
 # [Optional] Install Node.js
-ARG INSTALL_NODE="no"
+ARG INSTALL_NODE="true"
 ARG NODE_VERSION="lts/*"
-RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "source /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION}"; fi
+RUN if [ "${INSTALL_NODE}" = "true" ]; then \
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs; \
+    fi
 
 # [Optional] Install Azure CLI
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 # [Optional] Install additional tools
-# RUN sudo apt-get update && sudo apt-get install -y <your-package-list>
+# RUN apt-get update && apt-get install -y <your-package-list>
+
+# Set the working directory
+WORKDIR /workspace
+
+# Copy the project files
+COPY . .
+
+# Restore dependencies
+RUN dotnet restore
+
+# Build the application
+RUN dotnet build --configuration Release --output /workspace/build
+
+# Set the entry point for the container
+ENTRYPOINT ["dotnet", "/workspace/build/YourApp.dll"]
