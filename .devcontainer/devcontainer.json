@@ -19,13 +19,18 @@
 		"vscode": {	
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
-				"ms-dotnettools.csharp"
+				"ms-dotnettools.csharp",
+				"ms-vscode.azurecli",
+				"github.copilot",
+				"github.copilot-chat",
+				"ms-azuretools.azure-dev"
 			]
 		}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [5000, 5001],
+    "postCreateCommand": "dotnet restore",
 
 	// [Optional] To reuse of your local HTTPS dev cert:
 	//
