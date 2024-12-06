@@ -2,7 +2,7 @@
 
 # [Choice] .NET version: 8.0, 6.0, 3.1
 ARG VARIANT="8.0-bullseye"
-FROM mcr.microsoft.com/vscode/devcontainers/dotnet:0-${VARIANT}
+FROM mcr.microsoft.com/vscode/devcontainers/dotnet:${VARIANT}
 
 # [Optional] Install Node.js
 ARG INSTALL_NODE="true"
