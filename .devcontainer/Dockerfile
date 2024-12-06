@@ -1,7 +1,7 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/main/containers/dotnet/.devcontainer/base.Dockerfile
 
 # [Choice] .NET version: 8.0, 6.0, 3.1
-ARG VARIANT="8.0-bullseye-slim"
+ARG VARIANT="8.0"
 FROM mcr.microsoft.com/dotnet/sdk:${VARIANT}
 
 # [Optional] Install Node.js
