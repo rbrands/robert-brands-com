@@ -5,9 +5,9 @@
 	"build": {
 		"dockerfile": "Dockerfile",
 		"args": { 
-			// Update 'VARIANT' to pick a .NET Core version: 3.1, 6.0
+			// Update 'VARIANT' to pick a .NET version: 8.0
 			// Append -bullseye or -focal to pin to an OS version.
-			"VARIANT": "6.0-bullseye",
+			"VARIANT": "8.0-bullseye",
 			// Options
 			"NODE_VERSION": "lts/*"
 		}
@@ -25,7 +25,7 @@
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [5000, 5001],
+	"forwardPorts": [5000, 5001],
 
 	// [Optional] To reuse of your local HTTPS dev cert:
 	//
@@ -59,3 +59,19 @@
 		"azure-cli": "latest"
 	}
 }
+
+// Dockerfile
+# [Choice] .NET version: 8.0, 6.0, 3.1
+ARG VARIANT="8.0-bullseye"
+FROM mcr.microsoft.com/vscode/devcontainers/dotnet:0-${VARIANT}
+
+# [Optional] Install Node.js
+ARG INSTALL_NODE="true"
+ARG NODE_VERSION="lts/*"
+RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "source /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION}"; fi
+
+# [Optional] Install Azure CLI
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+# [Optional] Install additional tools
+# RUN sudo apt-get update && sudo apt-get install -y <your-package-list>
