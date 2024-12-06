@@ -48,12 +48,19 @@
                         <ul class="profile-links">
                             <li class="profile-link-item">
                                 <div class="badge-base LI-profile-badge" data-locale="de_DE" data-size="medium" data-theme="light" data-type="VERTICAL" data-vanity="robertbrands" data-version="v1">
-                                    <a class="badge-base__link LI-simple-link" href="https://de.linkedin.com/in/robertbrands?trk=profile-badge"></a>
-                                </div>                            
+                                    <a class="badge-base__link LI-simple-link" href="https://de.linkedin.com/in/robertbrands?trk=profile-badge" target="_blank ">
+                                    </a>
+                                </div>     
+                                <script src="https://platform.linkedin.com/badges/js/profile.js" defer type="text/javascript"></script>
                             </li>
                             <li class="profile-link-item">
-                                <a href="https://github.com/rbrands">
-                                    <img src="~/images/github-mark.png" alt="GitHub" height="33" class="profile-link-icon">Mein GitHub
+                                <a href="https://de.linkedin.com/in/robertbrands" target="_blank">
+                                    <img src="~/images/linkedin-logo.png" alt="LinkedIn" class="profile-link-icon">LinkedIn
+                                </a>
+                            </li>
+                            <li class="profile-link-item">
+                                <a href="https://github.com/rbrands" target="_blank">
+                                    <img src="~/images/github-mark.png" alt="GitHub" height="33" class="profile-link-icon">GitHub
                                 </a>
                             </li>
                             <li class="profile-link-item">
@@ -161,7 +168,6 @@
         display: flex;
         align-items: center;
         text-decoration: none;
-        color: inherit;
     }
 
     .social-logo {
@@ -183,7 +189,6 @@
         display: flex;
         align-items: center;
         text-decoration: none;
-        color: inherit;
     }
 
     .profile-link-icon {
@@ -200,5 +205,4 @@
 </style>
 @section Scripts {
     <script src="//embedr.flickr.com/assets/client-code.js" defer charset="utf-8"></script>
-    <script src="https://platform.linkedin.com/badges/js/profile.js" defer type="text/javascript"></script>
 }
