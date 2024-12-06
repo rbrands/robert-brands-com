@@ -4,12 +4,6 @@
 @section CSS {
     <link rel="stylesheet" href="~/css/tracks.css" />
 }
-@{
-    // Set defaults for meta tags
-    ViewData["Title"] = "Ausfahrten";
-    ViewData["Description"] = "Hier sammle ich alles rund um die Ausfahrten der letzten Zeit - Fotos, Video, GPS-Tracks alles auf einer Seite.";
-    ViewData["Image"] = "https://live.staticflickr.com/65535/54172429130_e75fc2b5cf_h.jpg";
-}
 <div class="container">
     @if (Model.ReferencedTrack == null)
     {

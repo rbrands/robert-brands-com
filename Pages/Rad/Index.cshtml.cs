@@ -38,6 +38,11 @@ namespace robert_brands_com.Pages.Rad
 
         public async Task<IActionResult> OnGetAsync(string category = null, string permalink = null, string language = null)
         {
+            // Set defaults for meta tags
+            ViewData["Title"] = "Ausfahrten";
+            ViewData["Description"] = "Hier sammle ich alles rund um die Ausfahrten der letzten Zeit - Fotos, Video, GPS-Tracks alles auf einer Seite.";
+            ViewData["Image"] = "https://live.staticflickr.com/65535/54172429130_e75fc2b5cf_h.jpg";
+        
             IEnumerable<TrackItem> documents;
             if (String.IsNullOrEmpty(category))
             {
@@ -62,7 +67,16 @@ namespace robert_brands_com.Pages.Rad
                     {
                         this.ViewData["Description"] = OverviewArticle.PlainSummary;
                     }
+                    
                 }
+                if (!String.IsNullOrEmpty(OverviewArticle?.ImageLink))
+                {
+                    this.ViewData["Image"] = OverviewArticle?.ImageLink;
+                } else if (Tracks.Any())
+                {
+                    this.ViewData["Image"] = Tracks.First()?.ImageLink;
+                }
+                
                 await this.LogActivity(tourSetLower);
             }
             else
@@ -84,6 +98,14 @@ namespace robert_brands_com.Pages.Rad
                 if (!String.IsNullOrEmpty(ReferencedTrack.PlainDescription))
                 {
                     this.ViewData["Description"] = ReferencedTrack.PlainDescription;
+                }
+                if (!String.IsNullOrEmpty(ReferencedTrack.KomootTourImage))
+                {
+                    this.ViewData["Image"] = ReferencedTrack.KomootTourImage;
+                }
+                else if (!String.IsNullOrEmpty(ReferencedTrack.ImageLink))
+                {
+                    this.ViewData["Image"] = ReferencedTrack.ImageLink;
                 }
                 await this.LogActivity($"{categoryLower}/{permaLinkLower}");
             }
