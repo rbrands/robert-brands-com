@@ -20,13 +20,16 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 WORKDIR /workspace
 
 # Copy the project files
-COPY .. .
+COPY . .
 
 # Restore dependencies
-RUN dotnet restore robert-brands-com.sln
+# RUN dotnet restore robert-brands-com.sln
 
 # Build the application
-RUN dotnet build robert-brands-com.sln --configuration Release --output /workspace/build
+# RUN dotnet build robert-brands-com.sln --configuration Release --output /workspace/build
+# Expose the port that the application will run on
+EXPOSE 5000
+EXPOSE 5001
 
 # Set the entry point for the container
 ENTRYPOINT ["dotnet", "/workspace/build/robert-brands-com.dll"]
