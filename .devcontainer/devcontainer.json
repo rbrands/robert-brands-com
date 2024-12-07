@@ -1,7 +1,7 @@
 {
     "name": "C# (.NET)",
     "build": {
-        "dockerfile": ".devcontainer/Dockerfile",
+        "dockerfile": "Dockerfile",
         "args": {
             "VARIANT": "8.0",
             "NODE_VERSION": "lts/*"
