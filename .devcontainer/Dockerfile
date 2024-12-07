@@ -20,7 +20,7 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 WORKDIR /workspace
 
 # Copy the project files
-COPY . .
+COPY .. .
 
 # Restore dependencies
 RUN dotnet restore robert-brands-com.sln
