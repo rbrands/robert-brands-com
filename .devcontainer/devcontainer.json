@@ -12,8 +12,6 @@
             "extensions": [
                 "ms-dotnettools.csharp",
                 "ms-vscode.azurecli",
-                "github.copilot",
-                "github.copilot-chat",
                 "ms-azuretools.azure-dev"
             ]
         }

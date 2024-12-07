@@ -23,10 +23,10 @@ WORKDIR /workspace
 COPY . .
 
 # Restore dependencies
-RUN dotnet restore
+RUN dotnet restore robert-brands-com.sln
 
 # Build the application
-RUN dotnet build --configuration Release --output /workspace/build
+RUN dotnet build robert-brands-com.sln --configuration Release --output /workspace/build
 
 # Set the entry point for the container
 ENTRYPOINT ["dotnet", "/workspace/build/robert-brands-com.dll"]
