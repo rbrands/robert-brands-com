@@ -17,16 +17,16 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 # RUN apt-get update && apt-get install -y <your-package-list>
 
 # Set the working directory
-# WORKDIR /workspace
+WORKDIR /workspace
 
 # Copy the project files
-# COPY . .
+COPY . .
 
 # Restore dependencies
-# RUN dotnet restore
+RUN dotnet restore
 
 # Build the application
-# RUN dotnet build --configuration Release --output /workspace/build
+RUN dotnet build --configuration Release --output /workspace/build
 
 # Set the entry point for the container
-# ENTRYPOINT ["dotnet", "/workspace/build/YourApp.dll"]
+ENTRYPOINT ["dotnet", "/workspace/build/robert-brands-com.dll"]
