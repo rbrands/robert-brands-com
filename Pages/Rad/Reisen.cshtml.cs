@@ -47,6 +47,10 @@ namespace robert_brands_com.Pages.Rad
                 ArticleKey = "radreisen";
                 OverviewArticle = await articleRepository.GetDocumentByKey(ArticleKey);
                 Tracks = documents.OrderByDescending(d => d.Date);
+                if (!String.IsNullOrEmpty(OverviewArticle?.PlainSummary))
+                {
+                    this.ViewData["Description"] = OverviewArticle?.PlainSummary;
+                }
                 if (!String.IsNullOrEmpty(OverviewArticle?.ImageLink))
                 {
                     this.ViewData["Image"] = OverviewArticle?.ImageLink;
