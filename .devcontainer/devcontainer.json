@@ -9,7 +9,9 @@
 			"version": "8.0"
 		},
         "ghcr.io/azure/azure-dev/azd:latest": {},		
-        "ghcr.io/azure/azure-dev/azure-cli:latest": {}		
+		"ghcr.io/devcontainers/features/azure-cli:1": {
+			"version": "latest"
+		  }
 	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
@@ -28,7 +30,26 @@
 
 	// Configure tool-specific properties.
 	// "customizations": {},
+"customizations": {
+  "vscode": {
+    "extensions": [
+      // Recommended extensions - GitHub
+      "cschleiden.vscode-github-actions",
+      "GitHub.vscode-pull-request-github",
 
+      // Recommended extensions - Azure
+      "ms-azuretools.vscode-bicep",
+
+
+      // Required extensions
+      "GitHub.copilot",
+	  "ms-dotnettools.csdevkit",
+      "ms-dotnettools.csharp",
+      "ms-vscode.PowerShell",
+      "ms-vscode.vscode-node-azure-pack"
+    ]
+  }
+}
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
