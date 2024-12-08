@@ -1,16 +1,35 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.238.1/containers/dotnet/.devcontainer/base.Dockerfile
+# Use the official .NET 8.0 SDK image
+ARG VARIANT="8.0"
+FROM mcr.microsoft.com/dotnet/sdk:${VARIANT}
 
-# [Choice] .NET version: 6.0, 3.1, 6.0-bullseye, 3.1-bullseye, 6.0-focal, 3.1-focal
-ARG VARIANT="6.0-bullseye-slim"
-FROM mcr.microsoft.com/vscode/devcontainers/dotnet:0-${VARIANT}
+# [Optional] Install Node.js
+ARG INSTALL_NODE="true"
+ARG NODE_VERSION="lts/*"
+RUN if [ "${INSTALL_NODE}" = "true" ]; then \
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs; \
+    fi
 
-# [Choice] Node.js version: none, lts/*, 18, 16, 14
-ARG NODE_VERSION="none"
-RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"; fi
+# [Optional] Install Azure CLI
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
+# [Optional] Install additional tools
+# RUN apt-get update && apt-get install -y <your-package-list>
 
-# [Optional] Uncomment this line to install global node packages.
-# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+# Set the working directory
+WORKDIR /workspace
+
+# Copy the project files
+COPY . .
+
+# Restore dependencies
+# RUN dotnet restore robert-brands-com.sln
+
+# Build the application
+# RUN dotnet build robert-brands-com.sln --configuration Release --output /workspace/build
+# Expose the port that the application will run on
+EXPOSE 5000
+EXPOSE 5001
+
+# Set the entry point for the container
+ENTRYPOINT ["dotnet", "/workspace/build/robert-brands-com.dll"]

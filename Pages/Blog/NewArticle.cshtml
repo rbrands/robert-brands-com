@@ -64,6 +64,10 @@
                     <label asp-for="NewArticle.Title"></label>
                     <input class="form-control" asp-for="NewArticle.Title" />
                 </div>
+                <div class="form-group">
+                    <label asp-for="NewArticle.SubTitle"></label>
+                    <input class="form-control" asp-for="NewArticle.SubTitle" />
+                </div>
                 @if (Model.SummaryEnabled)
                 {
                     <input asp-for="SummaryEnabled" type="hidden" />

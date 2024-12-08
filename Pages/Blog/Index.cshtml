@@ -20,6 +20,10 @@
             {
                 <div class="col-md-8 px-0">
                     <h1 class="display-4">@Model.HeadlineArticle.Title</h1>
+                    @if (!String.IsNullOrEmpty(Model.HeadlineArticle.SubTitle))
+                    {
+                        <h2 class="subtitle">@Model.HeadlineArticle.SubTitle</h2>
+                    }
                     <div class="lead my-3 text-muted small">
                         @Model.HeadlineArticle.Date.ToString("dd.MM.yyyy")
                         @if (!String.IsNullOrEmpty(Model.HeadlineArticle.UrlTitle))
@@ -88,6 +92,10 @@
                                 <h3 class="mb-0 text-dark">
                                     @Model.SideFeaturedArticle_1.Title
                                 </h3>
+                                @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_1.SubTitle))
+                                {
+                                    <h2 class="subtitle">@Model.SideFeaturedArticle_1.SubTitle</h2>
+                                }
                                 <div class="mb-1 text-muted small">
                                     @Model.SideFeaturedArticle_1.Date.ToString("dd.MM.yyyy")
                                     @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_1.UrlTitle))
@@ -146,6 +154,10 @@
                                 <h3 class="mb-0 text-dark">
                                     @Model.SideFeaturedArticle_2.Title
                                 </h3>
+                                @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_2.SubTitle))
+                                {
+                                    <h2 class="subtitle">@Model.SideFeaturedArticle_2.SubTitle</h2>
+                                }
                                 <div class="mb-1 text-muted small">
                                     @Model.SideFeaturedArticle_2.Date.ToString("dd.MM.yyyy")
                                     @if (!String.IsNullOrEmpty(Model.SideFeaturedArticle_2.UrlTitle))
@@ -206,6 +218,10 @@
                         <div class="col blog-post">
                             <div class="d-inline-block mb-2 text-muted">@article.Tags?.Trim(' ', ',')</div>
                             <h3>@article.Title</h3>
+                            @if (!String.IsNullOrEmpty(article.SubTitle))
+                            {
+                                <h2 class="subtitle">@article.SubTitle</h2>
+                            }
                             <p class="text-muted small">
                                 @article.Date.ToString("dd.MM.yyyy")
                                 @if (!String.IsNullOrEmpty(article.UrlTitle))

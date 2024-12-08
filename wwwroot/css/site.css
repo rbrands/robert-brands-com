@@ -37,4 +37,12 @@ body {
     }
 }
 
+.subtitle {
+    font-style: italic;
+    color: #555; /* Subtle gray color */
+    font-size: 1.3em; /* Slightly larger font size */
+    font-weight: 300; /* Light font weight */
+    margin-top: 10px; /* Space above the subtitle */
+    margin-bottom: 10px; /* Space below the subtitle */
+}
 

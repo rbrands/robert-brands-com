@@ -22,6 +22,10 @@
         <div class="row">
             <div class="col-md-8 px-0">
                 <h1 class="display-4">@Model.ReferencedArticle.Title</h1>
+                @if (!String.IsNullOrEmpty(Model.ReferencedArticle.SubTitle))
+                {
+                    <h2 class="subtitle">@Model.ReferencedArticle.SubTitle</h2>
+                }
                 <div class="lead my-3 text-muted small">
                     @Model.ReferencedArticle.Date.ToString("dd.MM.yyyy")
                 </div>
