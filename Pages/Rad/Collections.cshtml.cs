@@ -41,8 +41,6 @@ namespace robert_brands_com.Pages.Rad
             {
                 this.ViewData["Image"] = OverviewArticle?.ImageLink;
             } 
-            var allItems = await repository.GetDocuments(d => d.TourSet != null);
-            var collections = allItems.AsQueryable().Select(d => d.TourSet).Distinct();
             CollectionsArticles = await articleRepository.GetDocuments(d => d.Id.StartsWith("Article-tourset-"));
             await this.LogGetActivity();
             return Page();

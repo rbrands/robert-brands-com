@@ -1,0 +1,45 @@
+﻿@using System.Security.Claims
+@using robert_brands_com.Models;
+@model IEnumerable<Article>;
+
+<div class="container bg-light">
+    <div class="row">
+        @foreach (Article article in Model)
+        {
+            <div class="col-md-4">
+                <div class="card box-shadow">
+                    <div class="card-header">
+                        @article.Title
+                    </div>
+                    @if (!String.IsNullOrEmpty(article.ImageLink))
+                    {
+                        <img class="card-img-top" src="@article.ImageLink" alt="@article.Title">
+                    }
+                    <div class="card-body">
+                        @if (!String.IsNullOrEmpty(article.SubTitle))
+                        {
+                            <h2 class="subtitle">@article.SubTitle</h2>
+                        }
+                        <div class="card-text">
+                            @if (!String.IsNullOrEmpty(article.Link))
+                            {
+                                <p>
+                                    <a href="@article.Link" target="_blank" title="@article.Title">@(article.LinkTitle ?? "Siehe auch ...")</a>
+                                </p>
+                            }
+                            @Html.Raw(article.ArticleContent)
+                            @{
+                                // Assumption: @article.Id has format "Article-tourset-name"
+                                var parts = article.Id.Split('-');
+                                var name = parts.Length > 2 ? parts[2] : string.Empty;
+                            }
+                            <a href="./@name">Collection "@name"</a>
+                        </div>
+                        <div class="card-text text-right"><small class="text-muted">@article.Date.ToString("dd.MM.yyyy")</small></div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
