@@ -8,16 +8,19 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using robert_brands_com.Models;
 using robert_brands_com.Repositories;
+using robert_brands_com.Pages.Blog;
 
 namespace robert_brands_com.Controllers
 {
     public class ShortcutsController : Controller
     {
         private ICosmosDBRepository<Shortcut> repository;
+
         public ShortcutsController(ICosmosDBRepository<Shortcut> repositoryService)
         {
             this.repository = repositoryService;
         }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Link(string category, string nickname)
@@ -27,8 +30,14 @@ namespace robert_brands_com.Controllers
             {
                 return this.Redirect(target.Url);
             }
-            return new NotFoundResult();
+            else
+            {   
+                // Redirect to Blog/Artikel page if no shortcut found. That page will handle the 404 error. 
+                // This redirect makes it possible to use the title of a blog article (nicknam) as a direct link without any configuration
+                return RedirectToPage("/Blog/Artikel", new { permalink = nickname });
+            }
         }
+
         [Authorize(Roles = KnownRoles.Admin)]
         public async Task<FileContentResult> ExportShortcutsAsCSV()
         {

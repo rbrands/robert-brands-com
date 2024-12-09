@@ -1,0 +1,45 @@
+﻿@page
+@using System.Security.Claims
+@using robert_brands_com.Models
+@model robert_brands_com.Pages.Rad.CollectionsModel
+@{
+    ViewBag.Keywords = "Radfahren, Rennrad, Reisen, Scuderia Südstadt";
+}
+
+<div class="container">
+    @if (!String.IsNullOrEmpty(Model.OverviewArticle?.FlickrLink))
+    {
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <a target="_blank" data-flickr-embed="true" data-header="@Model.OverviewArticle.FlickrHeader.ToString().ToLower()" data-footer="@Model.OverviewArticle.FlickrFooter.ToString().ToLower()" href="@Model.OverviewArticle.FlickrLink" title="@Model.OverviewArticle.Title bei Flickr"><img class="img-fluid card-img-top" src="@Model.OverviewArticle.FlickrLinkImage" alt="Flickr"></a>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="jumbotron p-3 p-md-5 rounded">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="display-4">@Model.OverviewArticle?.Title</h1>
+                <h2 class="subtitle">@Model.OverviewArticle?.SubTitle</h2>
+                <div class="lead my-3">@Html.Raw(Model.OverviewArticle?.ArticleContent)</div>
+                @if (User.IsInRole(KnownRoles.Admin))
+                {
+                    <a asp-page="/Blog/NewArticle" asp-page-handler="customized" asp-route-callingpage="/Rad/Index" asp-route-listname="Reise" asp-route-image="true" asp-route-logicalkey="@Model.ArticleKey" asp-route-featuredenabled="false" asp-route-timetolive="0" class="btn btn-sm btn-outline-secondary">
+                        <span class="fi-pencil" title="Ändern" aria-hidden="true"></span>
+                    </a>
+                }
+            </div>
+            <div class="col">
+                @if (!String.IsNullOrEmpty(Model.OverviewArticle?.ImageLink))
+                {
+                    <img class="img-fluid" src="@Model.OverviewArticle.ImageLink" alt="@Model.OverviewArticle.Title">
+                }
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_Collection", Model.CollectionsArticles);
+</div>
+@section Scripts {
+    <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+}

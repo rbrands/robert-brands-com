@@ -17,8 +17,8 @@ namespace robert_brands_com.Pages.Blog
         const string Blog = "Blog";
         private ICosmosDBRepository<Article> repository;
         private IFunctionSiteTools _functionSiteTools;
-        public Article ReferencedArticle { get; private set; }
-        public string Language { get; private set; }
+        public Article ReferencedArticle { get; set; }
+        public string Language { get; set; }
 
         public ArtikelModel(ICosmosDBRepository<Article> articleRepository, IActivityLog activityLog, IFunctionSiteTools functionSiteTools) : base(activityLog, "Blog")
         {

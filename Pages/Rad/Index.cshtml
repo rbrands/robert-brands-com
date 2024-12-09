@@ -23,6 +23,10 @@
             <div class="row">
                 <div class="col-md-8">
                     <h1 class="display-4">@Model.OverviewArticle?.Title</h1>
+                    @if (!String.IsNullOrEmpty(Model.OverviewArticle?.SubTitle))
+                    {
+                        <h2 class="subtitle">@Model.OverviewArticle?.SubTitle</h2>
+                    }
                     <div class="lead my-3">@Html.Raw(Model.OverviewArticle?.ArticleContent)</div>
                     @if (User.IsInRole(KnownRoles.Admin))
                     {
