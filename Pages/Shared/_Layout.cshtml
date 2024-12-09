@@ -80,16 +80,18 @@
                                 Featured
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">
-                                <a class="dropdown-item" href="/rad/scuderia">Scuderia Südstadt</a>
+                                <a class="dropdown-item" href="/Fotos/mont-ventoux">Mont Ventoux</a>
                                 <a class="dropdown-item" href="/rad/routedesgrandesalpes">Route des Grandes Alpes</a>
                                 <a class="dropdown-item" href="/Fotos/Korsika">Korsika</a>
                                 <a class="dropdown-item" href="/Fotos/Vietnam">Vietnam</a>
                                 <a class="dropdown-item" href="/Fotos/Marokko">Marokko</a>
+                                <a class="dropdown-item" href="/rad/scuderia">Scuderia Südstadt</a>
                                 @if (User.IsInAnyRole(KnownRoles.Admin, KnownRoles.User))
                                 {
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" asp-page="/Fotos/Album">Fotoalbum</a>
                                     <a class="dropdown-item" asp-page="/Blog/Index">Blog</a>
+                                    <a class="dropdown-item" asp-page="/Rad/Collections">Tour-Collections</a>
                                 }
 
                             </div>
@@ -135,7 +137,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - robert-brands.com - 2024-12-08 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
+            &copy; 2024 - robert-brands.com - 2024-12-09 | <a asp-page="/About">Über</a> | <a asp-page="/Contact">Impressum</a>
             @if (User.Identity.IsAuthenticated && User.IsAdmin()) {
                 <text>| Admin</text>
             }
