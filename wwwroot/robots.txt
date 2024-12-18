@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /Blog/Artikel/*/en
+Disallow: /Blog/Artikel/*/fr
+Disallow: /Blog/Artikel/*/es
+Disallow: /Blog/Artikel/*/pt
