@@ -20,20 +20,34 @@ namespace robert_brands_com.Repositories
         }
         public async Task<string> Translate(string language, string text)
         {
-            object body = new { text = text };
-
-            string[] supportedLanguages = { "en", "fr", "es", "it", "pt" };
-            if (String.IsNullOrEmpty(text) || String.IsNullOrEmpty(language) || !supportedLanguages.Contains(language))
+            try
             {
-                return text;
-            }
+                object body = new { text = text };
 
-            var response = await $"https://{_functionsConfig.FunctionAppName}.azurewebsites.net/api/TranslateText"
-                            .WithHeader("x-functions-key", _functionsConfig.TranslateFunctionKey)
-                           .SetQueryParam("to", language)
-                           .PostJsonAsync(body)
-                           .ReceiveJson<List<TranslationResponse>>();
-            return response.FirstOrDefault()?.Translations.FirstOrDefault()?.Text ?? text;
+                string[] supportedLanguages = { "en", "fr", "es", "it", "pt" };
+                if (String.IsNullOrEmpty(text) || String.IsNullOrEmpty(language) || !supportedLanguages.Contains(language))
+                {
+                    return text;
+                }
+
+                var response = await $"https://{_functionsConfig.FunctionAppName}.azurewebsites.net/api/TranslateText"
+                                .WithHeader("x-functions-key", _functionsConfig.TranslateFunctionKey)
+                            .SetQueryParam("to", language)
+                            .PostJsonAsync(body)
+                            .ReceiveJson<List<TranslationResponse>>();
+                return response.FirstOrDefault()?.Translations.FirstOrDefault()?.Text ?? text;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errorContent = await ex.GetResponseStringAsync();
+                Console.WriteLine($"FlurlHttpException: {ex.Message}, Response: {errorContent}");
+                throw; 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                throw; 
+            }
         }
         public async Task<dynamic> AnalyzeImage(string imageUrl)
         {

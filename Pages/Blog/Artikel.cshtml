@@ -6,6 +6,17 @@
 @inject IAuthorizationService AuthorizationService
 @section CSS {
     <link rel="stylesheet" href="~/css/blog.css" />
+    <style>
+    .message-box {
+        border: 1px solid #ccc; /* Rahmenfarbe */
+        background-color: #f9f9f9; /* Hintergrundfarbe */
+        padding: 15px; /* Innenabstand */
+        margin-top: 10px; /* Abstand nach oben */
+        border-radius: 5px; /* Abgerundete Ecken */
+        font-size: 14px; /* Schriftgröße */
+        color: #333; /* Schriftfarbe */
+    }
+</style>  
 }
 <div class="container">
     @if (!String.IsNullOrEmpty(Model.ReferencedArticle.FlickrLink))
@@ -29,6 +40,7 @@
                 <div class="lead my-3 text-muted small">
                     @Model.ReferencedArticle.Date.ToString("dd.MM.yyyy")
                 </div>
+    using Microsoft.DotNet.Scaffolding.Shared.Messaging;
                 <div class="lead my-3">
                     @if (!String.IsNullOrEmpty(Model.ReferencedArticle.Link))
                     {
@@ -53,9 +65,11 @@
                     {
                         <a asp-route-language="es" class="btn btn-sm btn-outline-secondary" rel="nofollow">Espagnol</a>
                     }
-                    @if (Model.Language != "pt")
+                    @if (!String.IsNullOrEmpty(Model.Message))
                     {
-                        <a asp-route-language="pt" class="btn btn-sm btn-outline-secondary" rel="nofollow">Portuguese</a>
+                        <p class="message-box">
+                            @Model.Message
+                        </p>
                     }
                 </div>
             </div>

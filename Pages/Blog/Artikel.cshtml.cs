@@ -19,6 +19,7 @@ namespace robert_brands_com.Pages.Blog
         private IFunctionSiteTools _functionSiteTools;
         public Article ReferencedArticle { get; set; }
         public string Language { get; set; }
+        public string Message { get; set; }
 
         public ArtikelModel(ICosmosDBRepository<Article> articleRepository, IActivityLog activityLog, IFunctionSiteTools functionSiteTools) : base(activityLog, "Blog")
         {
@@ -40,11 +41,18 @@ namespace robert_brands_com.Pages.Blog
             if (!String.IsNullOrEmpty(language))
             {
                 Language = language;
-                ReferencedArticle.Title = await _functionSiteTools.Translate(language, ReferencedArticle.Title);
-                ReferencedArticle.Summary = await _functionSiteTools.Translate(language, ReferencedArticle.Summary);
-                if (!String.IsNullOrEmpty(ReferencedArticle.ArticleContent))
+                try
                 {
-                    ReferencedArticle.ArticleContent = await _functionSiteTools.Translate(language, ReferencedArticle.ArticleContent);
+                    ReferencedArticle.Title = await _functionSiteTools.Translate(language, ReferencedArticle.Title);
+                    ReferencedArticle.Summary = await _functionSiteTools.Translate(language, ReferencedArticle.Summary);
+                    if (!String.IsNullOrEmpty(ReferencedArticle.ArticleContent))
+                    {
+                        ReferencedArticle.ArticleContent = await _functionSiteTools.Translate(language, ReferencedArticle.ArticleContent);
+                    }
+                }
+                catch
+                {
+                    Message = "Die Übersetzungsfunktion kann zur Zeit nicht genutzt werden.";
                 }
             }
             this.ViewData["Keywords"] = this.ReferencedArticle.Tags;
