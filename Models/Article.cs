@@ -25,9 +25,9 @@ namespace robert_brands_com.Models
         [JsonProperty(PropertyName = "urlTitle", NullValueHandling = NullValueHandling.Ignore), Display(Name = "Titel-Link", Prompt = "Kurztitel wie er in der Url auftaucht"), MaxLength(80, ErrorMessage = "Kurztitel zu lang.")]
         [RegularExpression("[a-z0-9-_]*", ErrorMessage = "Bitte nur Kleinbuchstaben und Zahlen für den Titel-Link eingeben.")]
         public string UrlTitle { get; set; }
-        [JsonProperty(PropertyName = "summary", NullValueHandling = NullValueHandling.Ignore), Display(Name = "Zusammenfassung", Prompt = "Kurze Zusammenfassung des Artikels für Facebook und Co"), MaxLength(1024, ErrorMessage = "Zusammenfassung zu lang.")]
+        [JsonProperty(PropertyName = "summary", NullValueHandling = NullValueHandling.Ignore), Display(Name = "Zusammenfassung", Prompt = "Kurze Zusammenfassung des Artikels"), MaxLength(10000, ErrorMessage = "Zusammenfassung zu lang.")]
         public string Summary { get; set; }
-        [JsonProperty(PropertyName = "plainSummary", NullValueHandling = NullValueHandling.Ignore), Display(Name = "Zusammenfassung für Facebook", Prompt = "Kurze Zusammenfassung des Artikels"), MaxLength(10000, ErrorMessage = "Zusammenfassung zu lang.")]
+        [JsonProperty(PropertyName = "plainSummary", NullValueHandling = NullValueHandling.Ignore), Display(Name = "Zusammenfassung für Facebook", Prompt = "Kurze Zusammenfassung des Artikels für Facebook und Co"), MaxLength(10000, ErrorMessage = "Zusammenfassung zu lang.")]
         public string PlainSummary { get; set; }
         [JsonProperty(PropertyName = "articleContent"), Display(Name = "Artikel"), MaxLength(64000, ErrorMessage = "Der Text ist zu lang.")]
         public string ArticleContent { get; set; }
