@@ -92,7 +92,8 @@ namespace robert_brands_com.Pages.Rad
                 if (!String.IsNullOrEmpty(language))
                 {
                     ReferencedTrack.Language = language;
-                    ReferencedTrack.Description = await _functionSiteTools.Translate(language, ReferencedTrack.Description);
+                    // Don't support translation for now
+                    // ReferencedTrack.Description = await _functionSiteTools.Translate(language, ReferencedTrack.Description);
                 }
                 this.ViewData["Title"] = ReferencedTrack.Title;
                 if (!String.IsNullOrEmpty(ReferencedTrack.PlainDescription))
