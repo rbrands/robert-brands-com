@@ -24,7 +24,8 @@ namespace robert_brands_com.Filter
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/10.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30",
             "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Mobile Safari/537.36",
             "Mozilla/5.0 (compatible; adscanner/)",
-            "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.2)"
+            "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.2)",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         };
         public async Task OnPageHandlerSelectionAsync(
                                       PageHandlerSelectedContext context)

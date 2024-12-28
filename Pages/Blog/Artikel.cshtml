@@ -48,27 +48,30 @@
                         </p>
                     }
                     @Html.Raw(Model.ReferencedArticle.Summary)
-                    @if (Model.Language != "de")
+                    @if (Model.ReferencedArticle.TranslationIsEnabled)
                     {
-                        <a asp-route-language="" class="btn btn-sm btn-outline-secondary" rel="nofollow">Deutsch</a>
-                    }
-                    @if (Model.Language != "en")
-                    {
-                        <a asp-route-language="en" class="btn btn-sm btn-outline-secondary" rel="nofollow">English</a>
-                    }
-                    @if (Model.Language != "fr")
-                    {
-                        <a asp-route-language="fr" class="btn btn-sm btn-outline-secondary" rel="nofollow">Français</a>
-                    }
-                    @if (Model.Language != "es")
-                    {
-                        <a asp-route-language="es" class="btn btn-sm btn-outline-secondary" rel="nofollow">Espagnol</a>
-                    }
-                    @if (!String.IsNullOrEmpty(Model.Message))
-                    {
-                        <p class="message-box">
-                            @Model.Message
-                        </p>
+                        @if (Model.Language != "de")
+                        {
+                            <a asp-route-language="" class="btn btn-sm btn-outline-secondary" rel="nofollow">Deutsch</a>
+                        }
+                        @if (Model.Language != "en")
+                        {
+                            <a asp-route-language="en" class="btn btn-sm btn-outline-secondary" rel="nofollow">English</a>
+                        }
+                        @if (Model.Language != "fr")
+                        {
+                            <a asp-route-language="fr" class="btn btn-sm btn-outline-secondary" rel="nofollow">Français</a>
+                        }
+                        @if (Model.Language != "es")
+                        {
+                            <a asp-route-language="es" class="btn btn-sm btn-outline-secondary" rel="nofollow">Espagnol</a>
+                        }
+                        @if (!String.IsNullOrEmpty(Model.Message))
+                        {
+                            <p class="message-box">
+                                @Model.Message
+                            </p>
+                        }
                     }
                 </div>
             </div>

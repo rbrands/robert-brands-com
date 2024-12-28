@@ -31,6 +31,8 @@ namespace robert_brands_com.Models
         public string PlainSummary { get; set; }
         [JsonProperty(PropertyName = "articleContent"), Display(Name = "Artikel"), MaxLength(64000, ErrorMessage = "Der Text ist zu lang.")]
         public string ArticleContent { get; set; }
+        [JsonProperty(PropertyName = "translationIsEnabled"), Display(Name = "Übersetzung?")]
+        public Boolean TranslationIsEnabled { get; set; }
         [JsonProperty(PropertyName = "tags", NullValueHandling = NullValueHandling.Ignore), Display(Name = "Tags zum Artikel")]
         public string Tags { get; set; }
         [JsonProperty(PropertyName = "featuredLevel", NullValueHandling = NullValueHandling.Ignore), Display(Name = "Featured Level", Prompt = "Falls Artikel gefeatured werden soll - Level 1 - 3")]
