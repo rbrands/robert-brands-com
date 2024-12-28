@@ -137,11 +137,11 @@
                     </div>
                     <div class="form-group">
                         <div class="form-check-inline">
-                            <input class="form-check-input" asp-for="NewArticle.FlickrHeader" type="checkbox" value="true" />
+                            <input class="form-check-input" asp-for="NewArticle.FlickrHeader" type="checkbox" />
                             <label class="form-check-label" asp-for="NewArticle.FlickrHeader"></label>
                         </div>
                         <div class="form-check-inline">
-                            <input class="form-check-input" asp-for="NewArticle.FlickrFooter" type="checkbox" value="true" />
+                            <input class="form-check-input" asp-for="NewArticle.FlickrFooter" type="checkbox" />
                             <label class="form-check-label" asp-for="NewArticle.FlickrFooter"></label>
                         </div>
                     </div>
@@ -161,6 +161,12 @@
                         </select>
                     </div>
                 }
+                <div class="form-group">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" asp-for="NewArticle.TranslationIsEnabled" type="checkbox" />
+                        <label class="form-check-label" asp-for="NewArticle.TranslationIsEnabled"></label>
+                    </div>
+                </div>
 
                 <button class="btn btn-primary" type="submit">Speichern</button>
                 <button type="button" class="btn btn-secondary" onclick="window.history.back()">Abbrechen</button>
