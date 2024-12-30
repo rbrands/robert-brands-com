@@ -58,6 +58,10 @@ namespace robert_brands_com.Pages.Blog
             this.ViewData["Keywords"] = this.ReferencedArticle.Tags;
             this.ViewData["Description"] = String.IsNullOrEmpty(ReferencedArticle.PlainSummary) ? ReferencedArticle.Title : ReferencedArticle.PlainSummary;
             this.ViewData["Title"] = ReferencedArticle.Title;
+            if (!String.IsNullOrEmpty(ReferencedArticle.ImageLink))
+            {
+                this.ViewData["Image"] = ReferencedArticle.ImageLink;
+            }
             await this.LogActivity($"{permalink} {language}");
             return Page();
         }

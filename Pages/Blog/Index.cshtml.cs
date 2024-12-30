@@ -33,7 +33,7 @@ namespace robert_brands_com.Pages.Blog
 
         public async Task OnGetAsync(string tag = null)
         {
-            await this.LogGetActivity();
+            await this.LogActivity($"{tag}");
             // await ReadArticlesAsync(tag);
             await ReadArticlePagedAsync(null, tag);
             await ReadTags();

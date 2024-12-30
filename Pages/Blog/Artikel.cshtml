@@ -91,6 +91,8 @@
 @section Metatags {
     <meta property="og:type" content="article" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="@($"{Request.Scheme}://{Request.Host}{Url.Page("/Blog/Artikel", new { permalink = Model.ReferencedArticle.UrlTitle })}")" />
+
 }
 
 @section Scripts {
