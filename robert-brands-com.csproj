@@ -20,9 +20,11 @@
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include=".github\workflows\" />
     <Folder Include="docs\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".github\dependabot.yml" />
     <None Include=".github\upgrades\scenarios\new-dotnet-version_922234\plan.md" />
   </ItemGroup>
 </Project>
