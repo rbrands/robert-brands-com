@@ -95,9 +95,6 @@ namespace robert_brands_com
             services.AddSingleton(typeof(ICosmosDBRepository<CalendarItem>), new CosmosDBRepository<CalendarItem>(dbConfig));
             // rbrands: Example for creating for every request services.AddScoped<ICosmosDBRepository<CalendarItem>>(provider => new CosmosDBRepository<CalendarItem>(Configuration, "SiteDB"));
 
-            // Application Insights
-            services.AddApplicationInsightsTelemetry();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
