@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <UserSecretsId>aspnet-robert_brands_com-585D8E87-11AF-4F82-8CE2-96BFF78B0AFB</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
     <RootNamespace>robert_brands_com</RootNamespace>
@@ -12,14 +12,16 @@
     <PackageReference Include="Flurl.Http" Version="4.0.2" />
     <PackageReference Include="Ical.Net" Version="4.3.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="6.0.36" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.48.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
     <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="1.0.0" />
     <PackageReference Include="reCAPTCHA.AspNetCore" Version="3.0.10" />
     <PackageReference Include="Microsoft.Identity.Web" Version="3.8.3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".github\upgrades\scenarios\new-dotnet-version_922234\plan.md" />
   </ItemGroup>
 </Project>
