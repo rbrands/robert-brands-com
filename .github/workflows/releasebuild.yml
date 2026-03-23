@@ -24,7 +24,7 @@ jobs:
       run: dotnet build --configuration Release
 
     - name: dotnet publish
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      run: dotnet publish -c Release -o ./publish
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
@@ -32,4 +32,4 @@ jobs:
         app-name: 'robert-brands-com'
         slot-name: 'release'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_3c99cbe0ec2c432c9e541f6c96c53002 }}
-        package: ${{env.DOTNET_ROOT}}/myapp 
+        package: ./publish
