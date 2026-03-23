@@ -58,9 +58,15 @@ namespace robert_brands_com.Controllers
                 Summary = calendarItem.Title,
                 Description = description,
                 Location = calendarItem.Place,
-                IsAllDay = calendarItem.WholeDay,
                 Organizer = new Organizer(calendarItem.Host)
             };
+
+            // IsAllDay is read-only in Ical.Net 5.x, set via CalDateTime instead
+            if (calendarItem.WholeDay)
+            {
+                e.Start = new CalDateTime(calendarItem.StartDate.Date);
+                e.End = new CalDateTime(calendarItem.EndDate.Date);
+            }
             Ical.Net.Calendar calendar = new Ical.Net.Calendar();
             calendar.Events.Add(e);
 
