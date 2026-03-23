@@ -6,13 +6,13 @@
             <a class="nav-link" href="https://account.activedirectory.windowsazure.com/profile" target="_blank">@User.Identity.Name</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-page="/MicrosoftIdentity/Account/SignOut">Abmelden</a>
+            <a class="nav-link" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Abmelden</a>
         </li>
 }
 else
 {
         <li class="nav-item">
-            <a class="nav-link" asp-page="/MicrosoftIdentity/Account/SignIn">Anmelden</a>
+            <a class="nav-link" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Anmelden</a>
         </li>
 }
 </ul>
