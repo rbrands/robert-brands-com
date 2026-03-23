@@ -1,0 +1,48 @@
+version: 2
+updates:
+  # NuGet Package Updates für .NET Projekt
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    
+    # Maximal 10 offene PRs gleichzeitig
+    open-pull-requests-limit: 10
+    
+    # Gruppiere Minor und Patch Updates zusammen
+    # Major Updates bekommen eigene PRs
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+        exclude-patterns:
+          - "Microsoft.ApplicationInsights.*"  # AppInsights separat behandeln
+    
+    # Labels für PRs
+    labels:
+      - "dependencies"
+      - "nuget"
+    
+    # Commit Message Präfix
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    
+    # Reviewer (optional - auskommentiert)
+    # reviewers:
+    #   - "rbrands"
+    
+  # GitHub Actions Updates (auch die Actions auf dem neuesten Stand halten!)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(actions)"
